@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://antandros.space/sitemap.xml
