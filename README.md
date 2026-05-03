@@ -42,21 +42,13 @@ Drag this folder into Netlify Drop, or connect the repository. The included `net
 
 Import the folder/repository as a static project. The included `vercel.json` sets static headers and routes missing pages to `404.html`.
 
-## Replace before launch
+## Launch readiness
 
-1. Replace `hello@antandros.space` with the production email address in:
-   - `index.html`
-   - `technology.html`
-   - `standards.html`
-   - `roadmap.html`
-   - `contact.html`
-   - `script.js`
-2. Replace `https://antandros.space/` in `sitemap.xml` with the final domain.
-3. Confirm whether the public site should mention NASA SBIR, EXPAND.1.S26A, Flight Opportunities, CONFERS, Orbit Fab RAFTI, or OSAM-1. The current site keeps those details mostly out of public copy and uses conservative roadmap language.
-4. Add the final company legal name, privacy policy, and terms links if collecting form submissions through a backend.
-5. Replace placeholder logo/visual direction if an official brand identity exists.
-6. Confirm the desired tone: investor-facing, customer-facing, government-program-facing, or recruiting-facing.
+1. Confirm company legal name, privacy policy, and terms links if collecting form submissions through a backend.
+2. Confirm whether additional customer proof points or mission examples should be published.
+3. Replace placeholder logo/visual direction if an official brand identity exists.
+4. Confirm the desired tone: investor-facing, customer-facing, partner-facing, or recruiting-facing.
 
 ## Content posture
 
-The site intentionally avoids claiming that Antandros currently operates a flight-qualified servicing spacecraft, has been awarded NASA funding, can diagnose all anomalies from inspection data, can dock/capture/refuel spacecraft today, or can support universal compatibility with all spacecraft. It presents the company as building a feasibility-backed, standards-aligned architecture with non-contact inspection as the first service and contact-capable functions as staged future extensions.
+The site intentionally avoids claiming current operational servicing capability, universal compatibility, or full anomaly diagnosis from inspection data. It presents Antandros as developing standards-aligned spacecraft readiness and servicing infrastructure with non-contact inspection and assessment support first, and future servicing support as staged roadmap capability only.
