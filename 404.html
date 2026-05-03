@@ -3,17 +3,63 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Page not found | Antandros</title>
+  <title>Not Found | Antandros</title>
   <meta name="description" content="Page not found." />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#061A33" />
+  <meta property="og:title" content="Not Found | Antandros" />
+  <meta property="og:description" content="Page not found." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/og-card.svg" />
+  <link rel="icon" href="assets/favicon.png" type="image/png" />
+  <link rel="preload" href="styles.css" as="style" />
   <link rel="stylesheet" href="styles.css" />
+  
 </head>
 <body>
-  <main class="section-shell page-hero narrow not-found">
-    <p class="eyebrow">404</p>
-    <h1>Page not found.</h1>
-    <p>The page may have moved or the URL may be incorrect.</p>
-    <a class="button primary" href="index.html">Return home</a>
+  <a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-header>
+  <nav class="nav" aria-label="Primary navigation">
+    <a class="brand" href="index.html" aria-label="Antandros home">
+      <img src="assets/antandros-logo.png" alt="Antandros" class="brand-logo" />
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" data-nav-toggle>
+      <span class="sr-only">Open navigation</span>
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-menu" id="nav-menu" data-nav-menu>
+      <a href="index.html">Home</a><a href="inspection.html">Inspection</a><a href="serviceability.html">Serviceability</a><a href="life-extension.html">Life Extension</a><a href="contact.html" class="nav-cta">Contact</a>
+    </div>
+  </nav>
+</header>
+  <main id="main">
+    <section class="not-found section-shell narrow"><p class="eyebrow">404</p><h1>Page not found.</h1><p>The page you are looking for may have moved.</p><a class="button primary" href="index.html">Return home</a></section>
   </main>
+  <footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <a class="brand footer-brand" href="index.html" aria-label="Antandros home">
+        <img src="assets/antandros-logo.png" alt="Antandros" class="footer-logo" />
+      </a>
+      <p>Advanced in-orbit inspection and spacecraft-side serviceability components for space asset management.</p>
+    </div>
+    <div>
+      <h2>Company</h2>
+      <a href="inspection.html">Inspection</a>
+      <a href="serviceability.html">Serviceability</a>
+      <a href="life-extension.html">Life Extension</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <h2>Contact</h2>
+      <a href="mailto:hello@antandros.space">hello@antandros.space</a>
+      <a href="contact.html">Partnership inquiries</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span data-year></span> Antandros. All rights reserved.</span>
+    <span>Development roadmap content; not a claim of current operational servicing capability.</span>
+  </div>
+</footer>
+  <script src="script.js" defer></script>
 </body>
 </html>
