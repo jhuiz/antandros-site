@@ -42,20 +42,12 @@ Drag this folder into Netlify Drop, or connect the repository. The included `net
 
 Import the folder/repository as a static project. The included `vercel.json` sets static headers and routes missing pages to `404.html`.
 
-## Replace before launch
+## Operational notes
 
-1. Replace `hello@antandros.space` with the production email address in:
-   - `index.html`
-   - `technology.html`
-   - `standards.html`
-   - `roadmap.html`
-   - `contact.html`
-   - `script.js`
-2. Replace `https://antandros.space/` in `sitemap.xml` with the final domain.
-3. Confirm whether any external references are approved for public release; current copy intentionally keeps positioning conservative and public-safe.
-4. Add the final company legal name, privacy policy, and terms links if collecting form submissions through a backend.
-5. Replace placeholder logo/visual direction if an official brand identity exists.
-6. Confirm the desired tone: investor-facing, customer-facing, government-program-facing, or recruiting-facing.
+1. Confirm whether any external references are approved for public release; current copy intentionally keeps positioning conservative and public-safe.
+2. Add the final company legal name, privacy policy, and terms links if collecting form submissions through a backend.
+3. Replace placeholder logo/visual direction if an official brand identity exists.
+4. Confirm the desired tone: investor-facing, customer-facing, government-program-facing, or recruiting-facing.
 
 ## Content posture
 
