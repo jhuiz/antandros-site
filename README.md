@@ -51,4 +51,4 @@ Import the folder/repository as a static project. The included `vercel.json` set
 
 ## Content posture
 
-The site intentionally avoids claiming that Antandros currently operates a flight-qualified servicing spacecraft, has been awarded NASA funding, can diagnose all anomalies from inspection data, can dock/capture/refuel spacecraft today, or can support universal compatibility with all spacecraft. It presents the company as building a feasibility-backed, standards-aligned architecture with non-contact inspection as the first service and contact-capable functions as staged future extensions.
+The site intentionally avoids claiming current operational servicing capability, universal compatibility, or full anomaly diagnosis from inspection data. It presents Antandros as developing standards-aligned spacecraft readiness and servicing infrastructure with non-contact inspection and assessment support first, and future servicing support as staged roadmap capability only.
