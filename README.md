@@ -1,11 +1,11 @@
 # Antandros website
 
-Static, responsive website for Antandros, a spacecraft-servicing company developing a standards-aligned servicer-side architecture for advanced non-contact inspection and servicing-readiness verification of cooperative client spacecraft.
+Static, responsive website for Antandros, a spacecraft-servicing company developing standards-aligned spacecraft readiness and servicing infrastructure with a staged roadmap toward non-contact inspection and future servicing support.
 
 ## What is included
 
 - `index.html` — landing page
-- `technology.html` — servicer-side architecture and inspection-first technical framing
+- `technology.html` — what Antandros does: readiness technologies and staged capabilities
 - `standards.html` — standards traceability and compatibility posture
 - `roadmap.html` — staged R&D and demonstration roadmap
 - `contact.html` — backend-free mailto contact form
@@ -52,11 +52,11 @@ Import the folder/repository as a static project. The included `vercel.json` set
    - `contact.html`
    - `script.js`
 2. Replace `https://antandros.space/` in `sitemap.xml` with the final domain.
-3. Confirm whether the public site should mention NASA SBIR, EXPAND.1.S26A, Flight Opportunities, CONFERS, Orbit Fab RAFTI, or OSAM-1. The current site keeps those details mostly out of public copy and uses conservative roadmap language.
+3. Confirm whether any external references are approved for public release; current copy intentionally keeps positioning conservative and public-safe.
 4. Add the final company legal name, privacy policy, and terms links if collecting form submissions through a backend.
 5. Replace placeholder logo/visual direction if an official brand identity exists.
 6. Confirm the desired tone: investor-facing, customer-facing, government-program-facing, or recruiting-facing.
 
 ## Content posture
 
-The site intentionally avoids claiming that Antandros currently operates a flight-qualified servicing spacecraft, has been awarded NASA funding, can diagnose all anomalies from inspection data, can dock/capture/refuel spacecraft today, or can support universal compatibility with all spacecraft. It presents the company as building a feasibility-backed, standards-aligned architecture with non-contact inspection as the first service and contact-capable functions as staged future extensions.
+The site intentionally avoids claims of current operational servicing capability and frames future servicing support as staged roadmap capability. Inspection outputs are presented as assessment-support data, with standards alignment and compatibility planning as core themes.
