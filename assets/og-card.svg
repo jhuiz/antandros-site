@@ -1,15 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Aeterna Sidera</title>
+  <desc id="description">Understanding recurring challenges in space-hardware execution.</desc>
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#061A33"/>
-      <stop offset="1" stop-color="#0B2A52"/>
-    </linearGradient>
+    <radialGradient id="glow" cx="84%" cy="18%" r="62%">
+      <stop offset="0" stop-color="#315e76" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#07131f" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0V64" fill="none" stroke="#ffffff" stroke-opacity=".045"/>
+    </pattern>
   </defs>
-  <rect width="1200" height="630" fill="url(#g)"/>
-  <circle cx="1010" cy="140" r="220" fill="#0A8FE8" opacity="0.15"/>
-  <circle cx="120" cy="530" r="180" fill="#39A6FF" opacity="0.10"/>
-  <text x="80" y="230" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="76" font-weight="800">Antandros</text>
-  <text x="84" y="310" fill="#BFD6EA" font-family="Inter, Arial, sans-serif" font-size="34">Advanced inspection and serviceability</text>
-  <text x="84" y="360" fill="#BFD6EA" font-family="Inter, Arial, sans-serif" font-size="34">components for space asset management.</text>
-  <rect x="84" y="440" width="360" height="4" fill="#0A8FE8"/>
+  <rect width="1200" height="630" fill="#07131f"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <path d="M1032 96l8.5 34 34.5 9-34.5 9-8.5 34-8.5-34-34.5-9 34.5-9 8.5-34z" fill="#a8d8ef"/>
+  <circle cx="1032" cy="139" r="7" fill="#f3f0e8"/>
+  <text x="92" y="126" fill="#a8d8ef" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="6">AETERNA SIDERA</text>
+  <text x="92" y="270" fill="#f3f0e8" font-family="Georgia, Times New Roman, serif" font-size="66">Understanding recurring</text>
+  <text x="92" y="350" fill="#f3f0e8" font-family="Georgia, Times New Roman, serif" font-size="66">challenges in</text>
+  <text x="92" y="430" fill="#f3f0e8" font-family="Georgia, Times New Roman, serif" font-size="66">space-hardware execution.</text>
+  <text x="94" y="530" fill="#b9c4cc" font-family="Arial, Helvetica, sans-serif" font-size="28">Focused, solution-neutral industry study.</text>
 </svg>
