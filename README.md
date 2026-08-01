@@ -20,7 +20,7 @@ The site presents one bounded activity: a focused, solution-neutral industry stu
 
 ## Deployment
 
-The live site is served by GitHub Pages from the `main` branch at `antandros.space`. Merging to `main` publishes the changed files. The old domain and `hello@antandros.space` remain in use only during the name transition. The temporary site does not load third-party analytics or tracking scripts.
+The live site is served by GitHub Pages from the `main` branch at `aeternasidera.com`. Merging to `main` publishes the changed files. The legacy `hello@antandros.space` mailbox remains in use while email hosting is transitioned. The temporary site does not load third-party analytics or tracking scripts.
 
 ## Local preview
 
