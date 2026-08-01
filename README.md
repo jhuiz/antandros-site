@@ -14,6 +14,7 @@ The site presents one bounded activity: a focused, solution-neutral industry stu
 - `404.html` — branded not-found page
 - `styles.css` — shared static styles
 - `script.js` — current-year footer update
+- `assets/aeterna-sidera-mark.png` — approved wordmark-free company mark used in the header and footer
 - `favicon.ico`, `assets/favicon.svg`, and `assets/favicon.png` — current favicon assets
 - `assets/og-card.svg` — editable social-card source; `assets/og-card.png` — served social card
 - `CNAME` — current GitHub Pages custom domain

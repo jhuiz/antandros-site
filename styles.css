@@ -102,14 +102,13 @@ p:last-child {
   text-transform: uppercase;
 }
 
-.wordmark-mark {
-  display: grid;
-  width: 27px;
-  height: 27px;
-  place-items: center;
-  color: var(--blue-bright);
-  font-size: 1.15rem;
-  line-height: 1;
+.wordmark-logo {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 7px;
+  background: #fff;
+  object-fit: contain;
 }
 
 .site-nav {
@@ -534,6 +533,12 @@ h3 {
   .wordmark {
     font-size: 0.7rem;
     letter-spacing: 0.13em;
+  }
+
+  .wordmark-logo {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
   }
 
   .site-nav .nav-contact {
