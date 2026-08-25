@@ -68,33 +68,12 @@
         <div class="hero-copy">
           <p class="eyebrow">Founder-led spacecraft propulsion development</p>
           <h1>Developing in-space chemical propulsion for spacecraft maneuvering.</h1>
-          <p class="hero-lede">Aeterna Sidera Inc. is developing an in-space bipropellant chemical-propulsion program, with an approximately 1 N-class head as the initial direction. The program treats propellant source/feed behavior and the head-end as one coupled engineering problem.</p>
-          <p class="hero-support">Current work is pre-hardware: application definition, coupled system analysis, numerical-method verification, interface development, and test planning.</p>
+          <p class="hero-lede">Aeterna Sidera Inc. is developing an in-space bipropellant chemical-propulsion program, with an approximately 1 N-class head as the initial direction.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#program">Review the development program</a>
             <a class="button button-secondary" href="mailto:hello@aeternasidera.com?subject=Aeterna%20Sidera%20inquiry">Start a conversation</a>
           </div>
         </div>
-
-        <aside class="status-card" aria-labelledby="status-title">
-          <p class="card-label">Program status · August 2026</p>
-          <h2 id="status-title">Bootstrap engineering</h2>
-          <dl>
-            <div>
-              <dt>Focus</dt>
-              <dd>Application basis, coupled feasibility, and numerical-method verification</dd>
-            </div>
-            <div>
-              <dt>Hardware</dt>
-              <dd>No propulsion hardware has been built or tested in the current program</dd>
-            </div>
-            <div>
-              <dt>Next gate</dt>
-              <dd>Close Bootstrap evidence and determine whether to authorize atmospheric head-end development</dd>
-            </div>
-          </dl>
-          <p class="status-note">No demonstrated or flight-qualified product is offered today.</p>
-        </aside>
       </div>
     </section>
 
@@ -105,8 +84,8 @@
           <h2>When maneuver time and acceleration matter.</h2>
         </div>
         <div class="section-copy">
-          <p>Electric propulsion excels at efficient cumulative velocity change. Stored-gas systems can support simple, precise impulses. Aeterna is investigating chemical propulsion for mission events where response time and acceleration create value.</p>
-          <p>Candidate applications include rapid rephasing, time-constrained conjunction response, rendezvous, orbit correction, disposal, and contingency recovery. These are design-driving application cases—not claims of customer adoption or demonstrated mission performance.</p>
+          <p>Electric propulsion excels at efficient cumulative velocity change. Stored-gas systems can support simple, precise impulses. Chemical propulsion is well suited to spacecraft maneuvers where response time and acceleration matter. Aeterna is developing its system for that mission space.</p>
+          <p>The application cases below guide the program’s requirements and development priorities.</p>
           <ul class="application-list" aria-label="Candidate application cases">
             <li>Rapid rephasing</li>
             <li>Conjunction response</li>
@@ -123,29 +102,29 @@
       <div class="shell">
         <div class="section-heading">
           <p class="eyebrow">Development boundary</p>
-          <h2>One coupled propulsion problem—from propellant source to nozzle exit.</h2>
-          <p>The intended long-term product boundary runs from a propellant source/feed system through the head-end to the nozzle exit. Requirements and interfaces are being developed as a coupled problem. Exact components and internal architecture remain open engineering decisions.</p>
+          <h2>A coupled subsystem—from propellant source to nozzle exit.</h2>
+          <p>Aeterna is developing the propellant source/feed system and thruster head as a coupled subsystem, with an intended boundary extending through the nozzle exit. Exact components and internal architecture remain open engineering decisions.</p>
         </div>
 
         <figure class="boundary-figure">
           <ol class="boundary-flow" aria-label="Aeterna propulsion subsystem development boundary">
             <li>
               <span class="boundary-number">01</span>
-              <h3>Propellant source/feed domain</h3>
-              <p>Pressure, thermal, flow, transient, isolation, and observability requirements under study</p>
+              <h3>Propellant source and feed</h3>
+              <p>Defines the delivery conditions and interfaces available to the thruster head</p>
             </li>
             <li>
               <span class="boundary-number">02</span>
-              <h3>Approx. 1 N head-end direction</h3>
-              <p>Inlet-to-chamber behavior, testability, and interfaces under study</p>
+              <h3>Approx. 1 N head direction</h3>
+              <p>Establishes the initial scale for head-end development and integration</p>
             </li>
             <li>
               <span class="boundary-number">03</span>
-              <h3>Nozzle-exit boundary</h3>
-              <p>Thrust and plume behavior to be established for the tested configuration and conditions</p>
+              <h3>Nozzle exit</h3>
+              <p>Marks the downstream end of the intended propulsion-subsystem boundary</p>
             </li>
           </ol>
-          <figcaption>Conceptual engineering boundary, not a frozen architecture. Development test ground-support equipment is outside the intended product boundary; physical source/feed realization is planned only for a later integrated stage.</figcaption>
+          <figcaption>Conceptual development boundary. The exact architecture and configuration will be established through development.</figcaption>
         </figure>
       </div>
     </section>
@@ -155,7 +134,7 @@
         <div>
           <p class="eyebrow">Evidence-gated progression</p>
           <h2>Evidence before scale.</h2>
-          <p class="program-intro">Aeterna advances a configuration only when its evidence supports the next question. Each stage supports only the analyzed or tested configuration, conditions, and stated purpose.</p>
+          <p class="program-intro">Aeterna is currently in the engineering-definition stage, prior to hardware development. The program advances through staged engineering and test evidence.</p>
         </div>
 
         <ol class="stage-list">
@@ -163,30 +142,30 @@
             <div class="stage-marker"><span>01</span></div>
             <div>
               <div class="stage-heading">
-                <h3>Bootstrap engineering</h3>
+                <h3>Engineering definition</h3>
                 <span class="stage-tag">Current</span>
               </div>
-              <p>Define applications and maneuver events; evaluate coupled feasibility; establish numerical, interface, verification, facility, safety, and planning bases.</p>
+              <p>Establish the application, subsystem, interface, and verification basis for physical development.</p>
             </div>
           </li>
           <li>
             <div class="stage-marker"><span>02</span></div>
             <div>
               <div class="stage-heading">
-                <h3>Atmospheric head development</h3>
+                <h3>Head-end development</h3>
                 <span class="stage-tag stage-tag-muted">Planned</span>
               </div>
-              <p>If authorized at the preceding gate, develop one evolving product-path head article with a dynamic two-propellant ground supply, then measure inlet demand and correlate the analytical model.</p>
+              <p>Develop and test an initial head-end article under controlled ground conditions.</p>
             </div>
           </li>
           <li>
             <div class="stage-marker"><span>03</span></div>
             <div>
               <div class="stage-heading">
-                <h3>Integrated one-gravity development</h3>
+                <h3>Integrated subsystem development</h3>
                 <span class="stage-tag stage-tag-muted">Future</span>
               </div>
-              <p>Converge one product-path source/feed article with the developed head in an atmospheric source-to-plume configuration.</p>
+              <p>Integrate the source/feed system and developed head-end in a ground-development configuration.</p>
             </div>
           </li>
           <li>
@@ -196,7 +175,7 @@
                 <h3>Later maturation</h3>
                 <span class="stage-tag stage-tag-muted">Future</span>
               </div>
-              <p>Vacuum or altitude operation, low-gravity acquisition, endurance, environment, qualification, acceptance, manufacturing, and flight-intent work remain separate evidence efforts.</p>
+              <p>Extend evidence through relevant operating environments, endurance, qualification, manufacturing, and flight-intent development.</p>
             </div>
           </li>
         </ol>
@@ -207,12 +186,11 @@
       <div class="shell company-note">
         <div>
           <p class="eyebrow">Company and method</p>
-          <h2 id="company-title">Founder-led, claim-limited development.</h2>
+          <h2 id="company-title">Founder-led engineering.</h2>
         </div>
         <div>
-          <p>Aeterna Sidera is led by Jesus Huizar, Founder, CEO, and Chief Engineer. His background spans chemical engineering, spacecraft propulsion, multiphysics modeling, and experimental hardware, including a NASA Jet Propulsion Laboratory internship and university propulsion research.</p>
-          <p>Technical decisions remain with the Founder and Chief Engineer. Specialists and independent reviewers are planned for later gates where their expertise or independence is required. Public claims are bounded to the configuration, conditions, and evidence actually established.</p>
-          <p>Spacecraft owners and primes retain vehicle requirements, installed-system qualification, launch and mission acceptance, and flight authority.</p>
+          <p>Aeterna Sidera is led by Jesus Huizar, Founder, CEO, and Chief Engineer. He holds a B.S. in Chemical Engineering from UC Berkeley and an M.S. in Aerospace Engineering from UC San Diego. His experience spans spacecraft propulsion, multiphysics modeling, and experimental hardware, including a NASA Jet Propulsion Laboratory internship and university propulsion research.</p>
+          <p>Technical direction is led by the Founder and Chief Engineer. The development plan includes future specialist participation and independent technical review.</p>
         </div>
       </div>
     </section>
@@ -221,7 +199,7 @@
       <div class="shell contact-panel">
         <div>
           <p class="eyebrow">Contact</p>
-          <h2>Start a bounded conversation.</h2>
+          <h2>Start a conversation.</h2>
           <p>We welcome non-sensitive conversations with spacecraft developers, propulsion and integration practitioners, specialists, facilities, suppliers, and potential partners or investors.</p>
           <p class="contact-caution">Please do not send classified, export-controlled, proprietary, or procurement-sensitive information.</p>
         </div>

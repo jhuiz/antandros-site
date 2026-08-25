@@ -4,15 +4,15 @@ Public GitHub Pages site for Aeterna Sidera Inc.
 
 ## Current public posture
 
-The site presents Aeterna Sidera's current in-space bipropellant chemical-propulsion development program, with an approximately 1 N-class head as the initial direction. The program is explicitly pre-hardware and evidence-gated. No demonstrated performance, qualification, flight readiness, customer adoption, or production capability is claimed.
+The site presents Aeterna Sidera's current in-space bipropellant chemical-propulsion development program, with an approximately 1 N-class head as the initial direction. The public page describes the program as being in the engineering-definition stage, prior to hardware development, without publishing internal tasks, gate criteria, schedules, or results.
 
 Public copy may describe:
 
 - the intended application domain;
 - the coupled source/feed-through-nozzle development boundary;
-- the current Bootstrap engineering stage;
-- the prospective atmospheric head-development and integrated one-gravity evidence stages; and
-- the founder-led, claim-limited development method.
+- the current engineering-definition stage;
+- the high-level path through head-end, integrated-subsystem, and later maturation stages; and
+- the founder-led development method.
 
 Public copy must not disclose or imply a selected detailed architecture, propellant pair, design point, predicted performance, hardware result, funding term, customer commitment, qualification, compliance, or flight authority.
 
