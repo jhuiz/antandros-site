@@ -1,14 +1,24 @@
-# Aeterna Sidera transition site
+# Aeterna Sidera public site
 
-Public GitHub Pages site for Aeterna Sidera Inc., formerly Antandros, Inc.
+Public GitHub Pages site for Aeterna Sidera Inc.
 
 ## Current public posture
 
-The site presents one bounded activity: a focused, solution-neutral industry study of recurring problems in uncrewed spacecraft and payload hardware execution. Aeterna Sidera is not currently marketing a commercial product. Earlier company descriptions are archived exploratory concepts, not current offerings or roadmap commitments.
+The site presents Aeterna Sidera's current in-space bipropellant chemical-propulsion development program, with an approximately 1 N-class head as the initial direction. The program is explicitly pre-hardware and evidence-gated. No demonstrated performance, qualification, flight readiness, customer adoption, or production capability is claimed.
+
+Public copy may describe:
+
+- the intended application domain;
+- the coupled source/feed-through-nozzle development boundary;
+- the current Bootstrap engineering stage;
+- the prospective atmospheric head-development and integrated one-gravity evidence stages; and
+- the founder-led, claim-limited development method.
+
+Public copy must not disclose or imply a selected detailed architecture, propellant pair, design point, predicted performance, hardware result, funding term, customer commitment, qualification, compliance, or flight authority.
 
 ## Structure
 
-- `index.html` — current one-page company and discovery site
+- `index.html` — current one-page company and development site
 - `contact.html` — redirect to the contact section on the homepage
 - Other legacy `.html` files — deindexed redirects to the homepage
 - `404.html` — branded not-found page
@@ -21,7 +31,7 @@ The site presents one bounded activity: a focused, solution-neutral industry stu
 
 ## Deployment
 
-The live site is served by GitHub Pages from the `main` branch at `aeternasidera.com`. Merging to `main` publishes the changed files. The public contact mailbox is `hello@aeternasidera.com`. The temporary site does not load third-party analytics or tracking scripts.
+The live site is served by GitHub Pages from the `main` branch at `aeternasidera.com`. Merging to `main` publishes the changed files. The public contact mailbox is `hello@aeternasidera.com`. The site does not load third-party analytics or tracking scripts.
 
 ## Local preview
 
@@ -39,4 +49,4 @@ Before merging:
 git diff --check
 ```
 
-Review the homepage, the 404 page, every legacy redirect, mobile layout, keyboard focus, metadata, and the email action. Confirm that retired concepts, unrelated affiliations, and unsupported capability claims are absent.
+Review the homepage, the 404 page, every legacy redirect, mobile layout, keyboard focus, metadata, structured data, social card, and email action. Confirm that superseded public positioning and unsupported capability claims are absent.
