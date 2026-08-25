@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
   <title id="title">Aeterna Sidera</title>
-  <desc id="description">Understanding recurring challenges in space-hardware execution.</desc>
+  <desc id="description">In-space chemical propulsion development.</desc>
   <defs>
     <radialGradient id="glow" cx="84%" cy="18%" r="62%">
       <stop offset="0" stop-color="#315e76" stop-opacity=".72"/>
@@ -16,8 +16,7 @@
   <path d="M1032 96l8.5 34 34.5 9-34.5 9-8.5 34-8.5-34-34.5-9 34.5-9 8.5-34z" fill="#a8d8ef"/>
   <circle cx="1032" cy="139" r="7" fill="#f3f0e8"/>
   <text x="92" y="126" fill="#a8d8ef" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="6">AETERNA SIDERA</text>
-  <text x="92" y="270" fill="#f3f0e8" font-family="Georgia, Times New Roman, serif" font-size="66">Understanding recurring</text>
-  <text x="92" y="350" fill="#f3f0e8" font-family="Georgia, Times New Roman, serif" font-size="66">challenges in</text>
-  <text x="92" y="430" fill="#f3f0e8" font-family="Georgia, Times New Roman, serif" font-size="66">space-hardware execution.</text>
-  <text x="94" y="530" fill="#b9c4cc" font-family="Arial, Helvetica, sans-serif" font-size="28">Focused, solution-neutral industry study.</text>
+  <text x="92" y="294" fill="#f3f0e8" font-family="Georgia, Times New Roman, serif" font-size="70">In-space chemical</text>
+  <text x="92" y="382" fill="#f3f0e8" font-family="Georgia, Times New Roman, serif" font-size="70">propulsion development.</text>
+  <text x="94" y="502" fill="#b9c4cc" font-family="Arial, Helvetica, sans-serif" font-size="28">Founder-led · Evidence-gated · Pre-hardware development</text>
 </svg>
