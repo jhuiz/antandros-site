@@ -170,13 +170,11 @@ p:last-child {
 .hero-grid {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(310px, 0.75fr);
-  gap: clamp(54px, 8vw, 108px);
-  align-items: end;
+  grid-template-columns: minmax(0, 920px);
+  align-items: start;
 }
 
-.eyebrow,
-.card-label {
+.eyebrow {
   margin-bottom: 20px;
   color: #315f76;
   font-size: 0.72rem;
@@ -187,7 +185,6 @@ p:last-child {
 }
 
 .hero .eyebrow,
-.status-card .card-label,
 .contact-panel .eyebrow {
   color: var(--blue-bright);
 }
@@ -222,17 +219,10 @@ h3 {
 
 .hero-lede {
   max-width: 790px;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
   color: #e9edf0;
   font-size: clamp(1.14rem, 2vw, 1.38rem);
   line-height: 1.55;
-}
-
-.hero-support {
-  max-width: 720px;
-  margin-bottom: 35px;
-  color: var(--text-dim);
-  font-size: 1rem;
 }
 
 .hero-actions {
@@ -282,56 +272,6 @@ h3 {
 .button-secondary:focus-visible {
   border-color: rgba(255, 255, 255, 0.65);
   background: rgba(255, 255, 255, 0.07);
-}
-
-.status-card {
-  padding: 30px;
-  border: 1px solid rgba(168, 216, 239, 0.22);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.055);
-  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(12px);
-}
-
-.status-card h2 {
-  margin-bottom: 25px;
-  font-size: 2rem;
-}
-
-.status-card dl {
-  margin-bottom: 0;
-}
-
-.status-card dl > div {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 18px;
-  padding: 16px 0;
-  border-top: 1px solid var(--line-dark);
-}
-
-.status-card dt {
-  color: var(--blue-bright);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
-.status-card dd {
-  margin-bottom: 0;
-  color: #d9e0e4;
-  font-size: 0.92rem;
-  line-height: 1.5;
-}
-
-.status-note {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid var(--line-dark);
-  color: #9fb0ba;
-  font-size: 0.78rem;
-  line-height: 1.5;
 }
 
 .section {
@@ -680,7 +620,6 @@ h3 {
   .site-nav a:not(.nav-contact):not([href="#program"]) {
     display: none;
   }
-
 }
 
 @media (max-width: 860px) {
@@ -697,14 +636,6 @@ h3 {
   .company-note,
   .contact-panel {
     grid-template-columns: 1fr;
-  }
-
-  .hero-grid {
-    gap: 56px;
-  }
-
-  .status-card {
-    max-width: 560px;
   }
 
   .section {
@@ -782,15 +713,6 @@ h3 {
   .hero-actions,
   .hero-actions .button {
     width: 100%;
-  }
-
-  .status-card {
-    padding: 24px;
-  }
-
-  .status-card dl > div {
-    grid-template-columns: 1fr;
-    gap: 5px;
   }
 
   .stage-list > li {
