@@ -4,7 +4,7 @@ Public GitHub Pages site for Aeterna Sidera Inc.
 
 ## Current public posture
 
-The site presents Aeterna Sidera's current in-space bipropellant chemical-propulsion development program, with an approximately 1 N-class head as the initial direction. The public page describes the program as being in the engineering-definition stage, prior to hardware development, without publishing internal tasks, gate criteria, schedules, or results.
+The site presents Aeterna Sidera's current in-space bipropellant chemical-propulsion development program for responsive spacecraft maneuvering. The public page describes the program as being in the engineering-definition stage, prior to hardware development, without publishing internal tasks, gate criteria, schedules, or results.
 
 Public copy may describe:
 
