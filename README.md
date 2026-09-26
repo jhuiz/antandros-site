@@ -4,14 +4,15 @@ Public GitHub Pages site for Aeterna Sidera Inc.
 
 ## Current public posture
 
-The site presents Aeterna Sidera's in-space bipropellant chemical-propulsion program and developing fluid-controls product line. Both remain in development; evaluation valve hardware is not yet available. Public copy does not publish internal tasks, gate criteria, schedules, or results.
+The site presents Aeterna Sidera's in-space bipropellant chemical-propulsion program and developing fluid-controls product line. Both remain in development; evaluation valve hardware is not yet available. The intended propulsion offering is spacecraft-specific system configurations, including multiple-thruster arrangements, rather than one fixed thruster package. Standalone-thruster sales remain uncommitted. Public copy does not publish internal tasks, gate criteria, schedules, or results.
 
 Public copy may describe:
 
-- the intended application domain;
-- the coupled source/feed-through-nozzle development boundary;
-- the current engineering-definition stage;
-- the high-level path through head-end, integrated-subsystem, and later maturation stages; and
+- the intended system offering and configuration considerations, without promising universal customization or supported configurations;
+- repeated operation, predictable pulses, sustained firing, and spacecraft integration as objectives rather than demonstrated capabilities;
+- the current design-and-analysis stage before prototype fabrication and testing;
+- the high-level path from thruster characterization to integrated configuration testing and configuration-specific verification;
+- sourced, non-proprietary engineering considerations, clearly distinguished from Aeterna analysis or test results;
 - the founder-led development method;
 - the intended independent fluid-control component offering and optional integration accessories, explicitly as development intentions; and
 - sourced educational articles, with illustrative models distinguished from Aeterna hardware results.
@@ -21,7 +22,7 @@ Public copy must not disclose or imply a selected detailed architecture, propell
 ## Structure
 
 - `index.html` — company and development homepage
-- `propulsion.html` — propulsion applications, development boundary, and staged program overview
+- `propulsion.html` — intended system configurations, operating priorities, a sourced integration consideration, and development status
 - `fluid-controls.html` — developing component line and application-discussion invitation
 - `articles/index.html` — technical series index
 - `articles/why-spacecraft-need-maneuverability.html` — Article 1 with sources and original phasing illustration
