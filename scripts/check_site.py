@@ -1,6 +1,7 @@
 """Dependency-free checks for local links, metadata, and public page structure."""
 from html.parser import HTMLParser
 from pathlib import Path
+from datetime import date
 from urllib.parse import unquote, urlsplit
 import json
 import base64
@@ -20,6 +21,7 @@ class Page(HTMLParser):
         self.headings = 0
         self.canonical = []
         self.scripts = []
+        self.times = []
         self.current_json = None
         self.errors = []
         self.feed(path.read_text(encoding="utf-8"))
@@ -33,6 +35,8 @@ class Page(HTMLParser):
             self.ids.add(value)
         if tag == "h1":
             self.headings += 1
+        if tag == "time":
+            self.times.append(attrs.get("datetime", ""))
         if tag == "img" and "alt" not in attrs:
             self.errors.append("image missing alt")
         if tag == "link" and attrs.get("rel") == "canonical":
@@ -85,6 +89,13 @@ for name in primary:
 
 for name in ["index.html", "propulsion.html", "fluid-controls.html"]:
     assert not re.search(r"\b(?:1|20)\s*N(?:\b|-class)", (ROOT / name).read_text()), f"{name}: public thrust-class claim"
+
+article = pages[(ROOT / "articles/why-spacecraft-need-maneuverability.html").resolve()]
+article_metadata = next(item for item in article.scripts if item.get("@type") == "Article")
+published = article_metadata["datePublished"]
+assert date.fromisoformat(published).isoformat() == published, "invalid publication date"
+assert published in article.times, "article publication date differs from its metadata"
+assert published in pages[(ROOT / "articles/index.html").resolve()].times, "article index publication date differs"
 
 namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 urls = [element.text for element in ET.parse(ROOT / "sitemap.xml").findall("s:url/s:loc", namespace)]
