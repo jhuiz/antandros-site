@@ -21,6 +21,7 @@ Public copy must not disclose or imply a selected detailed architecture, propell
 ## Structure
 
 - `index.html` — company and development homepage
+- `propulsion.html` — propulsion applications, development boundary, and staged program overview
 - `fluid-controls.html` — developing component line and application-discussion invitation
 - `articles/index.html` — technical series index
 - `articles/why-spacecraft-need-maneuverability.html` — Article 1 with sources and original phasing illustration
@@ -31,7 +32,7 @@ Public copy must not disclose or imply a selected detailed architecture, propell
 - `styles.css` — shared static styles
 - `script.js` — current-year footer update
 - `assets/aeterna-sidera-mark.png` — approved wordmark-free company mark used in the header and footer
-- `favicon.ico`, `assets/favicon.svg`, and `assets/favicon.png` — current favicon assets
+- `favicon.ico`, `assets/favicon.svg`, and `assets/favicon.png` — format exports of the approved company mark; regenerate with `node scripts/generate_favicons.cjs` (requires Sharp). The SVG embeds the original mark so it does not depend on external image loading. Versioned icon links refresh the prior browser icon.
 - `assets/og-card.svg` — editable social-card source; `assets/og-card.png` — served social card
 - `CNAME` — current GitHub Pages custom domain
 
@@ -67,8 +68,8 @@ For browser checks, make Playwright available to Node (for example through the i
 node scripts/check_browser.cjs
 ```
 
-The browser check starts an ephemeral localhost-only server and uses an isolated headless Edge browser by default. Set `AETERNA_BROWSER_CHANNEL=chromium` to use Playwright's Chromium instead. It checks the four primary pages at 320, 768, and 1280 pixels, navigation visibility, overflow, JavaScript errors, phasing controls, reduced motion, and the no-JavaScript fallback. Optional `AETERNA_SCREENSHOT_DIR` saves review screenshots outside the repository.
+The browser check starts an ephemeral localhost-only server and uses an isolated headless Edge browser by default. Set `AETERNA_BROWSER_CHANNEL=chromium` to use Playwright's Chromium instead. It checks the five primary pages at 320, 768, and 1280 pixels, navigation destinations and visibility, favicon rendering, overflow, JavaScript errors, phasing controls, reduced motion, and the no-JavaScript fallback. Optional `AETERNA_SCREENSHOT_DIR` saves review screenshots outside the repository.
 
-Review the homepage, fluid-controls page, article index, article, 404 page, every legacy redirect, mobile layout, keyboard focus, metadata, structured data, social card, and email action. Confirm that superseded public positioning and unsupported capability claims are absent. Article sources and legal scope require editorial review before merge; the article is an educational synthesis, not peer-reviewed research or demonstrated Aeterna performance.
+Review the homepage, propulsion page, fluid-controls page, article index, article, 404 page, every legacy redirect, mobile layout, keyboard focus, metadata, structured data, social card, and email action. Confirm that superseded public positioning and unsupported capability claims are absent. Article sources and legal scope require editorial review before merge; the article is an educational synthesis, not peer-reviewed research or demonstrated Aeterna performance.
 
 The social preview PNG is rendered from `assets/og-card.svg`; regenerate both together when changing its copy. No branch should be merged to `main` until the founder approves the public content.

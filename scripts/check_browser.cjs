@@ -31,13 +31,22 @@ const server = http.createServer(async (request, response) => {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
-    const routes = ['/', '/fluid-controls.html', '/articles/', '/articles/why-spacecraft-need-maneuverability.html'];
+    const articleRoute = '/articles/why-spacecraft-need-maneuverability.html';
+    const routes = ['/', '/propulsion.html', '/fluid-controls.html', '/articles/', articleRoute];
     for (const width of [320, 768, 1280]) {
       await page.setViewportSize({ width, height: 900 });
       for (const route of routes) {
         await page.goto(origin + route);
         assert.equal(await page.locator('h1').count(), 1);
         assert.equal(await page.locator('.site-nav a:visible').count(), 5, `Hidden navigation at ${width}: ${route}`);
+        assert.equal(await page.locator('.site-nav a', { hasText: 'Propulsion' }).getAttribute('href'), '/propulsion.html');
+        if (route === '/propulsion.html') assert.equal(await page.locator('.site-nav [aria-current="page"]').textContent(), 'Propulsion');
+        const iconUrls = await page.locator('link[rel="icon"]').evaluateAll(icons => icons.map(icon => icon.href));
+        assert.equal(iconUrls.length, 2);
+        for (const iconUrl of iconUrls) {
+          assert(iconUrl.endsWith('?v=aeterna-mark-1'), 'Stale favicon URL');
+          await page.evaluate(async url => { const icon = new Image(); icon.src = url; await icon.decode(); }, iconUrl);
+        }
         assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `Overflow at ${width}: ${route}`);
         await page.keyboard.press('Tab');
         assert.equal(await page.locator(':focus').textContent(), 'Skip to content');
@@ -46,7 +55,7 @@ const server = http.createServer(async (request, response) => {
           await fs.mkdir(process.env.AETERNA_SCREENSHOT_DIR, { recursive: true });
           const name = route.replaceAll('/', '_').replace('.html', '') || 'home';
           await page.screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `${name}-${width}.png`), fullPage: true });
-          if (route === routes[3]) await page.locator('#phasing-illustration').screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `phasing-${width}.png`) });
+          if (route === articleRoute) await page.locator('#phasing-illustration').screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `phasing-${width}.png`) });
         }
       }
     }
@@ -76,12 +85,16 @@ const server = http.createServer(async (request, response) => {
     assert.equal(await page.locator('#phasing-days').innerText(), '0.00');
     const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 900 } });
     const fallback = await noJs.newPage();
-    await fallback.goto(origin + routes[3]);
+    await fallback.goto(origin + articleRoute);
     assert.equal(await fallback.locator('.phasing-controls').isVisible(), false);
     assert(await fallback.locator('.phasing-diagram').isVisible());
     assert.equal(await fallback.locator('#phasing-lag').innerText(), '10.01');
+    await page.goto(origin + '/');
+    await page.getByRole('link', { name: 'Propulsion', exact: true }).click();
+    assert.equal(new URL(page.url()).pathname, '/propulsion.html');
+    assert.equal(new URL(page.url()).hash, '');
     assert.deepEqual(errors, []);
-    console.log('PASS: 12 responsive page checks, visible navigation, keyboard entry, animation, endpoints, reduced motion, no-JS fallback, and no browser errors');
+    console.log('PASS: 15 responsive page checks, dedicated propulsion navigation, favicon rendering, keyboard entry, animation, endpoints, reduced motion, no-JS fallback, and no browser errors');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
