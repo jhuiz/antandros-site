@@ -92,6 +92,25 @@ expected = ["https://aeternasidera.com/" + ("" if name == "index.html" else name
 assert sorted(urls) == sorted(expected), "sitemap does not match primary pages"
 assert (ROOT / "CNAME").read_text().strip() == "aeternasidera.com", "deployment domain changed"
 
+# Keep source PNGs, but do not serve their full download cost on the homepage.
+homepage = pages[(ROOT / "index.html").resolve()]
+image_bytes = 0
+for name in ["orbital-operations-concept", "jesus-huizar-portrait"]:
+    derivative = f"/assets/{name}.webp"
+    assert derivative in homepage.links, f"homepage missing optimized {name}"
+    assert f"/assets/{name}.png" not in homepage.links, f"homepage loads source PNG {name}"
+    assert (ROOT / f"assets/{name}.png").is_file(), f"source original missing: {name}"
+    data = (ROOT / derivative.lstrip("/")).read_bytes()
+    assert data[:4] == b"RIFF" and data[8:12] == b"WEBP", f"invalid WebP: {name}"
+    image_bytes += len(data)
+assert image_bytes < 400_000, "homepage artwork and portrait exceed the 400 kB combined review budget"
+
+social_card = ET.parse(ROOT / "assets/og-card.svg").getroot()
+social_mark = social_card.find("{http://www.w3.org/2000/svg}image")
+assert social_mark is not None and social_mark.attrib["href"] == "aeterna-sidera-mark.png", "social card must reference the approved mark"
+social_png = (ROOT / "assets/og-card.png").read_bytes()
+assert social_png.startswith(b"\x89PNG\r\n\x1a\n") and struct.unpack_from(">II", social_png, 16) == (1200, 630), "invalid social card PNG"
+
 # The favicon must embed the approved mark, not a substitute drawing.
 favicon = ET.parse(ROOT / "assets/favicon.svg").getroot()
 embedded = favicon.find("{http://www.w3.org/2000/svg}image").attrib["href"]

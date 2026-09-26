@@ -6,7 +6,7 @@ const path = require('node:path');
 const assert = require('node:assert/strict');
 
 const root = path.resolve(__dirname, '..');
-const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon' };
+const mime = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.ico': 'image/x-icon' };
 const server = http.createServer(async (request, response) => {
   try {
     let relative = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
@@ -33,7 +33,7 @@ const server = http.createServer(async (request, response) => {
     page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
     const articleRoute = '/articles/why-spacecraft-need-maneuverability.html';
     const routes = ['/', '/propulsion.html', '/fluid-controls.html', '/articles/', articleRoute];
-    for (const width of [320, 768, 1280]) {
+    for (const width of [320, 768, 900, 1280]) {
       await page.setViewportSize({ width, height: 900 });
       for (const route of routes) {
         await page.goto(origin + route);
@@ -41,6 +41,38 @@ const server = http.createServer(async (request, response) => {
         assert.equal(await page.locator('.site-nav a:visible').count(), 5, `Hidden navigation at ${width}: ${route}`);
         assert.equal(await page.locator('.site-nav a', { hasText: 'Propulsion' }).getAttribute('href'), '/propulsion.html');
         if (route === '/propulsion.html') assert.equal(await page.locator('.site-nav [aria-current="page"]').textContent(), 'Propulsion');
+        if (route === '/') {
+          for (const selector of ['.hero-background', '.founder-portrait img']) {
+            const picture = page.locator(selector);
+            await picture.scrollIntoViewIfNeeded();
+            await picture.evaluate(img => img.decode());
+            assert(await picture.evaluate(img => img.naturalWidth > 0 && img.clientWidth > 0), `${selector} did not render`);
+            assert.match(await picture.getAttribute('src'), /\.webp$/, `${selector} must use its optimized derivative`);
+            if (selector === '.hero-background') {
+              assert.equal(await picture.getAttribute('alt'), '');
+              assert.equal(await picture.getAttribute('aria-hidden'), 'true');
+              assert(await picture.evaluate(img => {
+                const image = img.getBoundingClientRect();
+                const hero = img.closest('.home-hero').getBoundingClientRect();
+                return Math.abs(image.width - hero.width) < 1 && Math.abs(image.height - hero.height) < 1 && getComputedStyle(img).position === 'absolute';
+              }), 'Hero background must fill its section');
+            } else {
+              assert(await picture.getAttribute('alt'), `${selector} needs an accessible description`);
+            }
+          }
+          assert.match(await page.locator('.hero-art-credit').innerText(), /Concept illustration/);
+          await page.evaluate(() => scrollTo(0, 0));
+        }
+        if (route === '/fluid-controls.html') {
+          assert.match(await page.locator('.hero').innerText(), /vertically integrated propulsion/);
+          assert.match(await page.locator('.hero').innerText(), /independent supply/);
+          assert.equal(await page.locator('.hero#product-direction').count(), 1);
+          assert.equal(await page.getByText('Evaluation hardware is not yet available.', { exact: true }).count(), 1);
+        }
+        if (route === '/articles/') {
+          assert.equal(await page.locator('.article-teaser h2 a').getAttribute('href'), articleRoute);
+          assert.equal(await page.locator('.article-teaser h2 a').isVisible(), true);
+        }
         const iconUrls = await page.locator('link[rel="icon"]').evaluateAll(icons => icons.map(icon => icon.href));
         assert.equal(iconUrls.length, 2);
         for (const iconUrl of iconUrls) {
@@ -94,7 +126,7 @@ const server = http.createServer(async (request, response) => {
     assert.equal(new URL(page.url()).pathname, '/propulsion.html');
     assert.equal(new URL(page.url()).hash, '');
     assert.deepEqual(errors, []);
-    console.log('PASS: 15 responsive page checks, dedicated propulsion navigation, favicon rendering, keyboard entry, animation, endpoints, reduced motion, no-JS fallback, and no browser errors');
+    console.log('PASS: 20 responsive page checks, homepage artwork and portrait, dedicated propulsion navigation, favicon rendering, keyboard entry, animation, endpoints, reduced motion, no-JS fallback, and no browser errors');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
