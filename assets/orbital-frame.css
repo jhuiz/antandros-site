@@ -1,0 +1,128 @@
+#orbital-frame-illustration {
+  --orbital-frame-axis: #647780;
+  --orbital-frame-blue: #21627e;
+  --orbital-frame-ochre: #91601f;
+  --orbital-frame-equator: #dfe3df;
+  --orbital-frame-plane-edge: #91a1a3;
+  --orbital-frame-orbit-fill: rgba(86, 143, 163, 0.09);
+  width: 100%;
+  min-width: 0;
+  color: var(--ink, #08121c);
+  line-height: 1.5;
+}
+
+#orbital-frame-illustration .orbital-frame-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.4rem, 3vw, 1.75rem);
+  line-height: 1.2;
+}
+
+#orbital-frame-illustration .orbital-frame-view {
+  margin: 0 0 4px;
+  color: #455764;
+  font-size: 0.84rem;
+}
+
+#orbital-frame-illustration .orbital-frame-geometry {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+}
+
+#orbital-frame-illustration .orbital-frame-geometry text {
+  fill: var(--ink, #08121c);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 650;
+  paint-order: stroke;
+  stroke: var(--paper, #f3f0e8);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+#orbital-frame-illustration .orbital-frame-geometry .orbital-frame-label-blue {
+  fill: var(--orbital-frame-blue);
+}
+
+#orbital-frame-illustration .orbital-frame-geometry .orbital-frame-label-ochre {
+  fill: var(--orbital-frame-ochre);
+}
+
+#orbital-frame-illustration .orbital-frame-label-vector {
+  font-style: italic;
+}
+
+#orbital-frame-illustration .orbital-frame-geometry .orbital-frame-small-label,
+#orbital-frame-illustration .orbital-frame-geometry .orbital-frame-earth-label {
+  font-size: 13px;
+  font-weight: 450;
+}
+
+#orbital-frame-illustration .orbital-frame-key,
+#orbital-frame-illustration .orbital-frame-plane-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.82rem;
+}
+
+#orbital-frame-illustration .orbital-frame-key {
+  margin: 6px 0 0;
+}
+
+#orbital-frame-illustration .orbital-frame-key li,
+#orbital-frame-illustration .orbital-frame-plane-key li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 0;
+}
+
+#orbital-frame-illustration .orbital-frame-key li > :first-child {
+  min-width: 21px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+#orbital-frame-illustration .orbital-frame-blue {
+  color: var(--orbital-frame-blue);
+}
+
+#orbital-frame-illustration .orbital-frame-ochre {
+  color: var(--orbital-frame-ochre);
+}
+
+#orbital-frame-illustration .orbital-frame-plane-key {
+  margin: 14px 0 0;
+  padding-top: 13px;
+  border-top: 1px solid var(--line-light, rgba(8, 18, 28, 0.16));
+  color: #455764;
+}
+
+#orbital-frame-illustration .orbital-frame-plane-key li {
+  align-items: center;
+}
+
+#orbital-frame-illustration .orbital-frame-swatch {
+  display: inline-block;
+  width: 23px;
+  flex: 0 0 23px;
+}
+
+#orbital-frame-illustration .orbital-frame-equator-swatch {
+  height: 10px;
+  border: 1px solid var(--orbital-frame-plane-edge);
+  border-radius: 50%;
+  background: var(--orbital-frame-equator);
+}
+
+#orbital-frame-illustration .orbital-frame-north-swatch {
+  border-top: 2px solid var(--orbital-frame-blue);
+}
+
+#orbital-frame-illustration .orbital-frame-south-swatch {
+  border-top: 2px dashed var(--orbital-frame-blue);
+}
