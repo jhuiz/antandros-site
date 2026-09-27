@@ -20,8 +20,11 @@ class Page(HTMLParser):
         self.links = []
         self.headings = 0
         self.canonical = []
+        self.metadata = {}
         self.scripts = []
         self.times = []
+        self.article_cards = []
+        self.current_card = None
         self.current_json = None
         self.errors = []
         self.feed(path.read_text(encoding="utf-8"))
@@ -35,8 +38,18 @@ class Page(HTMLParser):
             self.ids.add(value)
         if tag == "h1":
             self.headings += 1
+        if tag == "meta":
+            key = attrs.get("name", attrs.get("property", ""))
+            self.metadata.setdefault(key, []).append(attrs.get("content", ""))
+        if tag == "article" and "article-teaser" in attrs.get("class", "").split():
+            self.current_card = {"links": [], "times": []}
+            self.article_cards.append(self.current_card)
+        if tag == "a" and self.current_card is not None:
+            self.current_card["links"].append(attrs.get("href", ""))
         if tag == "time":
             self.times.append(attrs.get("datetime", ""))
+            if self.current_card is not None:
+                self.current_card["times"].append(attrs.get("datetime", ""))
         if tag == "img" and "alt" not in attrs:
             self.errors.append("image missing alt")
         if tag == "link" and attrs.get("rel") == "canonical":
@@ -53,6 +66,8 @@ class Page(HTMLParser):
             self.current_json += data
 
     def handle_endtag(self, tag):
+        if tag == "article":
+            self.current_card = None
         if tag == "script" and self.current_json is not None:
             self.scripts.append(json.loads(self.current_json))
             self.current_json = None
@@ -77,11 +92,20 @@ for path, page in pages.items():
         elif parsed.fragment and target in pages and unquote(parsed.fragment) not in pages[target].ids:
             errors.append(f"{path.relative_to(ROOT)}: missing anchor {link}")
 
-primary = ["index.html", "propulsion.html", "fluid-controls.html", "articles/index.html", "articles/why-spacecraft-need-maneuverability.html"]
+articles = ["articles/why-spacecraft-need-maneuverability.html", "articles/why-orbits-change.html"]
+primary = ["index.html", "propulsion.html", "fluid-controls.html", "articles/index.html", *articles]
+canonical_urls = {name: "https://aeternasidera.com/" + ("" if name == "index.html" else name.replace("articles/index.html", "articles/")) for name in primary}
 for name in primary:
     page = pages[(ROOT / name).resolve()]
     assert page.headings == 1, f"{name}: expected one h1"
-    assert len(page.canonical) == 1, f"{name}: expected one canonical"
+    assert page.canonical == [canonical_urls[name]], f"{name}: incorrect canonical"
+    robots = {value.strip().lower() for value in ",".join(page.metadata.get("robots", [])).split(",")}
+    assert {"index", "follow"} <= robots and not robots.intersection({"noindex", "nofollow", "none"}), f"{name}: page is not indexable"
+    assert page.metadata.get("og:url") == page.canonical, f"{name}: Open Graph URL differs from canonical"
+    assert page.metadata.get("og:type") == ["article" if name in articles else "website"], f"{name}: incorrect Open Graph type"
+    for key in ["description", "og:title", "og:description", "og:image", "og:image:alt"]:
+        assert len(page.metadata.get(key, [])) == 1 and page.metadata[key][0], f"{name}: missing or duplicate {key}"
+    assert page.metadata["og:image"] == ["https://aeternasidera.com/assets/og-card.png"], f"{name}: incorrect social preview"
     assert "main" in page.ids, f"{name}: skip-link target missing"
     assert "/propulsion.html" in page.links, f"{name}: dedicated propulsion link missing"
     assert "/#program" not in page.links, f"{name}: obsolete propulsion navigation"
@@ -90,16 +114,29 @@ for name in primary:
 for name in ["index.html", "propulsion.html", "fluid-controls.html"]:
     assert not re.search(r"\b(?:1|20)\s*N(?:\b|-class)", (ROOT / name).read_text()), f"{name}: public thrust-class claim"
 
-article = pages[(ROOT / "articles/why-spacecraft-need-maneuverability.html").resolve()]
-article_metadata = next(item for item in article.scripts if item.get("@type") == "Article")
-published = article_metadata["datePublished"]
-assert date.fromisoformat(published).isoformat() == published, "invalid publication date"
-assert published in article.times, "article publication date differs from its metadata"
-assert published in pages[(ROOT / "articles/index.html").resolve()].times, "article index publication date differs"
+index_cards = pages[(ROOT / "articles/index.html").resolve()].article_cards
+assert len(index_cards) == len(articles), "article index card count differs from published articles"
+for name in articles:
+    article = pages[(ROOT / name).resolve()]
+    metadata = [item for item in article.scripts if item.get("@type") == "Article"]
+    assert len(metadata) == 1, f"{name}: expected one Article JSON-LD object"
+    article_metadata = metadata[0]
+    assert article_metadata.get("@context") == "https://schema.org", f"{name}: invalid schema context"
+    assert article_metadata.get("mainEntityOfPage") == canonical_urls[name], f"{name}: JSON-LD URL differs from canonical"
+    assert article_metadata.get("headline") and article_metadata.get("author", {}).get("name"), f"{name}: incomplete Article metadata"
+    published = article_metadata["datePublished"]
+    assert date.fromisoformat(published).isoformat() == published, f"{name}: invalid publication date"
+    if "dateModified" in article_metadata:
+        modified = article_metadata["dateModified"]
+        assert date.fromisoformat(modified).isoformat() == modified and modified >= published, f"{name}: invalid modification date"
+    assert published in article.times, f"{name}: visible publication date differs from metadata"
+    cards = [card for card in index_cards if "/" + name in card["links"]]
+    assert len(cards) == 1, f"{name}: missing or duplicate article index card"
+    assert cards[0]["times"] == [published], f"{name}: index card publication date differs"
 
 namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 urls = [element.text for element in ET.parse(ROOT / "sitemap.xml").findall("s:url/s:loc", namespace)]
-expected = ["https://aeternasidera.com/" + ("" if name == "index.html" else name.replace("articles/index.html", "articles/")) for name in primary]
+expected = list(canonical_urls.values())
 assert sorted(urls) == sorted(expected), "sitemap does not match primary pages"
 assert (ROOT / "CNAME").read_text().strip() == "aeternasidera.com", "deployment domain changed"
 

@@ -24,6 +24,8 @@ Public copy must not disclose internal tasks, gate criteria, schedules, or unann
 - `fluid-controls.html` — in-house valve development for Aeterna propulsion and independent supply, intended evaluation offering, and contact
 - `articles/index.html` — technical series index
 - `articles/why-spacecraft-need-maneuverability.html` — Article 1 with sources and original phasing illustration
+- `articles/why-orbits-change.html` — Article 2 with public sources, an orbital reference frame, Sun-synchronous precession and GEO longitude illustrations
+- `assets/article-two.css`, `assets/orbital-frame.{css,js}`, `assets/precession.{css,js}`, `assets/geo-libration.{css,js}` — isolated Article 2 layout and self-contained educational illustrations
 - `assets/phasing.js` — progressively enhanced phasing controls (no remote dependencies or tracking)
 - `contact.html` — redirect to the contact section on the homepage
 - Other legacy `.html` files — deindexed redirects to the homepage
@@ -50,6 +52,10 @@ python3 -m http.server 8080
 
 Open `http://localhost:8080`.
 
+Article 2 is available at `/articles/why-orbits-change.html` and is listed in the article index and sitemap. Its release was approved by the founder on September 26, 2026. Only approved public copy and original illustrative assets belong in the site; private presentations, study-specific implementation details and internal editorial notes stay outside the repository. `noindex` is not an access-control mechanism for future drafts.
+
+Its GEO illustration (`#geo-animation`) combines an Earth-fixed longitude dial, an ideal geostationary reference and the normalized libration plot. Playback and scrubbing share one time state; autoplay is off, playback stops after three libration periods, and reduced-motion mode retains manual scrubbing. The dial is a longitude projection with magnified angles, not an orbital trajectory or altitude display.
+
 ## Verification
 
 Before merging:
@@ -70,7 +76,7 @@ For browser checks, make Playwright available to Node (for example through the i
 node scripts/check_browser.cjs
 ```
 
-The browser check starts an ephemeral localhost-only server and uses an isolated headless Edge browser by default. Set `AETERNA_BROWSER_CHANNEL=chromium` to use Playwright's Chromium instead. It checks the five primary pages at 320, 768, 900, and 1280 pixels, optimized homepage artwork and portrait rendering, navigation destinations and visibility, favicon rendering, overflow, JavaScript errors, phasing controls, reduced motion, and the no-JavaScript fallback. Optional `AETERNA_SCREENSHOT_DIR` saves review screenshots outside the repository.
+The browser check starts an ephemeral localhost-only server and uses an isolated headless Edge browser by default. Set `AETERNA_BROWSER_CHANNEL=chromium` to use Playwright's Chromium instead. It checks the six primary pages at 320, 768, 900, and 1280 pixels, optimized homepage artwork and portrait rendering, navigation destinations and visibility, favicon rendering, overflow, JavaScript errors, article illustrations, reduced motion, and no-JavaScript fallbacks. Optional `AETERNA_SCREENSHOT_DIR` saves review screenshots outside the repository; `AETERNA_SITE_ORIGIN=https://aeternasidera.com` verifies the live site instead of starting the local server.
 
 Review the homepage, propulsion page, fluid-controls page, article index, article, 404 page, every legacy redirect, mobile layout, keyboard focus, metadata, structured data, social card, and email action. Confirm that superseded public positioning and unsupported capability claims are absent. Article sources and legal scope require editorial review before merge; the article is an educational synthesis, not peer-reviewed research or demonstrated Aeterna performance.
 

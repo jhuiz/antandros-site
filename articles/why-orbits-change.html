@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Why Orbits Change—and What Missions Do About It | Aeterna Sidera</title>
+  <meta name="description" content="How gravity, atmospheric drag, radiation and third-body forces change orbits—and how missions exploit, accept, predict or correct that motion." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#07131f" />
+  <meta name="author" content="Jesus Daniel Huizar" />
+  <meta property="og:title" content="Why Orbits Change—and What Missions Do About It | Aeterna Sidera" />
+  <meta property="og:description" content="Gravity, drag, radiation and orbital motion—with interactive illustrations of precession and GEO longitude dynamics." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Aeterna Sidera Inc." />
+  <meta property="og:url" content="https://aeternasidera.com/articles/why-orbits-change.html" />
+  <meta property="og:image" content="https://aeternasidera.com/assets/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development" />
+  <meta property="article:published_time" content="2026-09-26" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Why Orbits Change—and What Missions Do About It | Aeterna Sidera" />
+  <meta name="twitter:description" content="How missions exploit, accept, predict or correct natural orbital motion." />
+  <meta name="twitter:image" content="https://aeternasidera.com/assets/og-card.png" />
+  <meta name="twitter:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development" />
+  <link rel="canonical" href="https://aeternasidera.com/articles/why-orbits-change.html" />
+  <link rel="icon" href="/assets/favicon.svg?v=aeterna-mark-1" type="image/svg+xml" />
+  <link rel="icon" href="/assets/favicon.png?v=aeterna-mark-1" type="image/png" sizes="256x256" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png?v=aeterna-mark-1" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/assets/article-two.css" />
+  <link rel="stylesheet" href="/assets/orbital-frame.css" />
+  <link rel="stylesheet" href="/assets/precession.css" />
+  <link rel="stylesheet" href="/assets/geo-libration.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Why Orbits Change—and What Missions Do About It",
+    "description": "How gravity, atmospheric drag, radiation and third-body forces change orbits—and how missions exploit, accept, predict or correct that motion.",
+    "datePublished": "2026-09-26",
+    "author": { "@type": "Person", "name": "Jesus Daniel Huizar" },
+    "publisher": { "@type": "Organization", "name": "Aeterna Sidera Inc.", "url": "https://aeternasidera.com/" },
+    "mainEntityOfPage": "https://aeternasidera.com/articles/why-orbits-change.html",
+    "image": "https://aeternasidera.com/assets/og-card.png",
+    "inLanguage": "en"
+  }
+  </script>
+</head>
+<body class="page-secondary article-two">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/propulsion.html">Propulsion</a>
+        <a href="/fluid-controls.html">Fluid controls</a>
+        <a href="/articles/" aria-current="true">Technical articles</a>
+        <a href="/#company">Company</a>
+        <a class="nav-contact" href="/#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="hero page-hero">
+        <div class="shell">
+          <p class="eyebrow">Mission to hardware · Article 2</p>
+          <h1>Why orbits change—and what missions do about it.</h1>
+          <p class="hero-lede">How gravity, atmospheric drag, radiation and third-body forces change orbits—and how missions exploit, accept, predict or correct that motion.</p>
+          <p class="article-meta">By Jesus Daniel Huizar · Founder, Aeterna Sidera</p>
+          <p class="article-meta">Published <time datetime="2026-09-26">September 26, 2026</time></p>
+        </div>
+      </header>
+
+      <div class="shell article-body">
+        <nav class="article-toc" aria-label="In this article">
+          <p><strong>In this article</strong></p>
+          <ol>
+            <li><a href="#what-changes">What changes—and when does it matter?</a></li>
+            <li><a href="#nonspherical-gravity">Earth’s nonspherical gravity can create useful motion</a></li>
+            <li><a href="#atmospheric-drag">Atmospheric drag connects the environment to spacecraft design</a></li>
+            <li><a href="#radiation-and-third-body">Radiation and third-body gravity change the prediction problem</a></li>
+            <li><a href="#geo-stability">GEO: stable does not mean motionless</a></li>
+            <li><a href="#operating-limits">From natural motion to operating limits</a></li>
+          </ol>
+        </nav>
+
+        <section class="article-section" id="what-changes" aria-labelledby="what-changes-title">
+          <h2 id="what-changes-title">1. What changes—and when does it matter?</h2>
+          <p>Reaching the intended orbit establishes a starting point. The next question is how the spacecraft’s trajectory will evolve—and whether that evolution preserves the observation timing, coverage or relative geometry the mission needs.</p>
+          <p>In the ideal two-body model, a bound Earth orbit is an ellipse with fixed size, shape and orientation in nonrotating axes. The spacecraft advances along it, but the ellipse itself does not rotate or shrink. Real orbital motion includes additional effects. <a href="https://ntrs.nasa.gov/api/citations/19890001049/downloads/19890001049.pdf">NASA: orbital geometry and perturbations, pp. 35–36 and 42–43</a></p>
+          <p>To describe orientation, we first need a reference frame. Here the axes originate at Earth’s center and retain the directions of its mean equator and equinox at a chosen reference epoch. <strong>+Z points toward that epoch’s north celestial pole, +X toward its vernal equinox, and +Y completes the right-handed frame.</strong> These axes do not rotate with Earth; Earth-fixed longitude uses a different, rotating reference. <a href="https://naif.jpl.nasa.gov/pub/naif/toolkit_docs/C/req/frames.html">NASA/JPL: reference frames</a></p>
+          <figure class="orbital-figure" id="reference-frame" aria-label="Figure 1: An Earth-centered frame for orbital motion" aria-describedby="orbital-frame-caption">
+            <div id="orbital-frame-illustration">
+              <p class="figure-fallback">The reference equatorial plane contains +X and +Y; +Z is perpendicular to it. An inclined orbit crosses this plane northward at the ascending node N. The angle Ω locates that node from +X toward +Y; inclination i separates +Z from the orbital normal h. The position vector r points from Earth’s center to the spacecraft. The coordinate illustration is available when JavaScript is enabled.</p>
+            </div>
+            <figcaption class="figure-caption" id="orbital-frame-caption">Figure 1 — The position vector <var class="vector">r</var> locates the spacecraft. The ascending node N is its south-to-north crossing of the reference equatorial plane. Right ascension of the ascending node <var>Ω</var> is measured in that plane from +X toward +Y to N. Inclination <var>i</var> is the angle between +Z and the orbital angular-momentum vector <var class="vector">h</var> = <var class="vector">r</var> × <var class="vector">v</var>, where <var class="vector">v</var> is velocity in this frame. The circular orbit is illustrative and the geometry is not to scale. Orbital-angle definitions: <a href="https://science.nasa.gov/wp-content/uploads/2023/05/GDC_OrbitPrimer.pdf#page=3">NASA GDC Orbit Primer, slide 3</a>.</figcaption>
+          </figure>
+          <p>For an unpowered spacecraft, a simplified Newtonian model organizes the additional effects as:</p>
+          <div class="equation">
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="The second time derivative of position r equals minus mu E over r cubed times r, plus nonspherical gravity acceleration, plus drag acceleration, plus radiation acceleration, plus third-body acceleration.">
+              <mtable columnalign="left" rowspacing="0.4em">
+                <mtr><mtd><mover accent="true"><mi mathvariant="bold">r</mi><mo>¨</mo></mover><mo>=</mo><mo>−</mo><mfrac><msub><mi>μ</mi><mi mathvariant="normal">E</mi></msub><msup><mi>r</mi><mn>3</mn></msup></mfrac><mi mathvariant="bold">r</mi></mtd></mtr>
+                <mtr><mtd><mo>+</mo><msub><mi mathvariant="bold">a</mi><mtext>nonspherical</mtext></msub><mo>+</mo><msub><mi mathvariant="bold">a</mi><mtext>drag</mtext></msub></mtd></mtr>
+                <mtr><mtd><mo>+</mo><msub><mi mathvariant="bold">a</mi><mtext>radiation</mtext></msub><mo>+</mo><msub><mi mathvariant="bold">a</mi><mtext>third-body</mtext></msub><mo>.</mo></mtd></mtr>
+              </mtable>
+            </math>
+          </div>
+          <p>Here, <var class="vector">r</var> is the position measured from Earth’s center in nonrotating axes, <var>r</var> its magnitude, and <var>μ</var><sub>E</sub> Earth’s gravitational parameter. The first term represents spherical-Earth gravity. The remaining terms represent departures from that gravity field, atmospheric drag, radiation forces, and the differential gravitational influence of other bodies, particularly the Sun and Moon. Their importance depends on the orbit and spacecraft. <a href="https://www.nasa.gov/wp-content/uploads/2018/01/oce_51-nasa_spacecraft_conjunction_assessment_and_collision_avoidance_best_practices_handbook.pdf">NASA: force-model considerations, Appendix P.3</a></p>
+          <p class="article-note"><em>This is an explanatory force budget, not a complete precision model.</em></p>
+          <p>Some perturbations produce sustained drift; others produce oscillations. Either can change the conditions needed for observations, communications or other operations. <a href="https://ntrs.nasa.gov/api/citations/19890001049/downloads/19890001049.pdf">NASA: secular and periodic changes, pp. 42–43</a></p>
+          <p><strong>The engineering question is which quantity must remain within limits, over what interval, and with what confidence in its predicted evolution.</strong> The following cases show why that can lead to exploiting natural motion, accepting it, improving its prediction or actively correcting it.</p>
+        </section>
+
+        <section class="article-section" id="nonspherical-gravity" aria-labelledby="nonspherical-gravity-title">
+          <h2 id="nonspherical-gravity-title">2. Earth’s nonspherical gravity can create useful motion</h2>
+          <p>Earth’s equatorial bulge and uneven mass distribution make its gravity field more complex than that of a sphere. Engineers represent this structure using spherical harmonics: spatial patterns indexed by degree <var>ℓ</var> and order <var>m</var>.</p>
+          <table class="article-table harmonics-table">
+            <caption class="visually-hidden">Components of Earth’s gravity field</caption>
+            <thead><tr><th scope="col">Component</th><th scope="col">Indices</th><th scope="col">Spatial character</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Zonal</th><td><var>m</var> = 0</td><td>Latitude-dependent; symmetric around Earth’s rotation axis</td></tr>
+              <tr><th scope="row">Tesseral</th><td>0 &lt; <var>m</var> &lt; <var>ℓ</var></td><td>Patterns varying with both latitude and longitude</td></tr>
+              <tr><th scope="row">Sectoral</th><td><var>m</var> = <var>ℓ</var> &gt; 0</td><td>Longitudinal sectors whose amplitude also depends on latitude</td></tr>
+            </tbody>
+          </table>
+          <p>The familiar <var>J</var><sub>2</sub> coefficient represents the leading nonspherical term, associated with Earth’s equatorial bulge. <a href="https://ntrs.nasa.gov/api/citations/19890001049/downloads/19890001049.pdf">NASA: gravitational harmonics, pp. 31–34</a></p>
+
+          <h3>Using precession</h3>
+          <p>One consequence is rotation of the orbital plane around Earth’s polar axis. The first-order, orbit-averaged <var>J</var><sub>2</sub> nodal rate is approximately</p>
+          <div class="equation">
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Omega dot is approximately minus three halves J two n times the square of R E divided by a times one minus eccentricity squared, times cosine of inclination. Mean motion n equals the square root of mu E divided by a cubed.">
+              <mtable columnalign="left" rowspacing="0.7em">
+                <mtr><mtd><mover accent="true"><mi>Ω</mi><mo>˙</mo></mover><mo>≈</mo><mo>−</mo><mfrac><mn>3</mn><mn>2</mn></mfrac><msub><mi>J</mi><mn>2</mn></msub><mi>n</mi><msup><mrow><mo>[</mo><mfrac><msub><mi>R</mi><mi mathvariant="normal">E</mi></msub><mrow><mi>a</mi><mo>(</mo><mn>1</mn><mo>−</mo><msup><mi>e</mi><mn>2</mn></msup><mo>)</mo></mrow></mfrac><mo>]</mo></mrow><mn>2</mn></msup><mi mathvariant="normal">cos</mi><mo>&#x2061;</mo><mi>i</mi><mo>,</mo></mtd></mtr>
+                <mtr><mtd><mi>n</mi><mo>=</mo><msqrt><mfrac><msub><mi>μ</mi><mi mathvariant="normal">E</mi></msub><msup><mi>a</mi><mn>3</mn></msup></mfrac></msqrt><mo>.</mo></mtd></mtr>
+              </mtable>
+            </math>
+          </div>
+          <p>Here, <var>Ω</var> is the right ascension of the ascending node: the northbound equator crossing’s angular direction from a fixed equatorial reference, not Earth-fixed longitude. The mean elements <var>a</var>, <var>e</var> and <var>i</var> describe semimajor axis, eccentricity and inclination; <var>R</var><sub>E</sub> is Earth’s equatorial radius; and <var>n</var> is mean motion. <a href="https://science.nasa.gov/wp-content/uploads/2023/05/GDC_OrbitPrimer.pdf">NASA: GDC Orbit Primer, slides 3–4</a></p>
+          <p>For a Sun-synchronous orbit, designers select geometry giving approximately <strong>0.986° of eastward precession per day</strong>, following the Sun’s mean apparent annual motion. This keeps equator crossings near the selected local mean solar time. In this first-order averaged model, the plane turns while its inclination remains constant; other perturbations can change that inclination. <a href="https://science.nasa.gov/wp-content/uploads/2023/05/GDC_OrbitPrimer.pdf">NASA: GDC Orbit Primer, slides 4 and 11</a></p>
+
+          <figure class="orbital-figure" aria-label="Figure 2: Sun-synchronous precession" aria-describedby="precession-caption">
+            <div id="precession-illustration">
+              <p class="figure-fallback">In a view from above Earth’s north pole, the Sun-synchronous ascending node turns with the mean Sun through the year. Its illustrative crossing time stays at 18:00. An ideal fixed-plane reference instead passes through 18:00, 12:00, 06:00, 00:00 and back to 18:00 at quarter-year intervals. The interactive illustration is available when JavaScript is enabled.</p>
+            </div>
+            <figcaption class="figure-caption" id="precession-caption">Figure 2 — Viewed from above Earth’s north pole, Sun-synchronous nodal precession preserves mean local time at the ascending equator crossing; an ideal fixed-plane reference does not. This original schematic prescribes the nodal rates, uses exaggerated scale and does not model spacecraft attitude or illumination. The initial 18:00 crossing time is illustrative, not a Metop-A setting. Physics basis: <a href="https://ntrs.nasa.gov/api/citations/19890001049/downloads/19890001049.pdf#page=75">NASA RP-1204, p. 67</a>.</figcaption>
+          </figure>
+
+          <h3>Choosing how much drift to accept</h3>
+          <p>EUMETSAT’s 2017 account of Metop-A illustrates the spacecraft-level consequences. Its equator-crossing time supported consistent observations and influenced solar-array geometry, radiator placement and instrument accommodation. Inclination adjustments maintained the required precession rate. Later, EUMETSAT planned to stop those adjustments and accept local-time drift, preserving propellant for end-of-life orbit lowering.</p>
+          <p>Whether that was workable depended on more than orbital mechanics. Engineers assessed the changing illumination, eclipses, power balance and temperatures. An initial thermal analysis missed solar-array shading of a battery radiator because its tools had been developed for the original orbital conditions. Examining the changed geometry exposed the missing effect. <a href="https://www.eumetsat.int/features/extending-working-lifetime-metop-weather-satellite">EUMETSAT: extending Metop-A’s working lifetime</a></p>
+          <p>Accepting orbital drift therefore changed the spacecraft’s thermal and power assessment—not just its orbit-maintenance plan.</p>
+        </section>
+
+        <section class="article-section" id="atmospheric-drag" aria-labelledby="atmospheric-drag-title">
+          <h2 id="atmospheric-drag-title">3. Atmospheric drag connects the environment to spacecraft design</h2>
+          <p>In low Earth orbit (LEO), the residual atmosphere can gradually remove orbital energy and reduce semimajor axis, changing orbital period and along-track timing as well as altitude. <a href="https://ntrs.nasa.gov/api/citations/20180004285/downloads/20180004285.pdf">NASA: aerodynamic drag, pp. 38–39</a></p>
+          <p>A simplified drag-acceleration model is</p>
+          <div class="equation">
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Drag acceleration a D equals minus one half rho C D times A over spacecraft mass, times the magnitude of relative velocity, times the relative velocity vector.">
+              <msub><mi mathvariant="bold">a</mi><mi mathvariant="normal">D</mi></msub><mo>=</mo><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>ρ</mi><msub><mi>C</mi><mi mathvariant="normal">D</mi></msub><mfrac><mi>A</mi><msub><mi>m</mi><mtext>sc</mtext></msub></mfrac><mo>‖</mo><msub><mi mathvariant="bold">v</mi><mtext>rel</mtext></msub><mo>‖</mo><msub><mi mathvariant="bold">v</mi><mtext>rel</mtext></msub><mo>.</mo>
+            </math>
+          </div>
+          <p>Here, <var>ρ</var> is atmospheric density, <var>A</var> the projected area facing the flow, <var>m</var><sub>sc</sub> spacecraft mass, and <var>C</var><sub>D</sub> the drag coefficient for that area and the applicable flow conditions. The velocity <var class="vector">v</var><sub>rel</sub> is relative to the local atmosphere; drag acts opposite that relative motion. This lumped model describes drag acceleration, not aerodynamic torques. <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/">NASA: drag equation and reference-area convention</a> · <a href="https://www.nasa.gov/wp-content/uploads/2018/01/oce_51-nasa_spacecraft_conjunction_assessment_and_collision_avoidance_best_practices_handbook.pdf">NASA: spacecraft drag modeling, Appendix P.3</a></p>
+          <p>Changing attitude or deploying a structure can change the spacecraft’s exposed area and aerodynamic response. Atmospheric density varies with location, time and solar activity; solar and geomagnetic disturbances can heat and expand the upper atmosphere, increasing density at a given altitude. <a href="https://ntrs.nasa.gov/api/citations/20180004285/downloads/20180004285.pdf">NASA: orbital-drag dependencies</a> · <a href="https://www.nasa.gov/solar-system/solar-superstorms-of-the-past-help-nasa-scientists-understand-risks-for-satellites/">NASA: space weather and satellite drag</a></p>
+          <p>NASA’s conjunction-assessment handbook treats density-forecast error and uncertain spacecraft frontal area as contributors to trajectory uncertainty. <a href="https://www.nasa.gov/wp-content/uploads/2018/01/oce_51-nasa_spacecraft_conjunction_assessment_and_collision_avoidance_best_practices_handbook.pdf">NASA: density and area uncertainty, Appendix N</a> The planning implication is to evaluate the expected configurations and environmental range, rather than rely on one nominal drag estimate.</p>
+
+          <h3>GOCE: compensation in service of the measurement</h3>
+          <p>ESA’s GOCE gravity mission illustrates a particularly demanding response. Its low orbit strengthened the gravity signal available for measurement, but also exposed it to atmospheric disturbances. A slender, symmetric spacecraft reduced aerodynamic forces and torques. An ion thruster, controlled using gradiometer feedback, compensated drag along the flight direction. <a href="https://www.esa.int/esapub/bulletin/bulletin133/bul133c_fehringer.pdf">ESA: GOCE spacecraft and control design, pp. 16–18</a></p>
+          <p>ESA reported successful operation of the combined system during commissioning in May 2009. This “drag-free” operation used active compensation to support the gravity instrument’s quiet measurement conditions. The payload needed control of along-flight nongravitational acceleration, not merely periodic restoration of orbital altitude. <a href="https://www.esa.int/Applications/Observing_the_Earth/FutureEO/GOCE/GOCE_achieves_drag-free_perfection">ESA: GOCE commissioning results</a></p>
+        </section>
+
+        <section class="article-section" id="radiation-and-third-body" aria-labelledby="radiation-and-third-body-title">
+          <h2 id="radiation-and-third-body-title">4. Radiation and third-body gravity change the prediction problem</h2>
+          <p>The Sun influences a spacecraft through both light and gravity. These are distinct mechanisms: solar radiation pressure comes from the momentum exchanged when photons interact with spacecraft surfaces. It is not the pressure of the solar wind, which is a flow of charged particles. <a href="https://spaceplace.nasa.gov/review/sailmast/solar_sailing.html">NASA: light pressure and solar wind</a></p>
+
+          <h3>Spacecraft surfaces belong in the orbit model</h3>
+          <p>Radiation forces depend on illuminated area, surface orientation and optical properties; the resulting acceleration also depends on spacecraft mass. Body attitude and solar-array motion therefore connect the spacecraft’s operating configuration to its trajectory. Eclipse transitions change the direct sunlight available, but sunlight is not the only radiation contribution: Earth-reflected light, terrestrial infrared and unequal thermal emission in different directions from the spacecraft can also produce forces. <a href="https://navigation-office.esa.int/attachments/32834428/1/GAL2022_Dilssner_Final.pdf">ESA: GNSS radiation-force modeling, slides 2–4</a> · <a href="https://gssc.esa.int/navipedia/index.php/Satellite_Eclipses">ESA: satellite eclipses</a></p>
+          <p>ESA’s 2020 report on orbit-prediction development for <a href="https://www.esa.int/Applications/Satellite_navigation/Galileo/What_is_Galileo">Galileo’s medium Earth orbit (MEO) navigation satellites</a> shows why these details matter. The work modeled radiation incident on and emitted by the satellites, including a refined thermal model for the navigation antenna. Its final model performed better than the alternatives evaluated on most criteria, although uncertainties remained. <a href="https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Shaping_the_Future/Model_for_long_term_orbit_prediction">ESA: long-term orbit prediction</a></p>
+          <p>This illustrates a separate engineering task from control: representing spacecraft-specific forces well enough to predict motion, whether or not those forces warrant a corrective maneuver.</p>
+
+          <h3>The Sun and Moon accelerate Earth, too</h3>
+          <p>Earth and its satellites both accelerate toward the Sun and Moon. In an Earth-centered description, each body’s contribution is the difference between its acceleration of the spacecraft and of Earth’s center.</p>
+          <p>For a third body represented as a point mass,</p>
+          <div class="equation">
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Third-body acceleration a three equals mu three times the quantity: R minus r divided by the magnitude of R minus r cubed, minus R divided by the magnitude of R cubed.">
+              <msub><mi mathvariant="bold">a</mi><mn>3</mn></msub><mo>=</mo><msub><mi>μ</mi><mn>3</mn></msub><mrow><mo>[</mo><mfrac><mrow><mi mathvariant="bold">R</mi><mo>−</mo><mi mathvariant="bold">r</mi></mrow><msup><mrow><mo>‖</mo><mi mathvariant="bold">R</mi><mo>−</mo><mi mathvariant="bold">r</mi><mo>‖</mo></mrow><mn>3</mn></msup></mfrac><mo>−</mo><mfrac><mi mathvariant="bold">R</mi><msup><mrow><mo>‖</mo><mi mathvariant="bold">R</mi><mo>‖</mo></mrow><mn>3</mn></msup></mfrac><mo>]</mo></mrow><mo>.</mo>
+            </math>
+          </div>
+          <p>Here, <var class="vector">r</var> points from Earth’s center to the spacecraft, <var class="vector">R</var> points from Earth’s center to the third body, and <var>μ</var><sub>3</sub> is that body’s gravitational parameter. Both vectors use the same nonrotating axes. The first term is the body’s attraction of the spacecraft; the second subtracts its attraction of Earth’s center. This is a differential gravitational effect, dependent on their relative geometry. <a href="https://www.space.t.u-tokyo.ac.jp/s2e-documents/Specifications/Disturbance/Spec_ThirdBodyGravity.html">University of Tokyo: third-body gravity model, §2.1.3</a></p>
+          <p>Near geostationary orbit (GEO), these forces contribute to several simultaneous behaviors. Sun–Moon gravity and Earth’s oblateness affect the orbital plane, radiation pressure can change eccentricity, and longitude-dependent Earth gravity affects longitude evolution. <a href="https://www.esa.int/esapub/bulletin/bullet104/flury104.pdf">ESA: characteristics of geostationary orbits, p. 93</a> The longitude dynamics provide a useful example of why bounded motion and an acceptable operating orbit are different questions.</p>
+        </section>
+
+        <section class="article-section" id="geo-stability" aria-labelledby="geo-stability-title">
+          <h2 id="geo-stability-title">5. GEO: stable does not mean motionless</h2>
+          <p>In the ideal spherical-Earth model, a prograde, circular, equatorial orbit with a period of one sidereal day remains above a fixed longitude. No longitude is preferred: rotating that ideal orbit around Earth’s axis produces an equivalent solution.</p>
+          <p>Earth’s longitude-dependent gravity breaks this symmetry. Its tesseral and sectoral components create east–west forcing that depends on longitude. Zonal terms alone cannot select a longitude because they are axisymmetric. The resulting dynamics include regions of bounded longitude oscillation and regions of circulation around Earth. <a href="https://link.springer.com/article/10.1007/s10569-019-9895-3">Gkolias and Colombo: geosynchronous resonance</a></p>
+
+          <h3>How longitude and orbital size interact</h3>
+          <p>To isolate the slow coupling near circular, equatorial GEO, we can construct a leading-order model relating mean Earth-fixed longitude <var>λ</var> and semimajor-axis offset Δ<var>a</var> = <var>a</var> − <var>a</var><sub>0</sub>:</p>
+          <div class="equation">
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Longitude rate lambda dot is approximately minus three n zero over two a zero times delta a. The time derivative of delta a is approximately two over n zero times tangential acceleration A T of lambda.">
+              <mtable columnalign="left" rowspacing="0.7em">
+                <mtr><mtd><mover accent="true"><mi>λ</mi><mo>˙</mo></mover><mo>≃</mo><mo>−</mo><mfrac><mrow><mn>3</mn><msub><mi>n</mi><mn>0</mn></msub></mrow><mrow><mn>2</mn><msub><mi>a</mi><mn>0</mn></msub></mrow></mfrac><mi mathvariant="normal">Δ</mi><mi>a</mi><mo>,</mo></mtd></mtr>
+                <mtr><mtd><mover accent="true"><mrow><mi mathvariant="normal">Δ</mi><mi>a</mi></mrow><mo>˙</mo></mover><mo>≃</mo><mfrac><mn>2</mn><msub><mi>n</mi><mn>0</mn></msub></mfrac><msub><mi>A</mi><mi mathvariant="normal">T</mi></msub><mo>(</mo><mi>λ</mi><mo>)</mo><mo>.</mo></mtd></mtr>
+              </mtable>
+            </math>
+          </div>
+          <p>Here, <var>a</var><sub>0</sub> is the Keplerian GEO reference radius, <var>n</var><sub>0</sub> equals Earth’s rotation rate, and <var>A</var><sub>T</sub> is the longitude-dependent tangential gravitational acceleration evaluated near the reference orbit, positive eastward. Longitude is also positive eastward.</p>
+          <p>The first relation follows by expanding <var>n</var>(<var>a</var>) − <var>n</var><sub>0</sub>, with <span class="inline-relation"><var>n</var>(<var>a</var>) = √(<var>μ</var><sub>E</sub> / <var>a</var><sup>3</sup>)</span>, about <var>a</var><sub>0</sub>. The second is the circular-orbit limit of Gauss’s semimajor-axis equation, with its coefficient evaluated at that reference. This is an explanatory reduction derived from standard orbital mechanics. <a href="https://farside.ph.utexas.edu/teaching/celestial/Celestial/node33.html">Fitzpatrick: Keplerian mean motion</a> · <a href="https://farside.ph.utexas.edu/teaching/celestial/Celestial/node164.html">Fitzpatrick: Gauss planetary equations, Eq. I.53</a></p>
+          <p>A larger semimajor axis produces slower mean orbital motion and westward drift relative to Earth; a smaller one produces eastward drift. Tangential gravity changes semimajor axis, altering the subsequent drift. The model retains a stationary Earth-gravity contribution and omits Sun–Moon and radiation forcing. It describes the slow longitude–size interaction, not the full perturbed motion or exact equilibrium radius.</p>
+
+          <h3>Bounded motion can still violate a mission limit</h3>
+          <p>Near a stable center in the conservative local approximation, sufficiently small departures produce <em>libration</em>: longitude oscillates around the equilibrium. Without damping, it does not converge to that point. The broader nonlinear resonance also admits <em>circulation</em>, with longitude passing through successive revolutions rather than remaining around one center. <a href="https://link.springer.com/article/10.1007/s10569-019-9895-3">Gkolias and Colombo: resonance structure, §3.1</a></p>
+          <p>For an operating spacecraft, the amplitude matters. A bounded trajectory may still travel outside the longitude range needed for its coverage or ground-antenna geometry. Its desired operating longitude may not coincide with a natural equilibrium at all. Meanwhile, inclination and eccentricity can evolve under the other perturbations discussed earlier. <a href="https://www.esa.int/esapub/bulletin/bullet104/flury104.pdf">ESA: GEO operating geometry and perturbations, p. 93</a></p>
+
+          <figure class="orbital-figure" id="geo-animation" aria-label="Figure 3: Geostationary reference and GEO longitude libration" aria-describedby="geo-caption">
+            <div id="geo-libration-illustration">
+              <p class="figure-fallback">An ideal geostationary reference stays at a fixed Earth-relative longitude. Two undamped longitude oscillations begin there with different initial drift rates. The smaller reaches half the operating-band half-width and stays within the band; the larger reaches 1.8 times that half-width and crosses the limits. Both repeat with the same period in this local linear model. Their east–west reversal is relative to Earth, not a reversal of orbital direction. The synchronized animation and graph are available when JavaScript is enabled.</p>
+            </div>
+            <figcaption class="figure-caption" id="geo-caption">Figure 3 — An ideal geostationary reference stays fixed relative to Earth. Two undamped longitude oscillations start at the same equilibrium with different drift rates; both remain bounded, but only the smaller stays inside the illustrative operating band. The dial shows longitude only, with exaggerated angular motion; its radius is not orbital altitude. Offset is scaled by the band half-width, time by the longitude-libration period—not the orbital period. The stationary reference is placed at equilibrium for comparison, not a demonstration of stationkeeping. This original schematic does not represent circulation or a predicted mission trajectory. Background: <a href="https://www.esa.int/esapub/bulletin/bullet104/flury104.pdf">ESA, p. 93</a> · <a href="https://link.springer.com/article/10.1007/s10569-019-9895-3">Gkolias and Colombo, §3.1</a>.</figcaption>
+          </figure>
+
+          <p><strong>Dynamical stability describes how motion behaves near a reference state. Mission suitability asks whether that motion remains within useful operating limits.</strong> The first can inform stationkeeping strategy; it cannot replace the second.</p>
+        </section>
+
+        <section class="article-section" id="operating-limits" aria-labelledby="operating-limits-title">
+          <h2 id="operating-limits-title">6. From natural motion to operating limits</h2>
+          <p>The examples above connect orbital physics to different engineering decisions:</p>
+          <table class="article-table examples-table">
+            <caption class="visually-hidden">Mission examples and their engineering implications</caption>
+            <thead><tr><th scope="col">Example</th><th scope="col">What the case illustrates</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Metop-A</th><td>Accepting local-time drift required reassessing observation conditions, illumination, power and thermal behavior. <a href="https://www.eumetsat.int/features/extending-working-lifetime-metop-weather-satellite">EUMETSAT</a></td></tr>
+              <tr><th scope="row">GOCE</th><td>Active along-flight drag compensation served the gravity measurement, not merely orbital-altitude maintenance. <a href="https://www.esa.int/Applications/Observing_the_Earth/FutureEO/GOCE/GOCE_achieves_drag-free_perfection">ESA</a></td></tr>
+              <tr><th scope="row">Galileo</th><td>Spacecraft-specific radiation-force modeling improved orbit prediction. <a href="https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Shaping_the_Future/Model_for_long_term_orbit_prediction">ESA</a></td></tr>
+              <tr><th scope="row">GEO longitude dynamics</th><td>Bounded longitude motion must still be assessed against useful operating geometry, alongside inclination and eccentricity evolution. <a href="https://www.esa.int/esapub/bulletin/bullet104/flury104.pdf">ESA</a></td></tr>
+            </tbody>
+          </table>
+          <p>Across these cases, the assessment must identify the quantity to preserve, its acceptable range and the interval over which it must remain there.</p>
+          <p>A nominal trajectory inside a boundary is not sufficient evidence that the spacecraft will remain inside it. Uncertainty in the estimated orbit, environmental forces and spacecraft configuration affects the prediction. <a href="https://www.nasa.gov/wp-content/uploads/2018/01/oce_51-nasa_spacecraft_conjunction_assessment_and_collision_avoidance_best_practices_handbook.pdf">NASA: uncertainty considerations, Appendix N</a> That uncertainty belongs in the assessment of how much margin remains for a response.</p>
+          <p class="article-callout"><strong>Where a correction is needed, the next step is to specify the required change in motion, the time available and the acceptable execution error.</strong></p>
+          <p>The next article develops those maneuver requirements, including repetition, interruptions to other activities and recovery before useful operations resume. They provide the basis for comparing propulsion and control approaches.</p>
+          <p class="article-note">This article is an educational synthesis of public sources and original illustrative models. It does not report Aeterna hardware performance, qualification or flight results. Aeterna’s propulsion and fluid-control programs are in development.</p>
+          <p><a href="/articles/why-spacecraft-need-maneuverability.html">← Article 1: Why spacecraft need maneuverability</a></p>
+          <p><a href="/articles/">All technical articles</a></p>
+        </section>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <a class="wordmark wordmark-footer" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" loading="lazy" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <p>© <span data-year>2026</span> Aeterna Sidera Inc. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="/script.js" defer></script>
+  <script src="/assets/orbital-frame.js" defer></script>
+  <script src="/assets/precession.js" defer></script>
+  <script src="/assets/geo-libration.js" defer></script>
+</body>
+</html>
