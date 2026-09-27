@@ -25,7 +25,9 @@ Public copy must not disclose internal tasks, gate criteria, schedules, or unann
 - `articles/index.html` — technical series index
 - `articles/why-spacecraft-need-maneuverability.html` — Article 1 with sources and original phasing illustration
 - `articles/why-orbits-change.html` — Article 2 with public sources, an orbital reference frame, Sun-synchronous precession and GEO longitude illustrations
+- `articles/from-mission-objectives-to-maneuver-requirements.html` — Article 3 with sourced maneuver-planning examples, an interactive coast comparison and a perigee/apogee impulse comparison
 - `assets/article-two.css`, `assets/orbital-frame.{css,js}`, `assets/precession.{css,js}`, `assets/geo-libration.{css,js}` — isolated Article 2 layout and self-contained educational illustrations
+- `assets/article-three.css`, `assets/state-coast.{css,js}`, `assets/apsis-burn.{css,js}` — isolated Article 3 layout and self-contained illustrative two-body models
 - `assets/phasing.js` — progressively enhanced phasing controls (no remote dependencies or tracking)
 - `contact.html` — redirect to the contact section on the homepage
 - Other legacy `.html` files — deindexed redirects to the homepage
@@ -56,6 +58,8 @@ Article 2 is available at `/articles/why-orbits-change.html` and is listed in th
 
 Its GEO illustration (`#geo-animation`) combines an Earth-fixed longitude dial, an ideal geostationary reference and the normalized libration plot. Playback and scrubbing share one time state; autoplay is off, playback stops after three libration periods, and reduced-motion mode retains manual scrubbing. The dial is a longitude projection with magnified angles, not an orbital trajectory or altitude display.
 
+Article 3 is available at `/articles/from-mission-objectives-to-maneuver-requirements.html` and is listed in the article index and sitemap. Its release was approved by the founder on September 27, 2026. The first figure compares two alternative initial velocities at the same position and epoch under ideal point-mass gravity, without thrust. Playback stops after one reference period; reduced-motion mode retains manual scrubbing. The second figure compares independent perigee and apogee impulses, not a two-burn sequence. Both are original illustrative calculations, not Aeterna hardware results.
+
 ## Verification
 
 Before merging:
@@ -76,7 +80,7 @@ For browser checks, make Playwright available to Node (for example through the i
 node scripts/check_browser.cjs
 ```
 
-The browser check starts an ephemeral localhost-only server and uses an isolated headless Edge browser by default. Set `AETERNA_BROWSER_CHANNEL=chromium` to use Playwright's Chromium instead. It checks the six primary pages at 320, 768, 900, and 1280 pixels, optimized homepage artwork and portrait rendering, navigation destinations and visibility, favicon rendering, overflow, JavaScript errors, article illustrations, reduced motion, and no-JavaScript fallbacks. Optional `AETERNA_SCREENSHOT_DIR` saves review screenshots outside the repository; `AETERNA_SITE_ORIGIN=https://aeternasidera.com` verifies the live site instead of starting the local server.
+The browser check starts an ephemeral localhost-only server and uses an isolated headless Edge browser by default. Set `AETERNA_BROWSER_CHANNEL=chromium` to use Playwright's Chromium instead. It checks the seven primary pages at 320, 768, 900, and 1280 pixels, optimized homepage artwork and portrait rendering, navigation destinations and visibility, favicon rendering, overflow, JavaScript errors, article illustrations, reduced motion, and no-JavaScript fallbacks. Optional `AETERNA_SCREENSHOT_DIR` saves review screenshots outside the repository; `AETERNA_SITE_ORIGIN=https://aeternasidera.com` verifies the live site instead of starting the local server.
 
 Review the homepage, propulsion page, fluid-controls page, article index, article, 404 page, every legacy redirect, mobile layout, keyboard focus, metadata, structured data, social card, and email action. Confirm that superseded public positioning and unsupported capability claims are absent. Article sources and legal scope require editorial review before merge; the article is an educational synthesis, not peer-reviewed research or demonstrated Aeterna performance.
 

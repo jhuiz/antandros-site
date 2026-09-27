@@ -24,6 +24,9 @@ class Page(HTMLParser):
         self.scripts = []
         self.times = []
         self.article_cards = []
+        self.article_sections = []
+        self.display_equations = []
+        self.figures = []
         self.current_card = None
         self.current_json = None
         self.errors = []
@@ -38,6 +41,12 @@ class Page(HTMLParser):
             self.ids.add(value)
         if tag == "h1":
             self.headings += 1
+        if tag == "section" and "article-section" in attrs.get("class", "").split():
+            self.article_sections.append(attrs.get("id", ""))
+        if tag == "math" and attrs.get("display") == "block":
+            self.display_equations.append(attrs)
+        if tag == "figure":
+            self.figures.append(attrs.get("id", ""))
         if tag == "meta":
             key = attrs.get("name", attrs.get("property", ""))
             self.metadata.setdefault(key, []).append(attrs.get("content", ""))
@@ -92,7 +101,11 @@ for path, page in pages.items():
         elif parsed.fragment and target in pages and unquote(parsed.fragment) not in pages[target].ids:
             errors.append(f"{path.relative_to(ROOT)}: missing anchor {link}")
 
-articles = ["articles/why-spacecraft-need-maneuverability.html", "articles/why-orbits-change.html"]
+articles = [
+    "articles/why-spacecraft-need-maneuverability.html",
+    "articles/why-orbits-change.html",
+    "articles/from-mission-objectives-to-maneuver-requirements.html",
+]
 primary = ["index.html", "propulsion.html", "fluid-controls.html", "articles/index.html", *articles]
 canonical_urls = {name: "https://aeternasidera.com/" + ("" if name == "index.html" else name.replace("articles/index.html", "articles/")) for name in primary}
 for name in primary:
@@ -133,6 +146,13 @@ for name in articles:
     cards = [card for card in index_cards if "/" + name in card["links"]]
     assert len(cards) == 1, f"{name}: missing or duplicate article index card"
     assert cards[0]["times"] == [published], f"{name}: index card publication date differs"
+
+article_three = pages[(ROOT / articles[2]).resolve()]
+assert len(article_three.article_sections) == 6, "Article 3: expected six sections"
+assert len(article_three.display_equations) == 2, "Article 3: expected two display equations"
+assert all(equation.get("xmlns") == "http://www.w3.org/1998/Math/MathML" and equation.get("aria-label") for equation in article_three.display_equations), "Article 3: equations need native MathML and accessible descriptions"
+assert article_three.figures == ["state-comparison", "apsis-comparison"], "Article 3: expected coast and apsis figures"
+assert {"state-coast-figure", "apsis-burn-figure"} <= article_three.ids, "Article 3: diagram containers missing"
 
 namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 urls = [element.text for element in ET.parse(ROOT / "sitemap.xml").findall("s:url/s:loc", namespace)]

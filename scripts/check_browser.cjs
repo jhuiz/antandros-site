@@ -40,7 +40,8 @@ const server = http.createServer(async (request, response) => {
     page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
     const articleRoute = '/articles/why-spacecraft-need-maneuverability.html';
     const articleTwoRoute = '/articles/why-orbits-change.html';
-    const articleRoutes = [articleRoute, articleTwoRoute];
+    const articleThreeRoute = '/articles/from-mission-objectives-to-maneuver-requirements.html';
+    const articleRoutes = [articleRoute, articleTwoRoute, articleThreeRoute];
     const routes = ['/', '/propulsion.html', '/fluid-controls.html', '/articles/', ...articleRoutes];
     for (const width of [320, 768, 900, 1280]) {
       await page.setViewportSize({ width, height: 900 });
@@ -92,15 +93,30 @@ const server = http.createServer(async (request, response) => {
             assert(await link.isVisible());
           }
         }
-        if (route === articleTwoRoute) {
-          assert.equal(await page.locator('.equation math').count(), 5);
+        if (route === articleTwoRoute || route === articleThreeRoute) {
+          assert.equal(await page.locator('.equation math').count(), route === articleTwoRoute ? 5 : 2);
           assert(await page.locator('.equation math').evaluateAll(equations => equations.every(equation =>
             equation.namespaceURI === 'http://www.w3.org/1998/Math/MathML' && equation.getAttribute('aria-label') && equation.getBoundingClientRect().height > 0)), 'Native equations did not render');
+        }
+        if (route === articleTwoRoute) {
           assert.equal(await page.locator('figure.orbital-figure').count(), 3);
           await page.waitForSelector('#orbital-frame-svg[data-projection="orthographic"]');
           await page.waitForSelector('#geo-libration-illustration[data-chart-ready="true"]');
           assert.equal(await page.locator('#orbital-frame-svg [data-orbital-frame-label]').count() >= 9, true);
           assert.equal(await page.locator('#precession-illustration svg.precession-geometry').count(), 2);
+        }
+        if (route === articleThreeRoute) {
+          assert.equal(await page.locator('.article-section').count(), 6);
+          assert.equal(await page.locator('figure.orbital-figure').count(), 2);
+          await page.waitForSelector('#state-coast-figure[data-ready="true"] [data-case="b"]');
+          await page.waitForSelector('#apsis-burn-figure [data-orbit="after"]');
+          assert.equal(await page.locator('#apsis-burn-figure .apsis-svg').count(), 2);
+          assert.equal(await page.locator('#apsis-burn-figure button, #apsis-burn-figure input').count(), 0, 'Apsis comparison is static');
+          const clipped = await page.locator('.equation math, .article-table, figure, h1, h2').evaluateAll(elements => elements.filter(element => {
+            const bounds = element.getBoundingClientRect();
+            return bounds.left < -0.5 || bounds.right > innerWidth + 0.5 || element.scrollWidth > element.clientWidth + 2;
+          }).map(element => element.tagName + '.' + element.className));
+          assert.deepEqual(clipped, [], `Article 3 content clipping at ${width}`);
         }
         const iconUrls = await page.locator('link[rel="icon"]').evaluateAll(icons => icons.map(icon => icon.href));
         assert.equal(iconUrls.length, 2);
@@ -120,7 +136,7 @@ const server = http.createServer(async (request, response) => {
         }
       }
     }
-    // Explicitly return to Article 1 now that Article 2 ends the responsive loop.
+    // Keep the legacy phasing checks independent of responsive route order.
     await page.goto(origin + articleRoute);
     assert.equal(await page.locator('#phasing-lag').innerText(), '10.01');
     await page.locator('#phasing-time').fill('5');
@@ -195,6 +211,76 @@ const server = http.createServer(async (request, response) => {
     assert.equal(await page.locator('#precession-fixed-time').innerText(), '00:00');
     assert.equal(Number(await page.locator('#precession-follow-svg').getAttribute('data-node-degrees')), 360);
 
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto(origin + articleThreeRoute);
+    const coast = page.locator('#state-coast-figure');
+    const coastSlider = page.locator('#coast-time');
+    const coastPlay = page.locator('#coast-play');
+    await page.waitForSelector('#state-coast-figure[data-ready="true"]');
+    assert.equal(await coast.getAttribute('data-playing'), 'false');
+    await page.waitForTimeout(180);
+    assert.equal(Number(await coast.getAttribute('data-fraction')), 0, 'Coast comparison must not autoplay');
+    const near = (actual, expected, label) => assert(Math.abs(actual - expected) < 1e-8, `${label}: ${actual} != ${expected}`);
+    for (const fraction of [0, 0.25, 0.5, 1]) {
+      await coastSlider.fill(String(fraction));
+      const states = await coast.locator('[data-case]').evaluateAll(markers => Object.fromEntries(markers.map(marker =>
+        [marker.dataset.case, ['x', 'y', 'vx', 'vy'].map(key => Number(marker.dataset[key]))])));
+      const angle = 2 * Math.PI * fraction;
+      [Math.cos(angle), Math.sin(angle), -Math.sin(angle), Math.cos(angle)].forEach((value, index) => near(states.a[index], value, 'Circular coast'));
+      const [x, y, vx, vy] = states.b;
+      near((vx * vx + vy * vy) / 2 - 1 / Math.hypot(x, y), -0.33875, 'Elliptical coast energy');
+      near(x * vy - y * vx, 1.15, 'Elliptical coast angular momentum');
+      if (fraction === 0) [1, 0, 0, 1.15].forEach((value, index) => near(states.b[index], value, 'Shared initial state'));
+      else assert(Math.hypot(x - states.a[0], y - states.a[1]) > 0.1, 'Different initial speeds must produce different later positions');
+      near(Number(await coast.getAttribute('data-fraction')), fraction, 'Coast slider time');
+    }
+    const apsides = await page.locator('#apsis-burn-figure .apsis-svg').evaluateAll(diagrams => diagrams.map(diagram => ({
+      id: diagram.dataset.case,
+      ...Object.fromEntries(['rp', 'ra', 'burnRadius', 'beforeSpeed', 'afterSpeed', 'scale'].map(key => [key, Number(diagram.dataset[key])])),
+      impulseY: Number(diagram.querySelector('[data-impulse]').dataset.dvy)
+    })));
+    const perigee = apsides.find(diagram => diagram.id === 'perigee');
+    const apogee = apsides.find(diagram => diagram.id === 'apogee');
+    near(perigee.rp, 1, 'Perigee burn preserves perigee');
+    near(perigee.ra, 2.645001542, 'Perigee burn raises apogee');
+    near(apogee.ra, 2, 'Apogee burn preserves apogee');
+    near(apogee.rp, 1.297980958, 'Apogee burn raises perigee');
+    near(perigee.scale, apogee.scale, 'Apsis diagrams share a distance scale');
+    for (const diagram of apsides) {
+      near(diagram.afterSpeed - diagram.beforeSpeed, 0.05, 'Equal speed increases');
+      near(diagram.beforeSpeed ** 2, 2 / diagram.burnRadius - 1 / 1.5, 'Original orbit vis-viva');
+      near(diagram.afterSpeed ** 2, 2 / diagram.burnRadius - 2 / (diagram.rp + diagram.ra), 'Resulting orbit vis-viva');
+      near(diagram.impulseY, diagram.id === 'perigee' ? 0.05 : -0.05, 'Prograde impulse direction');
+    }
+    await coastSlider.fill('0.25');
+    await coastSlider.focus();
+    await page.keyboard.press('ArrowRight');
+    near(Number(await coast.getAttribute('data-fraction')), 0.251, 'Keyboard slider increment');
+    await page.keyboard.press('Home');
+    near(Number(await coast.getAttribute('data-fraction')), 0, 'Keyboard slider start');
+    await page.keyboard.press('End');
+    near(Number(await coast.getAttribute('data-fraction')), 1, 'Keyboard slider end');
+    await coastSlider.fill('0.99');
+    await coastPlay.click();
+    await page.waitForFunction(() => document.querySelector('#coast-play').textContent === 'Replay');
+    assert.equal(await coast.getAttribute('data-playing'), 'false');
+    near(Number(await coast.getAttribute('data-fraction')), 1, 'Coast playback endpoint');
+    await coastPlay.click();
+    await page.waitForFunction(() => Number(document.querySelector('#state-coast-figure').dataset.fraction) > 0.01);
+    assert(Number(await coast.getAttribute('data-fraction')) < 0.25, 'Coast replay starts at zero');
+    await coastPlay.click();
+    const pausedCoastTime = await coast.getAttribute('data-fraction');
+    await page.waitForTimeout(100);
+    assert.equal(await coast.getAttribute('data-fraction'), pausedCoastTime, 'Coast pause holds time');
+    await coastPlay.click();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.waitForFunction(() => document.querySelector('#coast-play').disabled);
+    assert.equal(await coast.getAttribute('data-playing'), 'false');
+    assert.equal(await coastPlay.innerText(), 'Motion off');
+    assert(await coastSlider.isEnabled());
+    await coastSlider.fill('0.25');
+    near(Number(await coast.getAttribute('data-fraction')), 0.25, 'Reduced-motion slider stays available');
+
     const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 900 } });
     const fallback = await noJs.newPage();
     await fallback.goto(origin + articleRoute);
@@ -207,13 +293,20 @@ const server = http.createServer(async (request, response) => {
     for (const description of await fallback.locator('.figure-fallback').all()) assert(await description.isVisible());
     assert.equal(await fallback.locator('input[type="range"], #geo-play').count(), 0);
     assert(await fallback.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No-JS Article 2 overflow');
+    await fallback.goto(origin + articleThreeRoute);
+    assert.equal(await fallback.locator('.article-section').count(), 6);
+    assert.equal(await fallback.locator('.equation math').count(), 2);
+    assert(await fallback.locator('#state-coast-figure .figure-fallback').isVisible());
+    assert(await fallback.locator('#apsis-burn-figure .figure-fallback').isVisible());
+    assert.equal(await fallback.locator('#coast-time, #coast-play').count(), 0);
+    assert(await fallback.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No-JS Article 3 overflow');
     await noJs.close();
     await page.goto(origin + '/');
     await page.getByRole('link', { name: 'Propulsion', exact: true }).click();
     assert.equal(new URL(page.url()).pathname, '/propulsion.html');
     assert.equal(new URL(page.url()).hash, '');
     assert.deepEqual(errors, []);
-    console.log('PASS: 24 responsive page checks, metadata, article index, homepage artwork and portrait, navigation, favicon rendering, keyboard entry, phasing, five native equations, three orbital diagrams, precession quarters, shared GEO states, reduced motion, no-JS fallbacks, and no browser errors');
+    console.log('PASS: 28 responsive page checks, metadata, three article index cards, homepage artwork and portrait, navigation, favicon rendering, keyboard entry, phasing, seven native display equations, five orbital figures, precession quarters, shared GEO states, coast controls and invariants, apsis physics, reduced motion, no-JS fallbacks, and no browser errors');
   } finally {
     if (browser) await browser.close();
     if (server.listening) await new Promise(resolve => server.close(resolve));

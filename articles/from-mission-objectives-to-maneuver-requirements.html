@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>From Mission Objectives to Maneuver Requirements | Aeterna Sidera</title>
+  <meta name="description" content="How mission objectives become requirements for motion, timing, accuracy, spacecraft compatibility and repeated operation." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#07131f" />
+  <meta name="author" content="Jesus Daniel Huizar" />
+  <meta property="og:title" content="From Mission Objectives to Maneuver Requirements | Aeterna Sidera" />
+  <meta property="og:description" content="How mission objectives become requirements for motion, timing, accuracy, spacecraft compatibility and repeated operation." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Aeterna Sidera Inc." />
+  <meta property="og:url" content="https://aeternasidera.com/articles/from-mission-objectives-to-maneuver-requirements.html" />
+  <meta property="og:image" content="https://aeternasidera.com/assets/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development" />
+  <meta property="article:published_time" content="2026-09-27" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="From Mission Objectives to Maneuver Requirements | Aeterna Sidera" />
+  <meta name="twitter:description" content="How mission objectives become requirements for motion, timing, accuracy, spacecraft compatibility and repeated operation." />
+  <meta name="twitter:image" content="https://aeternasidera.com/assets/og-card.png" />
+  <meta name="twitter:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development" />
+  <link rel="canonical" href="https://aeternasidera.com/articles/from-mission-objectives-to-maneuver-requirements.html" />
+  <link rel="icon" href="/assets/favicon.svg?v=aeterna-mark-1" type="image/svg+xml" />
+  <link rel="icon" href="/assets/favicon.png?v=aeterna-mark-1" type="image/png" sizes="256x256" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png?v=aeterna-mark-1" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/assets/article-three.css" />
+  <link rel="stylesheet" href="/assets/state-coast.css" />
+  <link rel="stylesheet" href="/assets/apsis-burn.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "From Mission Objectives to Maneuver Requirements",
+    "description": "How mission objectives become requirements for motion, timing, accuracy, spacecraft compatibility and repeated operation.",
+    "datePublished": "2026-09-27",
+    "author": { "@type": "Person", "name": "Jesus Daniel Huizar" },
+    "publisher": { "@type": "Organization", "name": "Aeterna Sidera Inc.", "url": "https://aeternasidera.com/" },
+    "mainEntityOfPage": "https://aeternasidera.com/articles/from-mission-objectives-to-maneuver-requirements.html",
+    "image": "https://aeternasidera.com/assets/og-card.png",
+    "inLanguage": "en"
+  }
+  </script>
+</head>
+<body class="page-secondary article-three">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/propulsion.html">Propulsion</a>
+        <a href="/fluid-controls.html">Fluid controls</a>
+        <a href="/articles/" aria-current="true">Technical articles</a>
+        <a href="/#company">Company</a>
+        <a class="nav-contact" href="/#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article>
+      <header class="hero page-hero">
+        <div class="shell">
+          <p class="eyebrow">Mission to hardware · Article 3</p>
+          <h1>From mission objectives to maneuver requirements.</h1>
+          <p class="hero-lede">Turning a mission’s purpose into requirements for motion, timing, accuracy and spacecraft operation.</p>
+          <p class="article-meta">By Jesus Daniel Huizar · Founder, Aeterna Sidera</p>
+          <p class="article-meta">Published <time datetime="2026-09-27">September 27, 2026</time></p>
+        </div>
+      </header>
+
+      <div class="shell article-body">
+        <nav class="article-toc" aria-label="In this article">
+          <p><strong>In this article</strong></p>
+          <ol>
+            <li><a href="#required-motion">Define the motion needed for the task</a></li>
+            <li><a href="#maneuver-timing">Timing is part of the maneuver</a></li>
+            <li><a href="#knowledge-and-execution">Separate knowledge from execution</a></li>
+            <li><a href="#spacecraft-compatibility">Make the maneuver compatible with the spacecraft</a></li>
+            <li><a href="#operating-cycle">Plan the operating cycle, not an isolated burn</a></li>
+            <li><a href="#requirements-together">Bring the requirements together</a></li>
+          </ol>
+        </nav>
+
+        <section class="article-section" id="required-motion" aria-labelledby="required-motion-title">
+          <h2 id="required-motion-title">1. Define the motion needed for the task</h2>
+          <p>Consider an observation that requires two spacecraft to establish useful relative geometry and maintain it throughout the exposure. Reaching the desired separation alone does not satisfy the task: the relative motion and the approach also matter.</p>
+          <p>For translational motion, describe each spacecraft’s position and velocity in a defined reference frame at a specified time:</p>
+          <div class="equation">
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="The translational state x at time t is a column vector containing position r of t and velocity v of t.">
+              <mi mathvariant="bold">x</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mrow><mo>[</mo><mtable><mtr><mtd><mi mathvariant="bold">r</mi><mo>(</mo><mi>t</mi><mo>)</mo></mtd></mtr><mtr><mtd><mi mathvariant="bold">v</mi><mo>(</mo><mi>t</mi><mo>)</mo></mtd></mtr></mtable><mo>]</mo></mrow>
+            </math>
+          </div>
+          <p>Position describes where the spacecraft is; velocity helps determine where it goes next. Two trajectories can pass through the same location and lead to different subsequent motion.</p>
+          <figure class="orbital-figure" id="state-comparison" aria-label="Figure 1: Same position, different motion" aria-describedby="state-coast-caption">
+            <div id="state-coast-figure">
+              <p class="figure-fallback">Two alternative initial states share the same position and epoch. A starts at circular-orbit speed; B starts 15% faster in the same tangential direction. Under ideal point-mass gravity, A follows a circle and B an ellipse with a longer period. After one A period, A returns to its initial position while B has not yet completed its orbit. The interactive comparison is available when JavaScript is enabled.</p>
+            </div>
+            <figcaption class="figure-caption" id="state-coast-caption">Figure 1 — Same position, different motion. Two alternative initial states share the same position and epoch. A starts at circular-orbit speed; B starts 15% faster in the same tangential direction. Both coast under gravity, without thrust, for the same elapsed time. The Earth-centered axes do not rotate. Velocity arrows share a scale; they are not thrust vectors. These are alternative trajectories, not two spacecraft flying together.</figcaption>
+            <p class="figure-model">This illustrative calculation uses an ideal point-mass, two-body model. Length is normalized by the initial radius <var>r</var><sub>0</sub>, speed by <math xmlns="http://www.w3.org/1998/Math/MathML" aria-label="v zero equals the square root of mu over r zero"><msub><mi>v</mi><mn>0</mn></msub><mo>=</mo><msqrt><mfrac><mi>μ</mi><msub><mi>r</mi><mn>0</mn></msub></mfrac></msqrt></math>, and elapsed time by A’s orbital period <var>T</var><sub>0</sub>. Here, <var>μ</var> is Earth’s gravitational parameter. Earth’s drawn size is schematic. The trajectories follow the eccentric-anomaly formulation of Keplerian motion. <a href="https://farside.ph.utexas.edu/teaching/celestial/Celestial/node33.html">Richard Fitzpatrick, University of Texas at Austin: Elliptic Orbits</a></p>
+          </figure>
+          <p>The required outcome may be a particular arrival state, a range of orbital conditions or relative geometry maintained throughout an observation. <strong>The destination, motion on arrival and acceptable approach are separate parts of that requirement.</strong></p>
+          <p>Maneuver design determines how to achieve it. NASA’s navigation framework describes a correction by its velocity-change vector—magnitude and direction—and execution time, subsequently translated into spacecraft pointing and propulsion commands. <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter13-1/">NASA: Navigation</a></p>
+        </section>
+
+        <section class="article-section" id="maneuver-timing" aria-labelledby="maneuver-timing-title">
+          <h2 id="maneuver-timing-title">2. Timing is part of the maneuver</h2>
+          <p>Moving a firing to another point along an orbit can change the resulting trajectory.</p>
+          <p>Consider an elliptical Earth orbit. <strong>Perigee is its closest point to Earth; apogee is its farthest.</strong> In an ideal two-body model, a small instantaneous speed increase along the direction of travel—a <em>prograde impulse</em>—at perigee raises apogee. Applied at apogee, it raises perigee instead. The cases below remain elliptical, with the firing point retaining its original apsis type. <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter3-4/">NASA: Gravity and Mechanics</a></p>
+          <figure class="orbital-figure" id="apsis-comparison" aria-label="Figure 2: Impulses at perigee and apogee" aria-describedby="apsis-burn-caption">
+            <div id="apsis-burn-figure">
+              <p class="figure-fallback">Perigee is the orbit’s nearest point to Earth; apogee is its farthest. In the first alternative, a small forward velocity change at perigee raises the opposite apogee while perigee stays fixed. In the second, the same speed increase at apogee raises the opposite perigee while apogee stays fixed. These are separate alternatives, not successive burns. The paired diagrams are available when JavaScript is enabled.</p>
+            </div>
+            <figcaption class="figure-caption" id="apsis-burn-caption">Figure 2 — The dashed ellipse is the same starting orbit in both panels. Each alternative applies the same small, instantaneous forward velocity change. At perigee it raises apogee; at apogee it raises perigee. The firing-point position does not change at the impulse. The solid ellipse is the resulting coast orbit, not a path followed while thrust continues. These are independent alternatives, not a two-burn sequence. Physics basis: <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter3-4/">NASA: Gravity and Mechanics</a>.</figcaption>
+            <p class="figure-model">Illustrative two-body calculation: initial perigee radius <var>r</var><sub>0</sub>, initial apogee radius 2<var>r</var><sub>0</sub>, and a speed increase of 0.05√(<var>μ</var>/<var>r</var><sub>0</sub>) in each alternative. Radii are measured from Earth’s center; <var>μ</var> is Earth’s gravitational parameter. Earth’s drawn size is schematic. The apogee impulse remains below the speed increase needed to circularize the orbit there.</p>
+          </figure>
+          <p>Four timing quantities matter:</p>
+          <ul>
+            <li><strong>Execution window:</strong> when the maneuver can satisfy trajectory and spacecraft constraints.</li>
+            <li><strong>Powered duration:</strong> how long thrust is applied during a burn.</li>
+            <li><strong>Transfer duration:</strong> elapsed time to reach the intended arrival state, potentially including several burns and coast intervals.</li>
+            <li><strong>Operational deadline:</strong> when the spacecraft must be ready for the enabled activity, including required settling or confirmation.</li>
+          </ul>
+          <p>Replacing a powered interval with an instantaneous velocity change is an approximation whose trajectory error must be acceptable for the task. Otherwise, the spacecraft’s motion during the burn must be modeled.</p>
+          <p>The earliest possible correction is not always preferable. NASA describes a navigation trade after events such as planetary flybys: correcting sooner can require less velocity change, while waiting can provide tracking data for a better orbit estimate. The decision balances correction cost against confidence in the command. <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter13-1/">NASA: Navigation</a></p>
+        </section>
+
+        <section class="article-section" id="knowledge-and-execution" aria-labelledby="knowledge-and-execution-title">
+          <h2 id="knowledge-and-execution-title">3. Separate knowledge from execution</h2>
+          <p>A maneuver can match its commanded velocity change and still miss the intended outcome. Accurate execution alone does not correct an initial error in the state estimate used to calculate the command.</p>
+          <p>Three contributions need to be assessed together:</p>
+          <ul>
+            <li><strong>State knowledge:</strong> uncertainty in the position and velocity used to plan the correction.</li>
+            <li><strong>Maneuver execution:</strong> differences between commanded and delivered velocity change, including magnitude, direction and timing.</li>
+            <li><strong>Trajectory prediction:</strong> uncertainty in the forces and models used to predict motion during and after the maneuver.</li>
+          </ul>
+          <p>Orbit estimation, maneuver design and post-maneuver tracking form an iterative process. <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter13-1/">NASA: Navigation</a></p>
+          <p><strong>Judge accuracy against the mission quantity, at the time or throughout the interval when it matters.</strong> For a formation observation, that might mean remaining inside an allowed relative-position envelope throughout an exposure. Meeting a velocity-change magnitude target does not establish directional accuracy; an acceptable position just after the burn does not establish acceptable motion throughout the observation.</p>
+          <p>The engineering task is to propagate uncertainties into that mission quantity and allocate acceptable contributions from navigation, execution and modeling. These contributions may be correlated and cannot automatically be combined as independent errors.</p>
+          <p>During JWST’s early correction campaign, engineers combined telemetry and attitude history to reconstruct maneuvers, then used independent tracking data for calibration. <a href="https://ntrs.nasa.gov/api/citations/20220010110/downloads/JWST_Monitoring_Paper_Draft_For_Review.pdf">NASA-hosted JWST technical paper, printed p. 7</a> Reconstruction estimates the achieved motion with uncertainty, supporting assessment of the result and subsequent corrections.</p>
+        </section>
+
+        <section class="article-section" id="spacecraft-compatibility" aria-labelledby="spacecraft-compatibility-title">
+          <h2 id="spacecraft-compatibility-title">4. Make the maneuver compatible with the spacecraft</h2>
+          <p>An orbit correction changes translational motion; an attitude maneuver changes orientation. Propulsion can couple them.</p>
+          <p>For body-fixed thrusters, changing spacecraft orientation changes thrust directions in space. Thrust whose line of action misses the center of mass also produces a turning moment. Representing each thruster by its resultant force, the combined thrust torque about the center of mass is:</p>
+          <div class="equation">
+            <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="The thrust torque tau sub T equals the sum over thrusters i of rho i cross F i.">
+              <msub><mi mathvariant="bold">τ</mi><mi mathvariant="normal">T</mi></msub><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><msub><mi mathvariant="bold">ρ</mi><mi>i</mi></msub><mo>×</mo><msub><mi mathvariant="bold">F</mi><mi>i</mi></msub>
+            </math>
+          </div>
+          <p>Here, <var class="vector">ρ</var><sub><var>i</var></sub> runs from the spacecraft’s center of mass to a point on thruster <var>i</var>’s line of action, and <var class="vector">F</var><sub><var>i</var></sub> is its force on the spacecraft. Both vectors use the same coordinate frame.</p>
+          <p>Delivering the required translation also requires managing the associated torque. Reaction wheels can change orientation without expelling propellant, although their torque and momentum capacity are limited. <a href="https://www.nasa.gov/smallsat-institute/sst-soa/guidance-navigation-and-control/">NASA: Guidance, Navigation, and Control</a></p>
+          <p>An orientation suitable for thrust may conflict with solar-array illumination, antenna coverage, instrument pointing or thermal protection. Evaluate those constraints throughout the maneuver. <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter11-2/">NASA: Onboard Systems</a></p>
+          <p>JWST’s thermal protection restricted allowable burn attitudes and made some corrective directions costly. The planned magnitudes of its first two mid-course corrections were deliberately biased below the optimal insertion values to reduce the risk of an overshoot that would be difficult to recover from. Thermal constraints influenced the maneuver strategy itself. <a href="https://ntrs.nasa.gov/api/citations/20220010110/downloads/JWST_Monitoring_Paper_Draft_For_Review.pdf">JWST maneuver-planning paper, printed p. 3</a></p>
+          <p>Spacecraft compatibility can therefore restrict thrust direction, maneuver duration, attitude changes and which other activities can continue during execution.</p>
+        </section>
+
+        <section class="article-section" id="operating-cycle" aria-labelledby="operating-cycle-title">
+          <h2 id="operating-cycle-title">5. Plan the operating cycle, not an isolated burn</h2>
+          <p>Repeated corrections can require preparation, reorientation, acquisition and settling around each burn. A short firing may occupy a longer interval in the mission schedule. Which activities overlap, require ground involvement or interrupt the payload is mission-specific.</p>
+          <p>In its May 2025 account of Proba-3, ESA described an operating cycle in which the spacecraft establish their precision formation in the high-altitude portion of the orbit, later break formation, and acquire it again on the next orbit. Re-establishing the observing geometry is part of the mission concept. <a href="https://www.esa.int/Enabling_Support/Space_Engineering_Technology/Proba-3_achieves_precise_formation_flying">ESA: Proba-3 formation flying</a></p>
+          <p>This introduces requirements beyond a single correction:</p>
+          <ul>
+            <li><strong>Service interruption:</strong> how long useful operations may be suspended, and how frequently.</li>
+            <li><strong>Repetition pattern:</strong> how often corrections occur, including closely spaced activities rather than only a mission-wide average.</li>
+            <li><strong>Cumulative demand:</strong> resources needed across routine operations and selected contingency cases.</li>
+          </ul>
+          <p>A missed or partial maneuver requires a response: reassess the state, hold safely where feasible, reschedule or execute a revised correction. The changed trajectory and timing may make the original command inappropriate. JWST’s contingency planning distinguished restart procedures from generating an updated maneuver plan. <a href="https://ntrs.nasa.gov/api/citations/20220010110/downloads/JWST_Monitoring_Paper_Draft_For_Review.pdf">JWST recovery planning, printed p. 10</a></p>
+          <p>Mission maneuvers are not a direct count of thruster starts or valve cycles. The chosen control implementation must translate the operating cadence into actuator duty and lifetime requirements.</p>
+        </section>
+
+        <section class="article-section" id="requirements-together" aria-labelledby="requirements-together-title">
+          <h2 id="requirements-together-title">6. Bring the requirements together</h2>
+          <p>For the illustrative two-spacecraft task, the objective is to establish observing geometry before the window opens, maintain it for the required interval and preserve a safe recovery option.</p>
+          <p>Turning that objective into a maneuver specification requires resolving these relationships:</p>
+          <table class="article-table">
+            <caption class="visually-hidden">Requirements for the illustrative two-spacecraft observation task</caption>
+            <thead><tr><th scope="col">Requirement area</th><th scope="col">What it means for this observation task</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Required motion</th><td>Define relative position, velocity and permitted evolution during observation, plus approach constraints, in a stated reference frame.</td></tr>
+              <tr><th scope="row">Timing</th><td>Complete acquisition and necessary settling before observation; specify the observing interval and permissible maneuver windows.</td></tr>
+              <tr><th scope="row">Accuracy</th><td>Define acceptable geometry errors and required confidence or bounds, accounting for navigation, execution and prediction uncertainty.</td></tr>
+              <tr><th scope="row">Spacecraft compatibility</th><td>Maintain instrument alignment while respecting thrust-direction, attitude-control, thermal, power and communications limits.</td></tr>
+              <tr><th scope="row">Repetition and recovery</th><td>Meet observation cadence and interruption allowances, budget cumulative resources, and define responses to missed or incomplete acquisition.</td></tr>
+            </tbody>
+          </table>
+          <p>Numerical limits, epochs and acceptance criteria still require mission-specific analysis. This table gives the structure of a specification, not Proba-3 requirements.</p>
+          <p>The conditions interact. A shorter acquisition window can remove feasible maneuver opportunities; tighter disturbance limits may change which corrections can occur during observation. Trajectory, navigation and control analyses must establish whether the combined requirements can be met.</p>
+          <p>Requirements and candidate designs develop together. A propulsion trade may expose a conflict requiring a revised operating strategy or negotiable allocation. NASA’s systems-engineering guidance describes this iteration among requirements, the concept of operations and the design solution. <a href="https://www.nasa.gov/reference/4-0-system-design-processes/">NASA: System Design Processes</a></p>
+          <p>The next article compares propulsion approaches: what each can deliver, what resources it consumes, and what it asks of the spacecraft around it.</p>
+          <p class="article-note">This article is an educational synthesis of public sources and original illustrative models. It does not report Aeterna hardware performance, qualification or flight results. Aeterna’s propulsion and fluid-control programs are in development.</p>
+          <p><a href="/articles/why-orbits-change.html">← Article 2: Why orbits change—and what missions do about it</a></p>
+          <p><a href="/articles/">All technical articles</a></p>
+        </section>
+      </div>
+    </article>
+  </main>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <a class="wordmark wordmark-footer" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" loading="lazy" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <p>© <span data-year>2026</span> Aeterna Sidera Inc. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="/script.js" defer></script>
+  <script src="/assets/state-coast.js" defer></script>
+  <script src="/assets/apsis-burn.js" defer></script>
+</body>
+</html>
