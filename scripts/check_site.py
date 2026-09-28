@@ -26,6 +26,9 @@ class Page(HTMLParser):
         self.article_cards = []
         self.article_sections = []
         self.display_equations = []
+        self.math_expressions = []
+        self.article_tables = []
+        self.images = []
         self.figures = []
         self.current_card = None
         self.current_json = None
@@ -45,6 +48,12 @@ class Page(HTMLParser):
             self.article_sections.append(attrs.get("id", ""))
         if tag == "math" and attrs.get("display") == "block":
             self.display_equations.append(attrs)
+        if tag == "math":
+            self.math_expressions.append(attrs)
+        if tag == "table" and "article-table" in attrs.get("class", "").split():
+            self.article_tables.append(attrs)
+        if tag == "img":
+            self.images.append(attrs)
         if tag == "figure":
             self.figures.append(attrs.get("id", ""))
         if tag == "meta":
@@ -105,6 +114,7 @@ articles = [
     "articles/why-spacecraft-need-maneuverability.html",
     "articles/why-orbits-change.html",
     "articles/from-mission-objectives-to-maneuver-requirements.html",
+    "articles/matching-propulsion-to-the-mission.html",
 ]
 primary = ["index.html", "propulsion.html", "fluid-controls.html", "articles/index.html", *articles]
 canonical_urls = {name: "https://aeternasidera.com/" + ("" if name == "index.html" else name.replace("articles/index.html", "articles/")) for name in primary}
@@ -143,6 +153,8 @@ for name in articles:
         modified = article_metadata["dateModified"]
         assert date.fromisoformat(modified).isoformat() == modified and modified >= published, f"{name}: invalid modification date"
     assert published in article.times, f"{name}: visible publication date differs from metadata"
+    if name == articles[3]:
+        assert article.metadata.get("article:published_time") == [published], f"{name}: Open Graph publication date differs"
     cards = [card for card in index_cards if "/" + name in card["links"]]
     assert len(cards) == 1, f"{name}: missing or duplicate article index card"
     assert cards[0]["times"] == [published], f"{name}: index card publication date differs"
@@ -153,6 +165,43 @@ assert len(article_three.display_equations) == 2, "Article 3: expected two displ
 assert all(equation.get("xmlns") == "http://www.w3.org/1998/Math/MathML" and equation.get("aria-label") for equation in article_three.display_equations), "Article 3: equations need native MathML and accessible descriptions"
 assert article_three.figures == ["state-comparison", "apsis-comparison"], "Article 3: expected coast and apsis figures"
 assert {"state-coast-figure", "apsis-burn-figure"} <= article_three.ids, "Article 3: diagram containers missing"
+
+article_four = pages[(ROOT / articles[3]).resolve()]
+assert len(article_four.article_sections) == 6, "Article 4: expected five numbered sections and reference notes"
+assert "calculation-and-reference-notes" in article_four.article_sections, "Article 4: calculation provenance section missing"
+assert len(article_four.display_equations) == 3, "Article 4: expected three display equations"
+assert len(article_four.math_expressions) == 10, "Article 4: expected ten display/inline math expressions"
+assert all(equation.get("xmlns") == "http://www.w3.org/1998/Math/MathML" and equation.get("aria-label", "").strip() for equation in article_four.math_expressions), "Article 4: all math needs native MathML and accessible descriptions"
+assert len(article_four.article_tables) == 6, "Article 4: expected six comparison tables"
+assert article_four.figures == ["hall-power-mass-figure", "mass-break-even-figure"], "Article 4: comparison figures missing or reordered"
+assert {"hall-power-mass-chart", "mass-break-even-chart"} <= article_four.ids, "Article 4: responsive chart containers missing"
+article_four_text = (ROOT / articles[3]).read_text(encoding="utf-8")
+assert not re.search(r"Private preview|Not published|draft-notice|Internal editorial notes|/mnt/|/home/|C:\\Users", article_four_text, re.I), "Article 4: private review material leaked into public copy"
+article_four_sources = {
+    "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/",
+    "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/specific-impulse/",
+    "https://www.nasa.gov/smallsat-institute/sst-soa/in-space_propulsion/",
+    "https://descanso.jpl.nasa.gov/SciTechBook/series4/Electric_Propulsion_2nd_edition.pdf",
+    "https://earth-info.nga.mil/?action=wgs84&dir=wgs84",
+    "https://science.nasa.gov/learn/basics-of-space-flight/chapter4-1/",
+    "https://www.moog.com/content/dam/moog/literature/sdg/space/propulsion/moog-coldgasthrusters-datasheet.pdf",
+    "https://space-propulsion.com/brochures/hydrazine-thrusters/hydrazine-thrusters.pdf",
+    "https://space-propulsion.com/brochures/bipropellant-thrusters/bipropellant-thrusters.pdf",
+    "https://www.busek.com/bht200",
+    "https://www.busek.com/s/BHT_600_v11.pdf",
+}
+actual_sources = {link for link in article_four.links if link.startswith("https://") and urlsplit(link).hostname != "aeternasidera.com"}
+assert actual_sources == article_four_sources, "Article 4: reference URLs differ from approved manuscript"
+for stem in ["series-04-hall-power-mass", "series-04-mass-break-even"]:
+    png_link, svg_link = f"/assets/{stem}.png", f"/assets/{stem}.svg"
+    assert png_link in article_four.links and svg_link in article_four.links, f"Article 4: fallback or full-size link missing for {stem}"
+    matching_images = [image for image in article_four.images if image.get("src") == png_link]
+    assert len(matching_images) == 1 and matching_images[0].get("alt", "").strip(), f"Article 4: fallback image needs descriptive alt text: {stem}"
+    assert (ROOT / png_link.lstrip("/")).read_bytes().startswith(b"\x89PNG\r\n\x1a\n"), f"Article 4: invalid PNG fallback {stem}"
+    figure_svg = ET.parse(ROOT / svg_link.lstrip("/")).getroot()
+    assert figure_svg.tag == "{http://www.w3.org/2000/svg}svg", f"Article 4: invalid full-size SVG {stem}"
+    assert not figure_svg.findall(".//{http://www.w3.org/2000/svg}script"), f"Article 4: static SVG contains script {stem}"
+assert "/assets/article-four.css" in article_four.links and "/assets/article-four-charts.js" in article_four.links, "Article 4: presentation assets missing"
 
 namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 urls = [element.text for element in ET.parse(ROOT / "sitemap.xml").findall("s:url/s:loc", namespace)]

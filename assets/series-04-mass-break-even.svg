@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000" role="img" aria-labelledby="figure-title figure-description">
+  <title id="figure-title">When propellant savings offset added mass</title>
+  <desc id="figure-description">Illustrative mass comparison for a 500 to 1,000 kilometre coplanar orbit relocation. The hydrazine reference retains 120 kilograms and has specific impulse 220 seconds. The bipropellant reference has specific impulse 290 seconds and retains 120 kilograms plus the added mass on the horizontal axis. The vertical axis is bipropellant initial mass minus hydrazine initial mass. The line starts at minus 3.92 kilograms and crosses zero at 3.575 kilograms of extra retained mass. Below the crossing the bipropellant spacecraft starts lighter; above it, heavier. Retained mass includes dry hardware and retained consumables. This is not an equipment estimate or Aeterna performance result.</desc>
+  <metadata>{"bipropellant_isp_s": 290.0, "break_even_extra_retained_kg": 3.5749787707456426, "delta_v_m_s": 262.3887989371143, "equal_initial_mass_kg": 135.5188689370743, "hydrazine_isp_s": 220.0, "hydrazine_retained_mass_kg": 120.0, "model": "series_04_reference_cases.py", "plotted_extra_retained_mass_range_kg": [0.0, 8.0], "status": "Published illustrative calculation; not a sized installation or hardware result"}</metadata>
+  <rect x="0" y="0" width="1400" height="1000" fill="#f3f0e8" />
+  <g font-family="Arial, Helvetica, sans-serif" fill="#08121c">
+    <text x="64" y="66" font-size="42" text-anchor="start" font-weight="500">When propellant savings offset added mass</text>
+    <text x="64" y="110" font-size="27" text-anchor="start" fill="#405362">Illustrative relocation  ·  500 km → 1,000 km</text>
+    <text x="64" y="155" font-size="25" text-anchor="start">Hydrazine: 120 kg retained, Isp 220 s  ·  Bipropellant: Isp 290 s</text>
+    <text x="64" y="189" font-size="25" text-anchor="start" fill="#405362">Vertical axis: bipropellant starting mass minus hydrazine starting mass</text>
+    <line x1="144" x2="1328" y1="696.1818181818181" y2="696.1818181818181" stroke="#cccac4" stroke-width="1" />
+    <text x="124" y="705.182" font-size="26" text-anchor="end">-4</text>
+    <line x1="144" x2="1328" y1="600.5454545454545" y2="600.5454545454545" stroke="#cccac4" stroke-width="1" />
+    <text x="124" y="609.545" font-size="26" text-anchor="end">-2</text>
+    <line x1="144" x2="1328" y1="504.9090909090909" y2="504.9090909090909" stroke="#08121c" stroke-width="2" />
+    <text x="124" y="513.909" font-size="26" text-anchor="end">0</text>
+    <line x1="144" x2="1328" y1="409.27272727272725" y2="409.27272727272725" stroke="#cccac4" stroke-width="1" />
+    <text x="124" y="418.273" font-size="26" text-anchor="end">+2</text>
+    <line x1="144" x2="1328" y1="313.6363636363636" y2="313.6363636363636" stroke="#cccac4" stroke-width="1" />
+    <text x="124" y="322.636" font-size="26" text-anchor="end">+4</text>
+    <line x1="144" x2="1328" y1="218.0" y2="218.0" stroke="#cccac4" stroke-width="1" />
+    <text x="124" y="227.0" font-size="26" text-anchor="end">+6</text>
+    <line x1="178.8235294117647" x2="178.8235294117647" y1="218" y2="744" stroke="#cccac4" stroke-width="1" />
+    <text x="178.824" y="785" font-size="26" text-anchor="middle">0</text>
+    <line x1="457.4117647058824" x2="457.4117647058824" y1="218" y2="744" stroke="#cccac4" stroke-width="1" />
+    <text x="457.412" y="785" font-size="26" text-anchor="middle">2</text>
+    <line x1="736.0" x2="736.0" y1="218" y2="744" stroke="#cccac4" stroke-width="1" />
+    <text x="736.0" y="785" font-size="26" text-anchor="middle">4</text>
+    <line x1="1014.5882352941177" x2="1014.5882352941177" y1="218" y2="744" stroke="#cccac4" stroke-width="1" />
+    <text x="1014.588" y="785" font-size="26" text-anchor="middle">6</text>
+    <line x1="1293.1764705882354" x2="1293.1764705882354" y1="218" y2="744" stroke="#cccac4" stroke-width="1" />
+    <text x="1293.176" y="785" font-size="26" text-anchor="middle">8</text>
+    <rect x="144" y="218" width="1184" height="526" fill="none" stroke="#cccac4" stroke-width="1" />
+    <text x="46" y="481.0" font-size="28" text-anchor="middle" transform="rotate(-90 46 481.0)">Starting-mass difference (kg)</text>
+    <text x="736.0" y="836" font-size="29" text-anchor="middle">Extra retained mass: bipropellant − hydrazine (kg)</text>
+    <line x1="676.797042889746" x2="676.797042889746" y1="504.9090909090909" y2="744" stroke="#405362" stroke-width="1.5" stroke-dasharray="6 7" />
+    <path d="M 178.8235,692.3808 L 185.7882,689.7588 L 192.7529,687.1368 L 199.7176,684.5148 L 206.6824,681.8928 L 213.6471,679.2708 L 220.6118,676.6488 L 227.5765,674.0268 L 234.5412,671.4048 L 241.5059,668.7828 L 248.4706,666.1608 L 255.4353,663.5388 L 262.4000,660.9168 L 269.3647,658.2948 L 276.3294,655.6728 L 283.2941,653.0508 L 290.2588,650.4288 L 297.2235,647.8068 L 304.1882,645.1848 L 311.1529,642.5629 L 318.1176,639.9409 L 325.0824,637.3189 L 332.0471,634.6969 L 339.0118,632.0749 L 345.9765,629.4529 L 352.9412,626.8309 L 359.9059,624.2089 L 366.8706,621.5869 L 373.8353,618.9649 L 380.8000,616.3429 L 387.7647,613.7209 L 394.7294,611.0989 L 401.6941,608.4769 L 408.6588,605.8549 L 415.6235,603.2329 L 422.5882,600.6109 L 429.5529,597.9889 L 436.5176,595.3669 L 443.4824,592.7449 L 450.4471,590.1229 L 457.4118,587.5009 L 464.3765,584.8789 L 471.3412,582.2569 L 478.3059,579.6349 L 485.2706,577.0129 L 492.2353,574.3909 L 499.2000,571.7689 L 506.1647,569.1469 L 513.1294,566.5249 L 520.0941,563.9029 L 527.0588,561.2809 L 534.0235,558.6589 L 540.9882,556.0369 L 547.9529,553.4149 L 554.9176,550.7929 L 561.8824,548.1709 L 568.8471,545.5489 L 575.8118,542.9269 L 582.7765,540.3049 L 589.7412,537.6829 L 596.7059,535.0609 L 603.6706,532.4390 L 610.6353,529.8170 L 617.6000,527.1950 L 624.5647,524.5730 L 631.5294,521.9510 L 638.4941,519.3290 L 645.4588,516.7070 L 652.4235,514.0850 L 659.3882,511.4630 L 666.3529,508.8410 L 673.3176,506.2190 L 680.2824,503.5970 L 687.2471,500.9750 L 694.2118,498.3530 L 701.1765,495.7310 L 708.1412,493.1090 L 715.1059,490.4870 L 722.0706,487.8650 L 729.0353,485.2430 L 736.0000,482.6210 L 742.9647,479.9990 L 749.9294,477.3770 L 756.8941,474.7550 L 763.8588,472.1330 L 770.8235,469.5110 L 777.7882,466.8890 L 784.7529,464.2670 L 791.7176,461.6450 L 798.6824,459.0230 L 805.6471,456.4010 L 812.6118,453.7790 L 819.5765,451.1570 L 826.5412,448.5350 L 833.5059,445.9130 L 840.4706,443.2910 L 847.4353,440.6690 L 854.4000,438.0470 L 861.3647,435.4250 L 868.3294,432.8030 L 875.2941,430.1810 L 882.2588,427.5590 L 889.2235,424.9371 L 896.1882,422.3151 L 903.1529,419.6931 L 910.1176,417.0711 L 917.0824,414.4491 L 924.0471,411.8271 L 931.0118,409.2051 L 937.9765,406.5831 L 944.9412,403.9611 L 951.9059,401.3391 L 958.8706,398.7171 L 965.8353,396.0951 L 972.8000,393.4731 L 979.7647,390.8511 L 986.7294,388.2291 L 993.6941,385.6071 L 1000.6588,382.9851 L 1007.6235,380.3631 L 1014.5882,377.7411 L 1021.5529,375.1191 L 1028.5176,372.4971 L 1035.4824,369.8751 L 1042.4471,367.2531 L 1049.4118,364.6311 L 1056.3765,362.0091 L 1063.3412,359.3871 L 1070.3059,356.7651 L 1077.2706,354.1431 L 1084.2353,351.5211 L 1091.2000,348.8991 L 1098.1647,346.2771 L 1105.1294,343.6551 L 1112.0941,341.0331 L 1119.0588,338.4111 L 1126.0235,335.7891 L 1132.9882,333.1671 L 1139.9529,330.5451 L 1146.9176,327.9231 L 1153.8824,325.3011 L 1160.8471,322.6791 L 1167.8118,320.0571 L 1174.7765,317.4352 L 1181.7412,314.8132 L 1188.7059,312.1912 L 1195.6706,309.5692 L 1202.6353,306.9472 L 1209.6000,304.3252 L 1216.5647,301.7032 L 1223.5294,299.0812 L 1230.4941,296.4592 L 1237.4588,293.8372 L 1244.4235,291.2152 L 1251.3882,288.5932 L 1258.3529,285.9712 L 1265.3176,283.3492 L 1272.2824,280.7272 L 1279.2471,278.1052 L 1286.2118,275.4832 L 1293.1765,272.8612" fill="none" stroke="#285b75" stroke-width="4.5" stroke-linecap="round" />
+    <circle cx="676.797042889746" cy="504.9090909090909" r="9" fill="#285b75" />
+    <text x="646.797" y="408.909" font-size="32" text-anchor="end" font-weight="500">3.57 kg added</text>
+    <text x="646.797" y="445.909" font-size="26" text-anchor="end">Equal starting mass</text>
+    <line x1="655.797042889746" y1="461.9090909090909" x2="670.797042889746" y2="491.9090909090909" stroke="#405362" stroke-width="1.5" />
+    <text x="875.294" y="265.818" font-size="27" text-anchor="start">Bipropellant starts heavier</text>
+    <text x="234.541" y="538.382" font-size="27" text-anchor="start">Bipropellant starts lighter</text>
+    <circle cx="178.8235294117647" cy="692.3808048760276" r="6" fill="#285b75" />
+    <text x="202.824" y="727.381" font-size="24" text-anchor="start">-3.92 kg</text>
+    <text x="64" y="890" font-size="25" text-anchor="start">Retained mass includes dry hardware, reserves and residuals.</text>
+    <text x="64" y="928" font-size="24" text-anchor="start" fill="#405362">Δv = 262.389 m/s. Illustrative inputs—not a sized installation or Aeterna result.</text>
+    <text x="64" y="965" font-size="24" text-anchor="start" fill="#405362">Source: Article 4 reference calculation, using the ideal rocket equation.</text>
+  </g>
+</svg>

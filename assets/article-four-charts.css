@@ -1,0 +1,82 @@
+/* Plot-only styles; the article owns figure layout, captions and source links. */
+#hall-power-mass-chart,
+#mass-break-even-chart {
+  width: 100%;
+  min-width: 0;
+  color: #08121c;
+  background: #f3f0e8;
+}
+
+#hall-power-mass-chart > img,
+#mass-break-even-chart > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+#hall-power-mass-chart > svg,
+#mass-break-even-chart > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  fill: #08121c;
+}
+
+[data-article-four-chart] .chart-label,
+[data-article-four-chart] .chart-axis-label {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+[data-article-four-chart] .chart-axis-label,
+[data-article-four-chart] .chart-emphasis {
+  font-weight: 600;
+}
+
+[data-article-four-chart] .chart-secondary { fill: #405362; }
+[data-article-four-chart] .chart-grid { stroke: #cccac4; stroke-width: 1; }
+[data-article-four-chart] .chart-axis { stroke: #a5a9a8; stroke-width: 1; }
+[data-article-four-chart] .chart-zero { stroke: #08121c; stroke-width: 1.5; }
+
+[data-article-four-chart] .chart-common-mass {
+  stroke: #08121c;
+  stroke-width: 1.4;
+  stroke-dasharray: 6 5;
+}
+
+[data-article-four-chart] .chart-curve {
+  fill: none;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+[data-article-four-chart] .chart-long { stroke: #285b75; }
+[data-article-four-chart] .chart-short { stroke: #765e48; stroke-dasharray: 7 5; }
+[data-article-four-chart] .chart-marker.chart-long { fill: #285b75; stroke: none; }
+[data-article-four-chart] .chart-marker.chart-short { fill: #765e48; stroke: none; }
+
+[data-article-four-chart] .chart-guide {
+  stroke: #405362;
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+}
+
+[data-article-four-chart] .chart-leader { stroke: #405362; stroke-width: 1; }
+
+[data-article-four-chart] .chart-annotation {
+  paint-order: stroke;
+  stroke: #f3f0e8;
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 480px) {
+  [data-article-four-chart] .chart-label,
+  [data-article-four-chart] .chart-axis-label {
+    font-size: 12px;
+  }
+}

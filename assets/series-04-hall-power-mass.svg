@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1040" viewBox="0 0 1400 1040" role="img" aria-labelledby="hall-title hall-description">
+  <title id="hall-title">Maximum mass after relocation</title>
+  <desc id="hall-description">Illustrative Hall propulsion resource screen for a circular coplanar 500 to 1,000 kilometre relocation. Assumed specific impulse is 1,400 seconds and efficiency is 30 percent at the complete propulsion electrical input. Continuous firing and zero other time overhead are optimistic bounds, not established operation. The 30-day maximum mass after relocation rises from 85.49 kilograms at 200 watts to 427.47 kilograms at 1,000 watts. The 48-hour maximum rises from 5.70 to 28.50 kilograms over those power points, below the 100 kilogram common-hardware mass alone. The vertical axis includes all spacecraft mass remaining after relocation: the common bus and payload, propulsion and additional power/thermal hardware, and unspent consumables. It is not payload alone or dry mass only. Specific impulse and efficiency are fixed; thrust increases with actual operating input power. These hypothetical, separately sized operating points are not one device's throttle range. A ceiling above 100 kilograms does not prove a feasible spacecraft or mission.</desc>
+  <metadata>{"assumed_complete_input_efficiency": 0.3, "assumed_operating_availability": 1.0, "assumed_other_overhead_days": 0.0, "assumed_total_propellant_isp_s": 1400.0, "checkpoints_mass_ceiling_kg_by_days_then_watts": {"2.0": {"1000": 28.49767595550132, "200": 5.6995351911002645}, "30.0": {"1000": 427.4651393325198, "200": 85.49302786650398}}, "common_hardware_mass_only_kg": 100.0, "complete_input_power_range_w": [100, 1000], "deadlines_days": [30.0, 2.0], "delta_v_m_s": 262.4695436105533, "fixed_and_variable_parameters": "Specific impulse and efficiency are held fixed. Thrust increases with actual operating input power.", "mass_definition": "All spacecraft mass remaining after relocation: common bus and payload, propulsion/power/thermal hardware, and unspent consumables. Not payload alone or dry mass only.", "model": "series_04_reference_cases.py", "status": "Published illustrative calculation; optimistic resource screen, not mission feasibility"}</metadata>
+  <rect x="0" y="0" width="1400" height="1040" fill="#f3f0e8" />
+  <g font-family="Arial, Helvetica, sans-serif" fill="#08121c">
+    <text x="64" y="66" font-size="42" text-anchor="start" font-weight="500">Maximum mass after relocation</text>
+    <text x="64" y="111" font-size="27" text-anchor="start" fill="#405362">Hall reference  ·  500 km → 1,000 km relocation</text>
+    <text x="64" y="156" font-size="25" text-anchor="start">Assumed Isp 1,400 s  ·  30% efficiency at complete propulsion input</text>
+    <text x="64" y="191" font-size="25" text-anchor="start" fill="#405362">Continuous firing; zero other time overhead (optimistic bound)</text>
+    <line x1="148" x2="1328" y1="763.4901960784314" y2="763.4901960784314" stroke="#cccac4" stroke-width="1" />
+    <text x="128" y="772.49" font-size="26" text-anchor="end">0</text>
+    <line x1="148" x2="1328" y1="658.3921568627451" y2="658.3921568627451" stroke="#cccac4" stroke-width="1" />
+    <text x="128" y="667.392" font-size="26" text-anchor="end">100</text>
+    <line x1="148" x2="1328" y1="553.2941176470588" y2="553.2941176470588" stroke="#cccac4" stroke-width="1" />
+    <text x="128" y="562.294" font-size="26" text-anchor="end">200</text>
+    <line x1="148" x2="1328" y1="448.1960784313726" y2="448.1960784313726" stroke="#cccac4" stroke-width="1" />
+    <text x="128" y="457.196" font-size="26" text-anchor="end">300</text>
+    <line x1="148" x2="1328" y1="343.09803921568624" y2="343.09803921568624" stroke="#cccac4" stroke-width="1" />
+    <text x="128" y="352.098" font-size="26" text-anchor="end">400</text>
+    <line x1="148" x2="1328" y1="238.0" y2="238.0" stroke="#cccac4" stroke-width="1" />
+    <text x="128" y="247.0" font-size="26" text-anchor="end">500</text>
+    <line x1="148.0" x2="148.0" y1="238" y2="774" stroke="#cccac4" stroke-width="1" />
+    <text x="148.0" y="816" font-size="26" text-anchor="middle">0</text>
+    <line x1="374.9230769230769" x2="374.9230769230769" y1="238" y2="774" stroke="#cccac4" stroke-width="1" />
+    <text x="374.923" y="816" font-size="26" text-anchor="middle">200</text>
+    <line x1="601.8461538461538" x2="601.8461538461538" y1="238" y2="774" stroke="#cccac4" stroke-width="1" />
+    <text x="601.846" y="816" font-size="26" text-anchor="middle">400</text>
+    <line x1="828.7692307692307" x2="828.7692307692307" y1="238" y2="774" stroke="#cccac4" stroke-width="1" />
+    <text x="828.769" y="816" font-size="26" text-anchor="middle">600</text>
+    <line x1="1055.6923076923076" x2="1055.6923076923076" y1="238" y2="774" stroke="#cccac4" stroke-width="1" />
+    <text x="1055.692" y="816" font-size="26" text-anchor="middle">800</text>
+    <line x1="1282.6153846153848" x2="1282.6153846153848" y1="238" y2="774" stroke="#cccac4" stroke-width="1" />
+    <text x="1282.615" y="816" font-size="26" text-anchor="middle">1,000</text>
+    <rect x="148" y="238" width="1180" height="536" fill="none" stroke="#cccac4" stroke-width="1" />
+    <text x="46" y="506.0" font-size="28" text-anchor="middle" transform="rotate(-90 46 506.0)">Maximum mass after relocation (kg)</text>
+    <text x="738.0" y="868" font-size="29" text-anchor="middle">Complete propulsion electrical input (W)</text>
+    <line x1="148" x2="1328" y1="658.3921568627451" y2="658.3921568627451" stroke="#08121c" stroke-width="2" stroke-dasharray="9 7" />
+    <text x="669.923" y="644.392" font-size="26" text-anchor="start">100 kg common hardware alone</text>
+    <path d="M 261.4615,718.5644 L 272.8077,714.0719 L 284.1538,709.5793 L 295.5000,705.0867 L 306.8462,700.5941 L 318.1923,696.1016 L 329.5385,691.6090 L 340.8846,687.1164 L 352.2308,682.6238 L 363.5769,678.1313 L 374.9231,673.6387 L 386.2692,669.1461 L 397.6154,664.6536 L 408.9615,660.1610 L 420.3077,655.6684 L 431.6538,651.1758 L 443.0000,646.6833 L 454.3462,642.1907 L 465.6923,637.6981 L 477.0385,633.2055 L 488.3846,628.7130 L 499.7308,624.2204 L 511.0769,619.7278 L 522.4231,615.2352 L 533.7692,610.7427 L 545.1154,606.2501 L 556.4615,601.7575 L 567.8077,597.2649 L 579.1538,592.7724 L 590.5000,588.2798 L 601.8462,583.7872 L 613.1923,579.2946 L 624.5385,574.8021 L 635.8846,570.3095 L 647.2308,565.8169 L 658.5769,561.3243 L 669.9231,556.8318 L 681.2692,552.3392 L 692.6154,547.8466 L 703.9615,543.3540 L 715.3077,538.8615 L 726.6538,534.3689 L 738.0000,529.8763 L 749.3462,525.3837 L 760.6923,520.8912 L 772.0385,516.3986 L 783.3846,511.9060 L 794.7308,507.4134 L 806.0769,502.9209 L 817.4231,498.4283 L 828.7692,493.9357 L 840.1154,489.4431 L 851.4615,484.9506 L 862.8077,480.4580 L 874.1538,475.9654 L 885.5000,471.4728 L 896.8462,466.9803 L 908.1923,462.4877 L 919.5385,457.9951 L 930.8846,453.5025 L 942.2308,449.0100 L 953.5769,444.5174 L 964.9231,440.0248 L 976.2692,435.5322 L 987.6154,431.0397 L 998.9615,426.5471 L 1010.3077,422.0545 L 1021.6538,417.5619 L 1033.0000,413.0694 L 1044.3462,408.5768 L 1055.6923,404.0842 L 1067.0385,399.5916 L 1078.3846,395.0991 L 1089.7308,390.6065 L 1101.0769,386.1139 L 1112.4231,381.6213 L 1123.7692,377.1288 L 1135.1154,372.6362 L 1146.4615,368.1436 L 1157.8077,363.6510 L 1169.1538,359.1585 L 1180.5000,354.6659 L 1191.8462,350.1733 L 1203.1923,345.6807 L 1214.5385,341.1882 L 1225.8846,336.6956 L 1237.2308,332.2030 L 1248.5769,327.7104 L 1259.9231,323.2179 L 1271.2692,318.7253 L 1282.6154,314.2327" fill="none" stroke="#285b75" stroke-width="4.5" stroke-linecap="round" />
+    <circle cx="374.9230769230769" cy="673.6387001246154" r="7" fill="#285b75" />
+    <circle cx="1282.6153846153848" cy="314.2327163093517" r="7" fill="#285b75" />
+    <path d="M 261.4615,760.4951 L 272.8077,760.1956 L 284.1538,759.8961 L 295.5000,759.5966 L 306.8462,759.2971 L 318.1923,758.9976 L 329.5385,758.6981 L 340.8846,758.3986 L 352.2308,758.0991 L 363.5769,757.7996 L 374.9231,757.5001 L 386.2692,757.2006 L 397.6154,756.9011 L 408.9615,756.6016 L 420.3077,756.3021 L 431.6538,756.0026 L 443.0000,755.7031 L 454.3462,755.4036 L 465.6923,755.1041 L 477.0385,754.8046 L 488.3846,754.5050 L 499.7308,754.2055 L 511.0769,753.9060 L 522.4231,753.6065 L 533.7692,753.3070 L 545.1154,753.0075 L 556.4615,752.7080 L 567.8077,752.4085 L 579.1538,752.1090 L 590.5000,751.8095 L 601.8462,751.5100 L 613.1923,751.2105 L 624.5385,750.9110 L 635.8846,750.6115 L 647.2308,750.3120 L 658.5769,750.0125 L 669.9231,749.7130 L 681.2692,749.4135 L 692.6154,749.1140 L 703.9615,748.8145 L 715.3077,748.5149 L 726.6538,748.2154 L 738.0000,747.9159 L 749.3462,747.6164 L 760.6923,747.3169 L 772.0385,747.0174 L 783.3846,746.7179 L 794.7308,746.4184 L 806.0769,746.1189 L 817.4231,745.8194 L 828.7692,745.5199 L 840.1154,745.2204 L 851.4615,744.9209 L 862.8077,744.6214 L 874.1538,744.3219 L 885.5000,744.0224 L 896.8462,743.7229 L 908.1923,743.4234 L 919.5385,743.1239 L 930.8846,742.8244 L 942.2308,742.5248 L 953.5769,742.2253 L 964.9231,741.9258 L 976.2692,741.6263 L 987.6154,741.3268 L 998.9615,741.0273 L 1010.3077,740.7278 L 1021.6538,740.4283 L 1033.0000,740.1288 L 1044.3462,739.8293 L 1055.6923,739.5298 L 1067.0385,739.2303 L 1078.3846,738.9308 L 1089.7308,738.6313 L 1101.0769,738.3318 L 1112.4231,738.0323 L 1123.7692,737.7328 L 1135.1154,737.4333 L 1146.4615,737.1338 L 1157.8077,736.8343 L 1169.1538,736.5347 L 1180.5000,736.2352 L 1191.8462,735.9357 L 1203.1923,735.6362 L 1214.5385,735.3367 L 1225.8846,735.0372 L 1237.2308,734.7377 L 1248.5769,734.4382 L 1259.9231,734.1387 L 1271.2692,733.8392 L 1282.6154,733.5397" fill="none" stroke="#765e48" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="12 7" />
+    <rect x="368.9230769230769" y="751.500096348177" width="12" height="12" fill="#765e48" />
+    <rect x="1276.6153846153848" y="727.5396974271594" width="12" height="12" fill="#765e48" />
+    <text x="885.5" y="364.118" font-size="29" text-anchor="start">30-day ceiling</text>
+    <text x="1264.615" y="294.233" font-size="28" text-anchor="end">427.5 kg</text>
+    <text x="392.923" y="706.639" font-size="25" text-anchor="start">85.5 kg</text>
+    <text x="851.462" y="698.329" font-size="27" text-anchor="start">48-hour ceiling</text>
+    <text x="392.923" y="739.5" font-size="24" text-anchor="start">5.7 kg</text>
+    <text x="1264.615" y="713.54" font-size="25" text-anchor="end">28.5 kg</text>
+    <text x="64" y="916" font-size="25" text-anchor="start">All spacecraft mass remaining: bus, payload, added hardware and unspent consumables.</text>
+    <text x="64" y="954" font-size="24" text-anchor="start" fill="#405362">Optimistic resource screen—not mission feasibility or one device’s throttle curve.</text>
+    <text x="64" y="992" font-size="24" text-anchor="start" fill="#405362">Source: Article 4 reference calculation (Δv = 262.470 m/s).</text>
+  </g>
+</svg>

@@ -36,16 +36,27 @@ const server = http.createServer(async (request, response) => {
     const context = await browser.newContext();
     const page = await context.newPage();
     const errors = [];
+    const articleFourExternal = [];
+    let checkingArticleFour = false;
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
+    page.on('request', request => {
+      if (checkingArticleFour && /^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleFourExternal.push(request.url());
+    });
     const articleRoute = '/articles/why-spacecraft-need-maneuverability.html';
     const articleTwoRoute = '/articles/why-orbits-change.html';
     const articleThreeRoute = '/articles/from-mission-objectives-to-maneuver-requirements.html';
-    const articleRoutes = [articleRoute, articleTwoRoute, articleThreeRoute];
+    const articleFourRoute = '/articles/matching-propulsion-to-the-mission.html';
+    const articleRoutes = [articleRoute, articleTwoRoute, articleThreeRoute, articleFourRoute];
+    const chartCases = [
+      { figure: '#hall-power-mass-figure', root: '#hall-power-mass-chart', name: 'hall-power-mass' },
+      { figure: '#mass-break-even-figure', root: '#mass-break-even-chart', name: 'mass-break-even' },
+    ];
     const routes = ['/', '/propulsion.html', '/fluid-controls.html', '/articles/', ...articleRoutes];
     for (const width of [320, 768, 900, 1280]) {
       await page.setViewportSize({ width, height: 900 });
       for (const route of routes) {
+        checkingArticleFour = route === articleFourRoute;
         const response = await page.goto(origin + route);
         assert.equal(response.status(), 200, `Unexpected status: ${route}`);
         assert(!/\b(?:noindex|none)\b/i.test(response.headers()['x-robots-tag'] || ''), `Noindex response header: ${route}`);
@@ -93,8 +104,8 @@ const server = http.createServer(async (request, response) => {
             assert(await link.isVisible());
           }
         }
-        if (route === articleTwoRoute || route === articleThreeRoute) {
-          assert.equal(await page.locator('.equation math').count(), route === articleTwoRoute ? 5 : 2);
+        if (route === articleTwoRoute || route === articleThreeRoute || route === articleFourRoute) {
+          assert.equal(await page.locator('.equation math').count(), route === articleTwoRoute ? 5 : route === articleThreeRoute ? 2 : 3);
           assert(await page.locator('.equation math').evaluateAll(equations => equations.every(equation =>
             equation.namespaceURI === 'http://www.w3.org/1998/Math/MathML' && equation.getAttribute('aria-label') && equation.getBoundingClientRect().height > 0)), 'Native equations did not render');
         }
@@ -118,6 +129,88 @@ const server = http.createServer(async (request, response) => {
           }).map(element => element.tagName + '.' + element.className));
           assert.deepEqual(clipped, [], `Article 3 content clipping at ${width}`);
         }
+        if (route === articleFourRoute) {
+          assert.equal(await page.locator('.article-section').count(), 6);
+          assert.equal(await page.locator('table.article-table').count(), 6);
+          assert.equal(await page.locator('figure.comparison-figure').count(), 2);
+          assert.equal(await page.locator('math').count(), 10);
+          assert(await page.locator('math').evaluateAll(equations => equations.every(equation =>
+            equation.namespaceURI === 'http://www.w3.org/1998/Math/MathML' && equation.getAttribute('aria-label')?.trim() && equation.getBoundingClientRect().height > 0)), 'Article 4 math needs accessible native rendering');
+          assert.equal(await page.locator('.draft-notice').count(), 0, 'Public Article 4 retains draft notice');
+          assert(!/Private preview|Not published|Internal editorial notes|\/mnt\/|\/home\/|C:\\Users/i.test(await page.locator('body').innerText()), 'Private material visible in Article 4');
+          const metadata = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts => scripts.map(script => JSON.parse(script.textContent)).filter(item => item['@type'] === 'Article'));
+          assert.equal(metadata.length, 1, 'Article 4 has one Article schema');
+          assert.equal(metadata[0].mainEntityOfPage, canonical);
+          assert.equal(metadata[0].headline, 'Matching Propulsion to the Mission');
+          assert.equal(await page.locator('meta[property="article:published_time"]').getAttribute('content'), metadata[0].datePublished);
+          assert.equal(await page.locator(`time[datetime="${metadata[0].datePublished}"]`).count(), 1, 'Visible publication date agrees with schema');
+          const anchors = await page.evaluate(() => {
+            const ids = [...document.querySelectorAll('[id]')].map(node => node.id);
+            const broken = [...document.querySelectorAll('a[href^="#"]')].filter(node => !document.getElementById(decodeURIComponent(node.getAttribute('href').slice(1)))).map(node => node.getAttribute('href'));
+            return { count: ids.length, unique: new Set(ids).size, broken };
+          });
+          assert.equal(anchors.count, anchors.unique, 'Article 4 IDs are unique');
+          assert.deepEqual(anchors.broken, [], 'Article 4 fragment links resolve');
+          for (const item of chartCases) {
+            await page.waitForSelector(`${item.root}[data-chart-ready="true"][data-model-checks="passed"] svg`);
+            const chart = page.locator(`${item.root} svg`);
+            assert.equal(await chart.getAttribute('role'), 'img');
+            assert.equal(await chart.getAttribute('data-model-checks'), 'passed');
+            assert((await chart.locator('title').textContent()).trim());
+            assert((await chart.locator('desc').textContent()).trim());
+            const labels = await chart.evaluate(svg => {
+              const bounds = svg.getBoundingClientRect();
+              const text = [...svg.querySelectorAll('text')].filter(node => node.textContent.trim());
+              return {
+                tiny: text.filter(node => {
+                  const matrix = node.getScreenCTM();
+                  const scale = matrix ? Math.hypot(matrix.c, matrix.d) : 1;
+                  return parseFloat(getComputedStyle(node).fontSize) * scale < 11.9;
+                }).map(node => node.textContent),
+                outside: text.filter(node => {
+                  const box = node.getBoundingClientRect();
+                  return box.left < bounds.left - 1 || box.right > bounds.right + 1 || box.top < bounds.top - 1 || box.bottom > bounds.bottom + 1;
+                }).map(node => node.textContent),
+              };
+            });
+            assert.deepEqual(labels.tiny, [], `${item.name} labels below 12 px at ${width}`);
+            assert.deepEqual(labels.outside, [], `${item.name} labels outside chart at ${width}`);
+          }
+          const clipped = await page.locator('.article-body math, .article-table, figure, h1, h2, h3').evaluateAll(elements => elements.filter(element => {
+            const bounds = element.getBoundingClientRect();
+            return bounds.left < -0.5 || bounds.right > innerWidth + 0.5 || element.scrollWidth > element.clientWidth + 2;
+          }).map(element => element.tagName + '#' + element.id));
+          assert.deepEqual(clipped, [], `Article 4 content clipping at ${width}`);
+          // Independently recalculate the two plotted reference cases, rather than only trusting the chart's self-check flag.
+          const audits = await page.locator('#hall-power-mass-chart, #mass-break-even-chart').evaluateAll(roots => Object.fromEntries(roots.map(root => [root.id, JSON.parse(root.dataset.chartAudit)])));
+          const hall = audits['hall-power-mass-chart'];
+          const mass = audits['mass-break-even-chart'];
+          const close = (actual, expected, label) => assert(Math.abs(actual - expected) < 1e-8, `${label}: ${actual} != ${expected}`);
+          const exhaust = 9.80665 * 1400;
+          close(hall.delta_v_m_s, 262.4695436105533, 'Hall reference delta-v');
+          close(hall.assumed_total_propellant_isp_s, 1400, 'Hall Isp boundary');
+          close(hall.assumed_complete_input_efficiency, 0.30, 'Hall total-input efficiency');
+          close(hall.assumed_operating_availability, 1, 'Continuous-firing screen');
+          close(hall.assumed_other_overhead_days, 0, 'Optimistic readiness overhead');
+          close(hall.common_hardware_mass_only_kg, 100, 'Common bus excludes propulsion installation');
+          const points = await page.locator('#hall-power-mass-chart .chart-marker').evaluateAll(markers => markers.map(node => ({ power: Number(node.dataset.powerW), days: Number(node.dataset.deadlineDays), mass: Number(node.dataset.massKg) })));
+          assert.equal(points.length, 4);
+          for (const point of points) {
+            const expected = (2 * 0.30 * point.power / exhaust) * point.days * 86400 / (exhaust * Math.expm1(262.4695436105533 / exhaust));
+            close(point.mass, expected, 'Hall marker mass ceiling');
+            close(hall.checkpoints_mass_ceiling_kg_by_days_then_watts[point.days.toFixed(1)][String(point.power)], expected, 'Hall audit checkpoint');
+          }
+          close(mass.hydrazine_retained_mass_kg, 120, 'Assumed hydrazine retained mass');
+          close(mass.hydrazine_isp_s, 220, 'Hydrazine reference Isp');
+          close(mass.bipropellant_isp_s, 290, 'Bipropellant reference Isp');
+          const extra = 120 * Math.expm1(262.3887989371143 / 9.80665 * (1 / 220 - 1 / 290));
+          const initialMono = 120 * Math.exp(262.3887989371143 / (9.80665 * 220));
+          close(mass.break_even_extra_retained_kg, extra, 'Extra retained-mass break-even');
+          close(mass.equal_initial_mass_kg, initialMono, 'Equal starting mass');
+          close(Number(await page.locator('[data-break-even-kg]').getAttribute('data-break-even-kg')), extra, 'Break-even marker');
+          close(Number(await page.locator('[data-break-even-kg]').getAttribute('data-starting-mass-difference-kg')), 0, 'Break-even zero crossing');
+          assert(mass.initial_mass_difference_at_0_kg < 0 && mass.initial_mass_difference_at_8_kg > 0, 'Break-even curve has correct sign');
+        }
         const iconUrls = await page.locator('link[rel="icon"]').evaluateAll(icons => icons.map(icon => icon.href));
         assert.equal(iconUrls.length, 2);
         for (const iconUrl of iconUrls) {
@@ -133,10 +226,14 @@ const server = http.createServer(async (request, response) => {
           const name = route.replaceAll('/', '_').replace('.html', '') || 'home';
           await page.screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `${name}-${width}.png`), fullPage: true });
           if (route === articleRoute) await page.locator('#phasing-illustration').screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `phasing-${width}.png`) });
+          if (route === articleFourRoute) {
+            for (const item of chartCases) await page.locator(item.figure).screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `article-four-${item.name}-${width}.png`) });
+          }
         }
       }
     }
     // Keep the legacy phasing checks independent of responsive route order.
+    checkingArticleFour = false;
     await page.goto(origin + articleRoute);
     assert.equal(await page.locator('#phasing-lag').innerText(), '10.01');
     await page.locator('#phasing-time').fill('5');
@@ -300,13 +397,46 @@ const server = http.createServer(async (request, response) => {
     assert(await fallback.locator('#apsis-burn-figure .figure-fallback').isVisible());
     assert.equal(await fallback.locator('#coast-time, #coast-play').count(), 0);
     assert(await fallback.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No-JS Article 3 overflow');
+    fallback.on('pageerror', error => errors.push(error.message));
+    fallback.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
+    fallback.on('request', request => { if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleFourExternal.push(request.url()); });
+    await fallback.goto(origin + articleFourRoute);
+    assert.equal(await fallback.locator('.article-section').count(), 6);
+    assert.equal(await fallback.locator('.equation math').count(), 3);
+    assert.equal(await fallback.locator('math').count(), 10);
+    assert.equal(await fallback.locator('.draft-notice').count(), 0);
+    for (const item of chartCases) {
+      const picture = fallback.locator(`${item.root} img.figure-fallback`);
+      assert(await picture.isVisible(), 'No-JS Article 4 PNG fallback visible');
+      await picture.scrollIntoViewIfNeeded();
+      await picture.evaluate(image => image.decode());
+      assert(await picture.evaluate(image => image.naturalWidth > 0 && image.getAttribute('alt')?.trim()), 'No-JS Article 4 image decoded and described');
+      const imageUrl = new URL(await picture.getAttribute('src'), origin);
+      assert.equal(imageUrl.origin, origin, 'PNG fallback must be local');
+      const imageResponse = await fallback.request.get(imageUrl.href);
+      assert.equal(imageResponse.status(), 200);
+      assert.match(imageResponse.headers()['content-type'], /^image\/png/);
+      const png = await imageResponse.body();
+      assert(png.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), 'PNG fallback signature');
+      const fullSize = fallback.locator(`${item.figure} .figure-full-size a`);
+      assert(await fullSize.isVisible(), 'Full-size figure link works without JavaScript');
+      const fullUrl = new URL(await fullSize.getAttribute('href'), origin);
+      assert.equal(fullUrl.origin, origin, 'Full-size SVG must be local');
+      const svgResponse = await fallback.request.get(fullUrl.href);
+      assert.equal(svgResponse.status(), 200);
+      assert.match(svgResponse.headers()['content-type'], /^image\/svg\+xml/);
+      assert.match(await svgResponse.text(), /<svg\b/);
+      if (process.env.AETERNA_SCREENSHOT_DIR) await fallback.locator(item.figure).screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `article-four-${item.name}-no-js-320.png`) });
+    }
+    assert(await fallback.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No-JS Article 4 overflow');
     await noJs.close();
     await page.goto(origin + '/');
     await page.getByRole('link', { name: 'Propulsion', exact: true }).click();
     assert.equal(new URL(page.url()).pathname, '/propulsion.html');
     assert.equal(new URL(page.url()).hash, '');
     assert.deepEqual(errors, []);
-    console.log('PASS: 28 responsive page checks, metadata, three article index cards, homepage artwork and portrait, navigation, favicon rendering, keyboard entry, phasing, seven native display equations, five orbital figures, precession quarters, shared GEO states, coast controls and invariants, apsis physics, reduced motion, no-JS fallbacks, and no browser errors');
+    assert.deepEqual(articleFourExternal, [], 'Article 4 made external network requests');
+    console.log('PASS: 32 responsive page checks, metadata, four article index cards, homepage artwork and portrait, navigation, favicon rendering, keyboard entry, phasing, ten native display equations, five orbital figures, two responsive resource charts with independent numerical checks, precession quarters, shared GEO states, coast controls and invariants, apsis physics, reduced motion, no-JS fallbacks, no Article 4 external requests, and no browser errors');
   } finally {
     if (browser) await browser.close();
     if (server.listening) await new Promise(resolve => server.close(resolve));

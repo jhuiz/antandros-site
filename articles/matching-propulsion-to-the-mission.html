@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matching Propulsion to the Mission | Aeterna Sidera</title>
+  <meta name="description" content="Comparing propellant, powered time and installation mass for a common orbital relocation, with explicit assumptions and original illustrative calculations." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#07131f" />
+  <meta name="author" content="Jesus Daniel Huizar" />
+  <meta property="og:title" content="Matching Propulsion to the Mission | Aeterna Sidera" />
+  <meta property="og:description" content="Comparing propellant, powered time and installation mass for a common orbital relocation, with explicit assumptions and original illustrative calculations." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Aeterna Sidera Inc." />
+  <meta property="og:url" content="https://aeternasidera.com/articles/matching-propulsion-to-the-mission.html" />
+  <meta property="og:image" content="https://aeternasidera.com/assets/og-card.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development" />
+  <meta property="article:published_time" content="2026-09-28" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Matching Propulsion to the Mission | Aeterna Sidera" />
+  <meta name="twitter:description" content="Comparing propellant, powered time and installation mass for a common orbital relocation, with explicit assumptions and original illustrative calculations." />
+  <meta name="twitter:image" content="https://aeternasidera.com/assets/og-card.png" />
+  <meta name="twitter:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development" />
+  <link rel="canonical" href="https://aeternasidera.com/articles/matching-propulsion-to-the-mission.html" />
+  <link rel="icon" href="/assets/favicon.svg?v=aeterna-mark-1" type="image/svg+xml" />
+  <link rel="icon" href="/assets/favicon.png?v=aeterna-mark-1" type="image/png" sizes="256x256" />
+  <link rel="apple-touch-icon" href="/assets/favicon.png?v=aeterna-mark-1" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/assets/article-four.css" />
+  <link rel="stylesheet" href="/assets/article-four-charts.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Matching Propulsion to the Mission",
+  "description": "Comparing propellant, powered time and installation mass for a common orbital relocation, with explicit assumptions and original illustrative calculations.",
+  "datePublished": "2026-09-28",
+  "author": {
+    "@type": "Person",
+    "name": "Jesus Daniel Huizar"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Aeterna Sidera Inc.",
+    "url": "https://aeternasidera.com/"
+  },
+  "mainEntityOfPage": "https://aeternasidera.com/articles/matching-propulsion-to-the-mission.html",
+  "image": "https://aeternasidera.com/assets/og-card.png",
+  "inLanguage": "en"
+}</script>
+</head><body class="page-secondary article-four">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/propulsion.html">Propulsion</a>
+        <a href="/fluid-controls.html">Fluid controls</a>
+        <a href="/articles/" aria-current="true">Technical articles</a>
+        <a href="/#company">Company</a>
+        <a class="nav-contact" href="/#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+<main id="main"><article>
+<header class="hero page-hero"><div class="shell">
+<p class="eyebrow">Mission to hardware · Article 4</p>
+<h1>Matching propulsion to the mission.</h1>
+<p class="hero-lede">Comparing propellant, powered time and installation mass for a common orbital relocation.</p>
+<p class="article-meta">By Jesus Daniel Huizar · Founder, Aeterna Sidera</p>
+<p class="article-meta">Published <time datetime="2026-09-28">September 28, 2026</time></p>
+</div></header>
+<div class="shell article-body">
+<nav class="article-toc" aria-label="In this article"><p><strong>In this article</strong></p><ol><li><a href="#a-common-task-for-the-comparison">A common task for the comparison</a></li>
+<li><a href="#propellant-needed-for-the-relocation">Propellant needed for the relocation</a></li>
+<li><a href="#powered-time-and-the-readiness-deadline">Powered time and the readiness deadline</a></li>
+<li><a href="#when-propellant-savings-become-spacecraft-savings">When propellant savings become spacecraft savings</a></li>
+<li><a href="#choosing-for-the-operations-that-follow">Choosing for the operations that follow</a></li></ol>
+<a href="#calculation-and-reference-notes">Calculation and reference notes</a></nav>
+<section class="article-section" id="a-common-task-for-the-comparison" aria-labelledby="a-common-task-for-the-comparison-title"><h2 id="a-common-task-for-the-comparison-title">1. A common task for the comparison</h2>
+<p>Consider a spacecraft relocating from a 500 km circular Earth orbit to a 1,000 km circular orbit in the same plane. Its payload and common spacecraft hardware weigh 100 kg. Propulsion equipment, propellant and any additional power or thermal hardware must be added separately.</p>
+<p>We examine three operating constraints:</p>
+<table class="article-table"><caption class="visually-hidden">Reference mission constraints</caption>
+<thead>
+<tr>
+<th scope="col">Case</th>
+<th scope="col" align="right">Readiness deadline</th>
+<th scope="col" align="right">Propulsion electrical allocation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Baseline</td>
+<td align="right">30 days</td>
+<td align="right">200 W</td>
+</tr>
+<tr>
+<td>Shorter deadline</td>
+<td align="right">48 hours</td>
+<td align="right">200 W</td>
+</tr>
+<tr>
+<td>Greater available power</td>
+<td align="right">30 days</td>
+<td align="right">1,000 W</td>
+</tr>
+</tbody></table>
+<p>The destination remains unchanged. What changes is the time and electrical power available to reach it. The power allocation is measured at the complete propulsion-system input during permitted operation, not at the solar-array output or thruster discharge. The deadline includes the preparation needed before useful operations begin; the particular arrival tolerances and readiness activities have not yet been assigned numerical allowances.</p>
+<p>These illustrative cases let us examine how propulsion choices affect propellant consumption, powered duration and spacecraft installation. The comparison begins with those resource requirements, then considers what must be added—and verified—to turn a candidate into an operational system. This is not a selection of flight hardware or a solved transfer schedule.</p>
+</section>
+<section class="article-section" id="propellant-needed-for-the-relocation" aria-labelledby="propellant-needed-for-the-relocation-title"><h2 id="propellant-needed-for-the-relocation-title">2. Propellant needed for the relocation</h2>
+<p>The idealized transfer calculations give a velocity-change requirement of approximately 262 m/s. For this modest altitude increase, the two-impulse transfer and slowly expanding circular spiral have nearly the same reference velocity increment; their different powered durations will become important in the next section.</p>
+<p>For constant effective specific impulse, the maneuver propellant is:</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Maneuver propellant equals retained mass times the quantity exponential of delta v divided by g zero I sp, minus one." data-tex="m_p=M_f\left[\exp\left(\frac{\Delta v}{g_0 I_{sp}}\right)-1\right]."><msub><mi>m</mi><mi mathvariant="normal">p</mi></msub><mo>=</mo><msub><mi>M</mi><mi mathvariant="normal">f</mi></msub><mo>[</mo><mi mathvariant="normal">exp</mi><mo>(</mo><mfrac><mrow><mi>Δ</mi><mi>v</mi></mrow><mrow><msub><mi>g</mi><mn>0</mn></msub><msub><mi>I</mi><mi mathvariant="normal">sp</mi></msub></mrow></mfrac><mo>)</mo><mo>−</mo><mn>1</mn><mo>]</mo><mo>.</mo></math></div>
+<p>Here, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Retained spacecraft mass M sub f" data-tex="M_f"><msub><mi>M</mi><mi mathvariant="normal">f</mi></msub></math> is the spacecraft mass remaining after the maneuver, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Specific impulse I sp" data-tex="I_{sp}"><msub><mi>I</mi><mi mathvariant="normal">sp</mi></msub></math> is specific impulse, and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Standard gravity g zero equals 9.80665 metres per second squared" data-tex="g_0=9.80665\ \mathrm{m/s^2}"><msub><mi>g</mi><mn>0</mn></msub><mo>=</mo><mn>9.80665</mn><mspace width="0.2em"/><mfrac><mi mathvariant="normal">m</mi><msup><mi mathvariant="normal">s</mi><mn>2</mn></msup></mfrac></math>. The remaining mass includes the common spacecraft hardware, the propulsion installation and any reserves or unusable residuals still onboard. This is the <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/">ideal rocket equation</a> rearranged to calculate propellant consumption.</p>
+<p>Because the installations have not been sized, the table expresses consumption <strong>per 100 kg remaining after the maneuver</strong>. That is a scaling reference, not the complete mass of the spacecraft introduced above. Multiply each row by its own candidate&#39;s actual remaining mass divided by 100 kg.</p>
+<table class="article-table"><caption class="visually-hidden">Illustrative propellant comparison</caption>
+<thead>
+<tr>
+<th scope="col">Illustrative reference</th>
+<th scope="col" align="right">Assumed specific impulse</th>
+<th scope="col" align="right">Propellant expelled per 100 kg remaining</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nitrogen cold gas</td>
+<td align="right">70 s</td>
+<td align="right">46.56 kg</td>
+</tr>
+<tr>
+<td>Hydrazine monopropellant</td>
+<td align="right">220 s</td>
+<td align="right">12.93 kg</td>
+</tr>
+<tr>
+<td>Conventional bipropellant, MMH/NTO-family informed</td>
+<td align="right">290 s</td>
+<td align="right">9.67 kg</td>
+</tr>
+<tr>
+<td>Hall-electric</td>
+<td align="right">1,400 s</td>
+<td align="right">1.93 kg</td>
+</tr>
+</tbody></table>
+<p>Calculation basis: the first three rows use 262.389 m/s from the ideal two-impulse transfer; the Hall row uses 262.470 m/s from the slow, near-circular tangential-spiral approximation. These are constant-specific-impulse resource calculations, not propagated finite-burn trajectories. The orbit model, constants and input provenance are listed in the <a href="#calculation-and-reference-notes">calculation and reference notes</a>.</p>
+<p>At equal remaining spacecraft mass, the selected bipropellant reference expels approximately <strong>25% less maneuver propellant</strong> than the hydrazine reference. The Hall reference reduces that quantity further, while the cold-gas reference requires substantially more propellant for this particular relocation.</p>
+<p>These rows are selected reference points, not limits for their respective technologies. In particular, green monopropellants based on ammonium dinitramide (ADN) or hydroxylammonium nitrate (HAN) can improve on hydrazine&#39;s specific impulse and density-specific impulse—the product of propellant density and specific impulse. The 220 s row does not represent those systems. <a href="https://www.nasa.gov/smallsat-institute/sst-soa/in-space_propulsion/">NASA propulsion assessment</a></p>
+<p>The mass differences give us a starting point for the installation comparison. Initial spacecraft mass also depends on the equipment and retained consumables each candidate requires. Startup consumption is outside this calculation. Next, we examine how long the propulsion must operate and what the power allocation permits.</p>
+</section>
+<section class="article-section" id="powered-time-and-the-readiness-deadline" aria-labelledby="powered-time-and-the-readiness-deadline-title"><h2 id="powered-time-and-the-readiness-deadline-title">3. Powered time and the readiness deadline</h2>
+<p>For constant thrust and effective specific impulse, the modeled propellant consumption gives the required powered duration:</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Powered duration equals maneuver propellant times g zero times I sp, divided by thrust F." data-tex="t_{\mathrm{on}}=\frac{m_p g_0 I_{sp}}{F}."><msub><mi>t</mi><mi mathvariant="normal">on</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>m</mi><mi mathvariant="normal">p</mi></msub><msub><mi>g</mi><mn>0</mn></msub><msub><mi>I</mi><mi mathvariant="normal">sp</mi></msub></mrow><mi>F</mi></mfrac><mo>.</mo></math></div>
+<p>The numerator is total impulse, and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Thrust F" data-tex="F"><mi>F</mi></math> is thrust. This follows from the <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/specific-impulse/">specific-impulse and total-impulse definitions</a>. The time is the sum of firing intervals, not the elapsed time from departure to readiness for useful operations.</p>
+<p>First, apply the same <strong>illustrative 10 N thrust level</strong> to the cold-gas and chemical references:</p>
+<table class="article-table"><caption class="visually-hidden">Conditional powered durations at ten newtons</caption>
+<thead>
+<tr>
+<th scope="col">Reference</th>
+<th scope="col" align="right">Conditional powered time per 100 kg remaining, at 10 N</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nitrogen cold gas, 70 s</td>
+<td align="right">53.3 minutes</td>
+</tr>
+<tr>
+<td>Hydrazine monopropellant, 220 s</td>
+<td align="right">46.5 minutes</td>
+</tr>
+<tr>
+<td>Conventional bipropellant, 290 s</td>
+<td align="right">45.8 minutes</td>
+</tr>
+</tbody></table>
+<p>At an assumed 1 N, these powered durations would be ten times longer. These are thrust-level sensitivities, not claims that the cited products deliver every listed operating point or support the required firing duty. At equal thrust and remaining mass, the two selected chemical references have similar powered durations; their more substantial difference in this example is propellant consumption.</p>
+<p>Even the 10 N durations are not instantaneous burns. A finite-thrust trajectory and operating schedule are needed before stating the actual arrival time. Adding the ideal Hohmann coast to these firing totals would not provide that solution. The chemical candidates&#39; electrical and readiness requirements also remain open.</p>
+<h3>What the electrical allocation permits</h3>
+<p>For the Hall reference, thrust is related to electrical input by:</p>
+<div class="equation"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Thrust F equals two times efficiency eta times complete propulsion input power, divided by g zero I sp." data-tex="F=\frac{2\eta P_{\mathrm{bus}}}{g_0 I_{sp}}."><mi>F</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>η</mi><msub><mi>P</mi><mi mathvariant="normal">bus</mi></msub></mrow><mrow><msub><mi>g</mi><mn>0</mn></msub><msub><mi>I</mi><mi mathvariant="normal">sp</mi></msub></mrow></mfrac><mo>.</mo></math></div>
+<p>Here, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Complete propulsion input power P sub bus" data-tex="P_{\mathrm{bus}}"><msub><mi>P</mi><mi mathvariant="normal">bus</mi></msub></math> is complete propulsion-system input power and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Efficiency eta" data-tex="\eta"><mi>η</mi></math> is the corresponding effective thrust efficiency, including conversion and operating auxiliary losses. The relationship is discussed in <a href="https://descanso.jpl.nasa.gov/SciTechBook/series4/Electric_Propulsion_2nd_edition.pdf">JPL&#39;s Fundamentals of Electric Propulsion, section 2.5</a>. Use specific impulse on the same total-propellant boundary, including cathode consumption.</p>
+<p>With the illustrative 1,400 s specific impulse and an <strong>assumed 30% complete-input efficiency</strong>, the calculation gives:</p>
+<table class="article-table"><caption class="visually-hidden">Illustrative Hall power and powered duration</caption>
+<thead>
+<tr>
+<th scope="col">Complete propulsion input</th>
+<th scope="col" align="right">Derived thrust</th>
+<th scope="col" align="right">Powered time per 100 kg remaining</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>200 W</td>
+<td align="right">8.74 mN</td>
+<td align="right">35.1 days</td>
+</tr>
+<tr>
+<td>1,000 W</td>
+<td align="right">43.70 mN</td>
+<td align="right">7.0 days</td>
+</tr>
+</tbody></table>
+<p>These are separately sized hypothetical configurations, not a verified throttle range of one device. The efficiency is an analysis assumption, not a supplier measurement. As in section 2, all powered times scale with each candidate&#39;s actual remaining mass divided by 100 kg; 100 kg alone is not the complete spacecraft.</p>
+<p>Under those assumptions, the 200 W reference cannot satisfy either the 30-day or 48-hour case, even with continuous firing and before installation mass is added. The 1,000 W reference remains a candidate under this resource screen; it has not yet demonstrated a workable transfer and readiness schedule.</p>
+<p>The graph asks: <strong>how much spacecraft mass can a given propulsion power maneuver within the available time, for this orbital change and assumed performance?</strong> Its vertical axis is the maximum mass remaining after relocation—the entire spacecraft, including propulsion and power equipment and unspent consumables, not payload alone or dry mass. The propellant expelled during relocation is accounted for separately; the starting spacecraft is heavier. Specific impulse and efficiency stay fixed, but thrust increases with power actually used, allowing more mass to be moved within the same firing time.</p>
+<figure class="comparison-figure" id="hall-power-mass-figure" aria-describedby="hall-power-mass-caption">
+<div id="hall-power-mass-chart" class="comparison-chart"><img class="figure-fallback" src="/assets/series-04-hall-power-mass.png" alt="Optimistic maximum spacecraft mass remaining after relocation versus complete propulsion input power. The 30-day ceiling rises from 85.5 kg at 200 W to 427.5 kg at 1,000 W; the 48-hour curve remains below the 100 kg common-hardware mass throughout the plotted range." width="1400" height="1040" loading="lazy" /></div>
+<figcaption class="figure-caption" id="hall-power-mass-caption">Figure 1 — Calculated maximum spacecraft mass after relocation at the assumed 1,400 s specific impulse and 30% complete-input efficiency, with continuous firing and zero other time overhead. The 100 kg line represents the common bus alone; installation and retained consumables must also fit below the applicable ceiling. The curves represent separately sized hypothetical operating points, not a device&#39;s verified throttle range. Original calculation using the rocket equation and the <a href="https://descanso.jpl.nasa.gov/SciTechBook/series4/Electric_Propulsion_2nd_edition.pdf">thrust-to-power relationship</a>, not a demonstration of mission feasibility.</figcaption>
+<p class="figure-full-size"><a href="/assets/series-04-hall-power-mass.svg" target="_blank" rel="noopener">Open the full-size reference figure</a></p>
+</figure>
+<p>The assumed operating point matters. At 200 W, changing effective efficiency from 25% to 40% changes the normalized powered duration from 42.1 to 26.3 days. At the 40% point, a 30-day continuous-firing budget permits about 114 kg of retained spacecraft mass: only about 14 kg beyond the common 100 kg bus for all added hardware and retained consumables, with no other readiness delay. This sensitivity is not an established efficiency range for a particular thruster.</p>
+<h3>Firing availability is part of the time budget</h3>
+<p>If firing is permitted for only 70% of elapsed time, 7.0 powered days consumes approximately 10.0 days in a simple availability budget, before separate preparation and readiness allowances. The 70% value is illustrative, not a calculated eclipse fraction. Actual firing windows may also change the trajectory and required velocity increment; this arithmetic does not replace that analysis.</p>
+<p>The comparison therefore carries two different findings forward: the chosen chemical thrust levels imply much shorter powered durations, while the selected Hall reference trades low propellant consumption against electrical allocation and operating time. Neither finding alone establishes a complete mission solution. Next, the installation comparison asks what equipment and retained consumables the spacecraft must carry to realize those operating points.</p>
+</section>
+<section class="article-section" id="when-propellant-savings-become-spacecraft-savings" aria-labelledby="when-propellant-savings-become-spacecraft-savings-title"><h2 id="when-propellant-savings-become-spacecraft-savings-title">4. When propellant savings become spacecraft savings</h2>
+<p>The propellant comparison held the mass remaining after the maneuver equal. We can now ask a different question: <strong>how much additional retained mass could the bipropellant spacecraft accommodate before its initial-mass advantage disappears?</strong></p>
+<p>For the same 262.389 m/s reference maneuver and the selected 220 s and 290 s specific impulses, equating initial masses using the rocket equation gives a <strong>2.98% additional retained-mass allowance</strong> for the bipropellant reference. This allowance includes equipment and consumables remaining onboard after relocation.</p>
+<p>To illustrate the scale, suppose the hydrazine-reference spacecraft retains 120 kg: the 100 kg common bus plus an assumed 20 kg of propulsion installation and retained consumables. That 20 kg is a numerical illustration, not an equipment estimate.</p>
+<table class="article-table"><caption class="visually-hidden">Equal-initial-mass break-even illustration</caption>
+<thead>
+<tr>
+<th scope="col">Quantity</th>
+<th scope="col" align="right">Hydrazine reference</th>
+<th scope="col" align="right">Bipropellant at mass break-even</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mass remaining after relocation</td>
+<td align="right">120.0 kg</td>
+<td align="right">123.6 kg</td>
+</tr>
+<tr>
+<td>Maneuver propellant expelled</td>
+<td align="right">15.5 kg</td>
+<td align="right">11.9 kg</td>
+</tr>
+<tr>
+<td>Initial spacecraft mass</td>
+<td align="right">135.5 kg</td>
+<td align="right">135.5 kg</td>
+</tr>
+</tbody></table>
+<p>Values are rounded to 0.1 kg. The calculated extra allowance is 3.57 kg, or approximately <strong>3.6 kg</strong>. Below that net extra retained mass, the bipropellant spacecraft starts lighter; above it, it starts heavier. The calculation already includes the propellant needed to move the additional mass.</p>
+<p>The allowance is not automatically an extra 3.6 kg of dry hardware. Additional retained reserves or unusable residuals consume part of it. Conversely, reductions elsewhere in the installation count in its favor. The comparison must also preserve the same required remaining mission capability; equal reserve kilograms do not establish equal future maneuver capability.</p>
+<figure class="comparison-figure" id="mass-break-even-figure" aria-describedby="mass-break-even-caption">
+<div id="mass-break-even-chart" class="comparison-chart"><img class="figure-fallback" src="/assets/series-04-mass-break-even.png" alt="Calculated starting-mass difference versus added bipropellant retained mass. The bipropellant reference starts lighter below 3.57 kg of additional retained mass and heavier above it." width="1400" height="1000" loading="lazy" /></div>
+<figcaption class="figure-caption" id="mass-break-even-caption">Figure 2 — Mass break-even for the illustrative 120 kg hydrazine-reference retained mass and the selected 220 s / 290 s specific impulses. The zero crossing equates starting masses; it does not establish a dry-hardware allowance or a sized installation. Original calculation using the <a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/ideal-rocket-equation/">ideal rocket equation</a> and the reference inputs documented below.</figcaption>
+<p class="figure-full-size"><a href="/assets/series-04-mass-break-even.svg" target="_blank" rel="noopener">Open the full-size reference figure</a></p>
+</figure>
+<h3>What belongs in the installation comparison?</h3>
+<table class="article-table"><caption class="visually-hidden">Installation comparison contributions</caption>
+<thead>
+<tr>
+<th scope="col">Contribution</th>
+<th scope="col">What the comparison must establish</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Storage and feed</td>
+<td>Net mass and volume of tanks, pressurization hardware, valves, plumbing, supports and retained consumables—not simply the number of propellant tanks.</td>
+</tr>
+<tr>
+<td>Power and thermal equipment</td>
+<td>Additional equipment needed to supply the operating point and maintain required temperatures. The 1,000 W electric case must include any incremental generation, storage, conversion and thermal hardware it requires.</td>
+</tr>
+<tr>
+<td>Readiness</td>
+<td>Preparation, ready-standby and firing resources evaluated from comparable initial conditions. A fresh catalyst preheat before every pulse cannot be assumed, nor can instantaneous readiness for the bipropellant case.</td>
+</tr>
+</tbody></table>
+<p>Added hardware feeds back into the calculation: it increases the mass that must be accelerated and therefore the required propellant and powered duration. The 7.0-day electric result, for example, remains a per-100-kg reference, not a time prediction for a heavier installation.</p>
+<p><strong>Mass and volume remain separate constraints.</strong> An installation can satisfy the mass comparison without fitting the spacecraft&#39;s available volume. Neither constraint has been resolved here by choosing actual equipment.</p>
+<p>For this relocation, the bipropellant propellant saving provides a quantified allowance for additional retained mass. Whether that produces a lighter spacecraft depends on the complete configuration. Whether it produces a better mission solution also depends on readiness and operating capability, which remain to be established. This is a mass comparison for the selected references, not a demonstration of lifetime maneuvering performance.</p>
+</section>
+<section class="article-section" id="choosing-for-the-operations-that-follow" aria-labelledby="choosing-for-the-operations-that-follow-title"><h2 id="choosing-for-the-operations-that-follow-title">5. Choosing for the operations that follow</h2>
+<p>A spacecraft expected to continue maneuvering must also be assessed against the sequence of operations after relocation:</p>
+<ul>
+<li><strong>Readiness:</strong> How much preparation is permitted before a maneuver, and what must remain powered between maneuvers?</li>
+<li><strong>Repeatability:</strong> What impulse and timing tolerances must be met across short firings and changing feed and thermal conditions?</li>
+<li><strong>Endurance:</strong> What combination of starts, accumulated firing time and storage must the installed system support?</li>
+</ul>
+<p>These are requirements to specify and verify for the intended installation, not capabilities established by the relocation calculation. A mission with frequent, time-constrained maneuvers may justify a different installation from one with long transfer windows and substantial propulsion power available. This comparison has not modeled that later operating history.</p>
+<p>Bipropellant has a substantive case to carry into the next design stage: at the illustrative 10 N thrust level, the selected reference combines short powered duration with lower maneuver propellant consumption than the hydrazine reference. Its propellant saving provides an allowance for additional retained mass, not a guaranteed reduction in initial spacecraft mass. Realizing that combination in an operational spacecraft depends on the feed system, thermal behavior, controls and hardware capabilities. The next article examines those architecture choices.</p>
+<p>These considerations inform Aeterna&#39;s development of bipropellant propulsion for spacecraft requiring frequent maneuvering and sustained operation. Repeatability, readiness and endurance are central development objectives.</p>
+</section>
+<section class="article-section" id="calculation-and-reference-notes" aria-labelledby="calculation-and-reference-notes-title"><h2 id="calculation-and-reference-notes-title">Calculation and reference notes</h2>
+<h3>Orbit model</h3>
+<p>The transfer values were calculated for this article using Earth&#39;s central gravity alone, excluding drag, other perturbations and rendezvous or phasing requirements. The adopted reference radius is 6,378.137 km and gravitational parameter is 398,600.4418 km³/s², from <a href="https://earth-info.nga.mil/?action=wgs84&dir=wgs84">NGA&#39;s WGS 84 defining parameters</a>. The two circular-orbit radii are therefore 6,878.137 km and 7,378.137 km.</p>
+<p>The ideal Hohmann reference sums two tangential impulses, 132.345 and 130.043 m/s, connecting the circular orbits through a transfer ellipse; <a href="https://science.nasa.gov/learn/basics-of-space-flight/chapter4-1/">NASA&#39;s trajectory introduction</a> explains the transfer geometry. For the slow, near-circular tangential spiral, integrating the change in circular-orbit energy gives the approximation <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Delta v equals square root of mu over r one minus square root of mu over r two" data-tex="\Delta v=\sqrt{\mu/r_1}-\sqrt{\mu/r_2}"><mi>Δ</mi><mi>v</mi><mo>=</mo><msqrt><mfrac><mi>μ</mi><msub><mi>r</mi><mn>1</mn></msub></mfrac></msqrt><mo>−</mo><msqrt><mfrac><mi>μ</mi><msub><mi>r</mi><mn>2</mn></msub></mfrac></msqrt></math>, or 262.470 m/s. Neither reference is a propagated finite-thrust trajectory.</p>
+<h3>Specific-impulse input provenance</h3>
+<p>These sources inform individual scalar assumptions, not four selected commercial installations. The comparison does not establish supplier performance for this mission or predict Aeterna hardware performance.</p>
+<ul>
+<li><strong>70 s cold gas:</strong> nominal nitrogen specific impulse in Moog&#39;s 58E163A entry. <a href="https://www.moog.com/content/dam/moog/literature/sdg/space/propulsion/moog-coldgasthrusters-datasheet.pdf">Moog cold-gas datasheet, PDF p. 2</a>.</li>
+<li><strong>220 s hydrazine:</strong> nominal specific impulse of ArianeGroup&#39;s 1 N hydrazine thruster. <a href="https://space-propulsion.com/brochures/hydrazine-thrusters/hydrazine-thrusters.pdf">ArianeGroup monopropellant brochure, PDF p. 6</a>.</li>
+<li><strong>290 s bipropellant:</strong> an illustrative value rounded from ArianeGroup&#39;s 292 s nominal 10 N MMH/NTO-family benchmark. It is not an N2O/hydrocarbon or Aeterna performance claim. <a href="https://space-propulsion.com/brochures/bipropellant-thrusters/bipropellant-thrusters.pdf">ArianeGroup bipropellant brochure, PDF p. 4</a>.</li>
+<li><strong>1,400 s Hall:</strong> an illustrative approximation informed by Busek&#39;s 1,390 s BHT-200 point and 1,300–1,500 s BHT-600 range. The calculation assumes effective specific impulse on a total-expelled-propellant basis, including cathode consumption; it is not a reconstructed supplier operating point. <a href="https://www.busek.com/bht200">Busek BHT-200</a>; <a href="https://www.busek.com/s/BHT_600_v11.pdf">BHT-600 datasheet</a>.</li>
+</ul>
+
+</section>
+<p class="article-note">This article is an educational discussion of public sources and original illustrative calculations. It does not report Aeterna hardware performance, qualification or flight results. Aeterna’s propulsion and fluid-control programs are in development.</p>
+<p class="article-backlink"><a href="/articles/from-mission-objectives-to-maneuver-requirements.html">← Article 3: From mission objectives to maneuver requirements</a></p>
+<p><a href="/articles/">All technical articles</a></p>
+</div></article></main>
+<footer class="site-footer">
+    <div class="shell footer-inner">
+      <a class="wordmark wordmark-footer" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" loading="lazy" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <p>© <span data-year>2026</span> Aeterna Sidera Inc. All rights reserved.</p>
+    </div>
+  </footer>
+<script src="/script.js" defer></script>
+<script src="/assets/article-four-charts.js" defer></script>
+</body></html>
