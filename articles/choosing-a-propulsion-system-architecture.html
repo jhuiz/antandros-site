@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Choosing a Propulsion System Architecture | Aeterna Sidera</title>
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="description" content="How storage, feed paths, controls and thermal conditions determine which maneuvers remain available.">
+<meta name="author" content="Jesus Daniel Huizar">
+<meta name="theme-color" content="#07131f">
+<link rel="icon" href="/assets/favicon.svg?v=aeterna-mark-1" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.png?v=aeterna-mark-1" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="/assets/favicon.png?v=aeterna-mark-1">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/assets/article-five.css">
+<link rel="stylesheet" href="/assets/article-five-visuals.css">
+<link rel="canonical" href="https://aeternasidera.com/articles/choosing-a-propulsion-system-architecture.html">
+<meta property="og:title" content="Choosing a Propulsion System Architecture | Aeterna Sidera">
+<meta property="og:description" content="How storage, feed paths, controls and thermal conditions determine which maneuvers remain available.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Aeterna Sidera Inc.">
+<meta property="og:url" content="https://aeternasidera.com/articles/choosing-a-propulsion-system-architecture.html">
+<meta property="og:image" content="https://aeternasidera.com/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development">
+<meta property="article:published_time" content="2026-09-29">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Choosing a Propulsion System Architecture | Aeterna Sidera">
+<meta name="twitter:description" content="How storage, feed paths, controls and thermal conditions determine which maneuvers remain available.">
+<meta name="twitter:image" content="https://aeternasidera.com/assets/og-card.png">
+<meta name="twitter:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Choosing a Propulsion System Architecture",
+  "description": "How storage, feed paths, controls and thermal conditions determine which maneuvers remain available.",
+  "datePublished": "2026-09-29",
+  "author": {
+    "@type": "Person",
+    "name": "Jesus Daniel Huizar"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Aeterna Sidera Inc.",
+    "url": "https://aeternasidera.com/"
+  },
+  "mainEntityOfPage": "https://aeternasidera.com/articles/choosing-a-propulsion-system-architecture.html",
+  "image": "https://aeternasidera.com/assets/og-card.png",
+  "inLanguage": "en"
+}</script>
+</head><body class="page-secondary article-five">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/propulsion.html">Propulsion</a>
+        <a href="/fluid-controls.html">Fluid controls</a>
+        <a href="/articles/" aria-current="page">Technical articles</a>
+        <a href="/#company">Company</a>
+        <a class="nav-contact" href="/#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+<main id="main"><article>
+<header class="hero page-hero"><div class="shell">
+<p class="eyebrow">Mission to hardware · Article 5</p>
+<h1>Choosing a propulsion system architecture.</h1>
+<p class="hero-lede">How storage, feed paths, controls and thermal conditions determine which maneuvers remain available.</p>
+<p class="article-meta">By Jesus Daniel Huizar · Founder, Aeterna Sidera</p>
+<p class="article-meta">Published <time datetime="2026-09-29">September 29, 2026</time></p>
+</div></header>
+<div class="shell article-body">
+<nav class="article-toc" aria-label="In this article"><p><strong>In this article</strong></p><ol><li><a href="#follow-the-operating-sequence">Follow the operating sequence</a></li><li><a href="#store-propellant-and-make-it-available">Store propellant and make it available</a></li><li><a href="#decide-which-pressure-variation-to-accept-or-control">Decide which pressure variation to accept or control</a></li><li><a href="#supply-and-command-a-network-of-thrusters">Supply and command a network of thrusters</a></li><li><a href="#make-thermal-management-part-of-availability">Make thermal management part of availability</a></li><li><a href="#compare-complete-architectures-over-the-operating-sequence">Compare complete architectures over the operating sequence</a></li></ol></nav>
+<section class="article-section" id="follow-the-operating-sequence" aria-labelledby="follow-the-operating-sequence-title"><h2 id="follow-the-operating-sequence-title">1. Follow the operating sequence</h2>
+<p>Consider a spacecraft with several pressure-fed bipropellant thrusters. It performs a sustained orbit-change maneuver, coasts while conducting other activities, and later makes shorter corrections. Different combinations of thrusters may be used across that sequence.</p>
+<p>The architecture must establish how propellant, electrical power and thermal control support each operating mode—and the transitions between them.</p>
+<table class="article-table"><caption class="visually-hidden">Operating stages and architecture questions</caption>
+<thead>
+<tr>
+<th scope="col">Operating stage</th>
+<th scope="col">Question for the architecture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sustained maneuver</td>
+<td>Can the supply maintain acceptable propellant phase and inlet conditions for the thrusters commanded to operate together, for the required duration?</td>
+</tr>
+<tr>
+<td>Coast or standby</td>
+<td>What must remain powered or thermally controlled, and how much preparation can be allowed before the next maneuver?</td>
+</tr>
+<tr>
+<td>Restart and short corrections</td>
+<td>From the conditions reached during standby, can the system deliver the requested impulse within its timing and accuracy limits?</td>
+</tr>
+</tbody>
+</table>
+<p>The same operating sequence should also be examined later in service, with less propellant remaining and potentially different tank, feedline and thruster temperatures; the resulting pressure history depends on the architecture.</p>
+<p><strong>The required maneuver outcome has a tolerance; the system's internal conditions may vary within an acceptable operating range.</strong> The design decision is where that variation can be accommodated through commands or operating procedures, and where pressure control, thermal management or another architectural measure is needed.</p>
+<p>The first physical choices are how to store the propellant, make it available at the tank outlet, and deliver it in the state the thrusters require.</p>
+</section>
+<section class="article-section" id="store-propellant-and-make-it-available" aria-labelledby="store-propellant-and-make-it-available-title"><h2 id="store-propellant-and-make-it-available-title">2. Store propellant and make it available</h2>
+<p>The stored state and the delivered state are separate architecture choices. A propellant stored partly as liquid may be supplied to a gas-fed thruster through deliberate phase management, while another design requires liquid at its inlet. NASA's propulsion assessment describes cold-gas systems that store saturated liquid and vaporize it before expansion through the nozzle. Liquid storage therefore does not, by itself, establish liquid delivery to the thruster. <a href="https://www.nasa.gov/smallsat-institute/sst-soa/in-space_propulsion/">NASA: In-Space Propulsion, Cold Gas</a></p>
+<p>Three locations need to be distinguished: <strong>inside the tank, at the tank outlet and at the thruster inlet.</strong></p>
+<div class="article-visual" id="figure-propulsion-architecture-map"><div id="propulsion-architecture-map" class="article-five-visual">
+  <h3>Propulsion architecture: shared dependencies</h3>
+  <div class="viz-controls" role="group" aria-label="Illustrative operating state">
+    <button class="btn" type="button" data-pam-mode="overview" aria-pressed="true">Overview</button>
+    <button class="btn" type="button" data-pam-mode="shared" aria-pressed="false">Shared demand</button>
+    <button class="btn" type="button" data-pam-mode="isolated" aria-pressed="false">Branch A isolated</button>
+  </div>
+  <div class="pam-detail" aria-live="polite" id="pam-state-detail">No firing shown; both branches share upstream functions and spacecraft interfaces.</div>
+  <figure class="pam-figure">
+    <svg class="pam-map" role="img" aria-labelledby="pam-map-title pam-map-description">
+      <title id="pam-map-title">Generic bipropellant supply and thruster groups</title>
+      <desc id="pam-map-description">Separate fuel and oxidizer supplies feed groups A and B. Both groups depend on shared supply functions and spacecraft power, control and thermal interfaces. Select a view to examine shared demand or branch A isolation.</desc>
+    </svg>
+    <div class="pam-legend text-small" aria-label="Connection legend">
+      <span><i class="pam-swatch" aria-hidden="true"></i>Fuel</span>
+      <span><i class="pam-swatch ox" aria-hidden="true"></i>Oxidizer</span>
+      <span><i class="pam-swatch electric" aria-hidden="true"></i>Power / commands</span>
+      <span><i class="pam-swatch thermal" aria-hidden="true"></i>Thermal coupling</span>
+    </div>
+    <figcaption class="pam-caption text-small text-muted">Functional blocks may share hardware. Crossings without dots are not junctions. No calculated flows or demonstrated fault tolerance; not an Aeterna configuration.</figcaption>
+  </figure>
+  <noscript>
+    <style>
+      #propulsion-architecture-map .viz-controls,
+      #propulsion-architecture-map .pam-detail,
+      #propulsion-architecture-map .pam-figure { display: none; }
+    </style>
+    <p>Fuel and oxidizer have separate supply functions and distribution paths to both thruster groups. Isolating both propellant paths to group A removes its supply; group B retains connected paths but also retains shared upstream and spacecraft dependencies.</p>
+    <p class="text-small text-muted">Conceptual connections only: functional blocks may share hardware. No calculated flows or demonstrated fault tolerance; not an Aeterna configuration.</p>
+  </noscript>
+</div>
+<p class="figure-caption">Figure 1. Conceptual supply functions and shared dependencies. Fuel and oxidizer remain separate; blocks describe functions that may share hardware. The views illustrate connectivity and isolation boundaries, without establishing remaining maneuver capability or depicting an Aeterna configuration. Principles: <a href="https://ntrs.nasa.gov/api/citations/20170000667/downloads/20170000667.pdf">NASA propellant acquisition review</a> and <a href="https://www.nasa.gov/wp-content/uploads/static/history/alsj/16_Reaction_Control_Subsystem_pp147-158.pdf">Apollo distribution and isolation, pp. 151–152</a>.</p></div>
+<h3>Inside the tank: define the storage conditions</h3>
+<p>Storage arrangements include compressed gas, liquid with a separate pressurant, and a propellant held as coexisting liquid and vapor. These arrangements do not have the same pressure behavior.</p>
+<p>For a pure propellant with liquid and vapor in equilibrium and no separate pressurant, the equilibrium pressure follows its saturation-pressure relationship with temperature. That is not a general rule for total pressure in a tank containing an additional pressurant, nor a prediction of a tank's temperature during withdrawal. Self-pressurization does not mean temperature-independent pressure. <a href="https://wtt-lite.nist.gov/wtt-lite/help/properties/LG_pressure.html">NIST: Vapor Pressure</a></p>
+<h3>At the outlet: acquire the required phase</h3>
+<p>During low-gravity coast, liquid cannot be assumed to remain over an outlet as it would in an upright tank on the ground. Surface tension, wetting and spacecraft acceleration influence where the liquid and gas reside. Acquiring liquid therefore requires a way to keep it available to the outlet under the relevant operating conditions.</p>
+<p>Options include diaphragms or bladders that separate propellant from pressurant, and capillary devices that use surface tension to collect or retain liquid along a path to the outlet. Settling maneuvers are another option where the mission permits them. Each approach has an applicable range of fill levels, acceleration, temperature and withdrawal demand; none should be treated as an unconditional guarantee. <a href="https://ntrs.nasa.gov/api/citations/20170000667/downloads/20170000667.pdf">NASA: Propellant Management Devices for Low Gravity Propellant Acquisition, sections I–III</a></p>
+<h3>At the thruster: deliver the specified state</h3>
+<p>The intended inlet phase must be explicit. DLR's 2023 research overview, for example, described gas-fed bipropellant thrusters and liquid feeding then under investigation. The propellant chemistry alone does not settle that choice. <a href="https://elib.dlr.de/197901/1/EUCASS2023-596.pdf">DLR: From Lampoldshausen to Space, section 4, p. 3</a></p>
+<p>The path from tank outlet to thruster must preserve the required state or deliberately change it—for example, through controlled heating when vaporization is required. Outlet conditions cannot simply be assigned to the thruster inlet. Both fuel and oxidizer paths need this assessment, without assuming identical thermal treatment or acquisition hardware.</p>
+<p><strong>Providing driving pressure, acquiring the required phase and conditioning the delivered propellant are distinct functions—not necessarily three separate devices.</strong> The architecture must accomplish them together throughout the operating sequence.</p>
+<p>The next choice is how to provide and manage that driving pressure.</p>
+</section>
+<section class="article-section" id="decide-which-pressure-variation-to-accept-or-control" aria-labelledby="decide-which-pressure-variation-to-accept-or-control-title"><h2 id="decide-which-pressure-variation-to-accept-or-control-title">3. Decide which pressure variation to accept or control</h2>
+<p>The pressure-control decision is <strong>which pressure must remain within which bounds, during which operation?</strong></p>
+<h3>Accept a changing supply—or constrain it</h3>
+<p>In a gas-pressurized liquid-propellant blowdown arrangement, the gas already in the tank expands as liquid is withdrawn. Pressure generally falls, with its trajectory also depending on thermal conditions. Regulated tank pressurization instead admits additional gas from a separate supply to keep the propellant-tank pressure within a selected range. NASA's Transit Habitat assessment compares these two approaches; both are pressure-fed systems. <a href="https://ntrs.nasa.gov/api/citations/20240003278/downloads/Paper_Transit_Habitat_Prop_Concept_JANNAF_V4.pdf">NASA: Transit Habitat propulsion architecture assessment, printed pp. 4–5</a></p>
+<p>Regulation can also occur in the propellant path. For example, ESA documents an engineering-model system that conditions and regulates gaseous propellant before delivery to the thruster interface. That controls a downstream feed pressure, rather than the storage-tank pressure. <a href="https://resilience.esa.int/archives/projects/electronic-pressure-regulator">ESA: Electronic Pressure Regulator, System Architecture</a></p>
+<p>Self-pressurization describes how the source provides pressure, not whether downstream regulation is used. The choices can therefore coexist, provided the source supplies enough pressure and flow for the regulator to operate. Its temperature-dependent behavior from Section 2 still matters.</p>
+<h3>Identify the pressure being controlled</h3>
+<p><strong>Propellant-tank pressure, regulator-outlet pressure, thruster-inlet pressure and chamber pressure are not interchangeable.</strong> Even with stable tank pressure, the inlet conditions reached through the feed network depend on the losses associated with the active flow paths and demand. Chamber pressure results from the coupled feed and thruster operation; it is not simply the regulator setting.</p>
+<p>Orion's European Service Module provides a practical precedent. ESA describes on/off helium valves used to manage propellant pressurization for its different engine classes. Its operations account explicitly distinguishes pressure at the source from pressure farther downstream. For the illustrative spacecraft, the same distinction matters: the assessment must address the conditions delivered to each operating thruster, not just the pressure maintained upstream. <a href="https://blogs.esa.int/orion/2022/11/21/how-to-fly-orion-propulsion/">ESA: How to fly Orion—propulsion</a></p>
+<h3>Compare the usable operating ranges</h3>
+<p>A pressure-reducing regulator needs sufficient upstream pressure above its controlled outlet pressure at the required flow. Its outlet also has a tolerance and a transient response: changes in supply pressure or demand can produce departures from the setpoint. NASA's regulator design guidance treats these as coupled performance considerations, including operation at low supply pressure and high demand. Regulation therefore reduces selected variations; it does not establish constant thrust or replace temperature and phase management. <a href="https://ntrs.nasa.gov/api/citations/19740002611/downloads/19740002611.pdf">NASA: Liquid Rocket Pressure Regulators, sections 2.1.1–2.1.3</a></p>
+<p>NASA's Transit Habitat concept assessment connects this choice to guidance, navigation and control: blowdown operation requires accommodating decreasing thrust and impulse bit as inlet pressure falls. <a href="https://ntrs.nasa.gov/api/citations/20240003278/downloads/Paper_Transit_Habitat_Prop_Concept_JANNAF_V4.pdf">NASA: Transit Habitat propulsion architecture assessment, printed p. 5</a></p>
+<p>For the sustained maneuver and later corrections, can changing thrust be accommodated by adjusting burn duration while still meeting the maneuver window? Can pulse commands be adapted to meet the required impulse and accuracy? Do those options remain available at lower inventory and different temperatures?</p>
+<p>If they do, accepting a wider pressure range may avoid additional hardware. If they do not, pressure regulation may justify its hardware and integration burden—but the resulting inlet conditions still need assessment. <strong>Compare pressure-management choices against the same maneuver requirements, including the hardware, control and operational effort each needs.</strong></p>
+<p>Several thrusters sharing a supply add another dependency: the firing of one can affect the conditions at another.</p>
+</section>
+<section class="article-section" id="supply-and-command-a-network-of-thrusters" aria-labelledby="supply-and-command-a-network-of-thrusters-title"><h2 id="supply-and-command-a-network-of-thrusters-title">4. Supply and command a network of thrusters</h2>
+<p>The spacecraft in this example may use several thrusters for a sustained maneuver, then a different combination for attitude corrections. The architecture must support those combinations—not merely each thruster operating alone.</p>
+<h3>Assess the firing combinations</h3>
+<p>When thrusters share a feed line or distribution manifold, opening or closing one changes demand on the common supply. Pressure disturbances can affect other connected thrusters. The assessment therefore includes transitions between firing combinations, such as short correction pulses while another thruster continues firing steadily.</p>
+<p>NASA investigated exactly that interaction during Lunar Module development. Its breadboard campaign included single- and multiple-engine firings, including pulsing alongside steady operation. Feed-pressure fluctuations were more severe than predicted, and the findings led to a reduction in the maximum permitted pulse frequency. <strong>The feed-system response helped define which commands the propulsion system could support.</strong> <a href="https://ntrs.nasa.gov/api/citations/19720014237/downloads/19720014237.pdf">NASA: Lunar Module Reaction Control System, printed pp. 7–8</a></p>
+<p>For a bipropellant system, fuel and oxidizer delivery must also be assessed together. Their transient responses need not match: the relative arrival and cessation of the two flows matter during startup and shutdown, as do their inlet conditions during sustained operation. Equal supply pressures alone do not establish the required mixture ratio. <a href="https://ntrs.nasa.gov/api/citations/20250004573/downloads/Lesson%20Learned%20and%20Prop%20Stand%20TIM%206-13-25%20R3.pdf">NASA: propulsion lessons-learned presentation, slide 37</a></p>
+<p class="figure-cross-reference"><a href="#propulsion-architecture-map">Revisit Figure 1</a> to compare shared demand and branch isolation.</p>
+<h3>Connect commands to delivered response</h3>
+<p>An electrical firing command, valve motion and the resulting thrust pulse are different events. The control interface therefore needs a characterized relationship between the command and delivered impulse across the intended conditions—not an assumption that thrust starts and stops with the electrical signal.</p>
+<p>Monitoring has a separate role. The Lunar Module compared engine-valve commands with chamber-pressure-switch indications to flag mismatches. That provided evidence of firing behavior, not a direct measurement of delivered impulse. <a href="https://ntrs.nasa.gov/api/citations/19720014237/downloads/19720014237.pdf">NASA: Lunar Module Reaction Control System, printed p. 6</a></p>
+<p>Distinguish what is commanded, what is measured and what is estimated from a model or spacecraft motion. This identifies the information needed for control and for deciding whether a thruster remains available, without prescribing a sensor on every thruster.</p>
+<h3>Choose useful isolation boundaries</h3>
+<p>Shared feeds consolidate hardware but also create shared dependencies. An isolation valve can shut off a troubled branch while removing supply from healthy thrusters connected to that branch. NASA's Apollo service-module description illustrates this boundary: each four-engine group shared distribution manifolds, with isolation valves provided for events such as a line rupture or runaway thruster. <a href="https://www.nasa.gov/wp-content/uploads/static/history/alsj/16_Reaction_Control_Subsystem_pp147-158.pdf">NASA: Reaction Control Subsystem, printed pp. 151–152</a></p>
+<p>For the spacecraft in this example, the question is which maneuvers remain possible after isolation. Can the remaining thrusters produce the required force directions and torques, with adequate supply and electrical resources? Separate branches do not establish independence if they still rely on the same upstream component or controller.</p>
+<p><strong>Choose feed groupings, isolation boundaries and control logic together, based on the maneuver capability they preserve.</strong></p>
+</section>
+<section class="article-section" id="make-thermal-management-part-of-availability" aria-labelledby="make-thermal-management-part-of-availability-title"><h2 id="make-thermal-management-part-of-availability-title">5. Make thermal management part of availability</h2>
+<p>Readiness means that the required thrusters and their supply paths can operate when the maneuver is needed—not simply that the hardware survives the preceding coast. NASA's thermal-control guidance distinguishes survival requirements from operational requirements. <a href="https://www.nasa.gov/smallsat-institute/sst-soa/thermal-control/">NASA: Thermal Control, section 7.1</a></p>
+<h3>Choose the standby condition</h3>
+<p>A planned orbit-change maneuver may allow time to prepare the propulsion system. Corrections required at short notice may instead justify maintaining selected thrusters and feed paths within their ready-to-operate conditions throughout standby.</p>
+<p>These choices impose different demands. Maintaining readiness can consume energy during the coast; preparation before firing requires time and sufficient available power. Neither approach necessarily uses less total energy, and different parts of the system may need different treatment.</p>
+<p>ESA's Orion operations account makes this connection explicit: thruster availability includes heater preparation, with the time required depending on thermal conditions. This is a spacecraft-specific example of temperature management affecting the maneuver timeline. <a href="https://blogs.esa.int/orion/2022/11/21/how-to-fly-orion-propulsion/">ESA: How to fly Orion—propulsion</a></p>
+<div class="article-visual" id="figure-propulsion-operating-timeline"><div id="propulsion-operating-timeline" class="article-five-visual">
+  <h3>Between firings, the system keeps evolving</h3>
+  <figure class="pot-figure">
+    <svg class="pot-chart" role="img" aria-labelledby="pot-title pot-desc">
+      <title id="pot-title">Qualitative propulsion operating sequence and standby choices</title>
+      <desc id="pot-desc">Sustained firing is followed by shutdown, coast and later correction commands. Thermal conditions continue evolving between firings. During coast, selected paths may be maintained ready, or allowed within storage and survival limits before restoring readiness as required. Preparation may occur within coast. No elapsed durations, temperatures, energies or thrust profiles are calculated.</desc>
+    </svg>
+    <figcaption class="pot-caption text-small text-muted">Widths are not durations. Command marks are schematic, not a specified firing count, thrust or flow. Standby choices apply to selected paths; neither establishes unrestricted firing or lower energy use.</figcaption>
+  </figure>
+  <noscript>
+    <style>
+      #propulsion-operating-timeline .pot-figure { display: none; }
+    </style>
+    <p>Firing → shutdown and early off-time → coast, including preparation if needed → later corrections. Heat redistribution can continue after shutdown. Standby can maintain selected paths ready or preserve storage/survival conditions and restore readiness before firing.</p>
+    <p class="text-small text-muted">Qualitative sequence only: no durations, temperatures, energies, thrust profiles or firing counts are calculated. Standby choices apply to selected paths; neither establishes unrestricted firing or lower energy use. No universal recovery interval is assumed.</p>
+  </noscript>
+</div>
+<p class="figure-caption">Figure 2. Operating sequence and alternative standby strategies. Preparation is conditional; thermal history continues between firings. Stage widths and command marks are schematic, without specifying durations, firing counts, temperatures or energy use. Principles: <a href="https://blogs.esa.int/orion/2022/11/21/how-to-fly-orion-propulsion/">Orion heater preparation</a> and the analytical <a href="https://ntrs.nasa.gov/api/citations/19830016280/downloads/19830016280.pdf">NASA-sponsored heat-soak study, p. 97</a>.</p></div>
+<h3>Follow the thermal history through shutdown</h3>
+<p>Tank, line, valve and thruster temperatures do not change together. Their heat capacity, surroundings, connections and propellant flow differ. ESA's account of Artemis I thermal operations describes both the different response rates of tanks and thrusters and the cooling effect of propellant flowing toward the engines. Firing therefore does not imply that every part simply becomes hotter. <a href="https://blogs.esa.int/orion/2023/02/03/how-to-fly-orion-thermal/">ESA: How to fly Orion—thermal</a></p>
+<p>Nor does shutdown end heat transfer. Heat retained in a chamber can continue into the injector, valves and nearby structure after firing—often called <em>heat soakback</em>. A NASA-sponsored auxiliary-propulsion study explicitly modeled injector warming from the chamber wall after shutdown, followed by valve warming through the connecting structure. Its analysis tracked firing and between-firing times; it was an analytical study, not flight evidence. <a href="https://ntrs.nasa.gov/api/citations/19830016280/downloads/19830016280.pdf">NASA: LOX/Hydrocarbon Auxiliary Propulsion System Study, section 6.3, p. 97</a></p>
+<p>The sustained burn, the following off-time and the later corrections therefore need to be assessed together. Acceptable chamber cooling during the burn does not establish acceptable valve or feedline conditions afterward. Any required recovery interval belongs in the maneuver schedule. The relevant result is an operating range that supports the required sequence from its expected initial conditions.</p>
+<h3>Define the spacecraft thermal interface</h3>
+<p>Thermal isolation can reduce unwanted heat transfer, but it can also impede a useful path for removing heat. Conductive mounts, insulation and radiating surfaces therefore need to be considered together. NASA's thermal-control guidance treats these interfaces, spacecraft orientation and electrical heating as parts of the overall heat balance. <a href="https://www.nasa.gov/smallsat-institute/sst-soa/thermal-control/">NASA: Thermal Control, sections 7.1–7.3</a></p>
+<p>The thermal interface should identify allowable mounting temperatures, heat transferred into adjacent hardware, required radiative exposure, and heater or conditioning demands. Peak electrical power and energy consumed over an operating sequence are separate quantities. The spacecraft must also accommodate any preparation time or restriction on the next firing.</p>
+<p><strong>Thermal design helps determine when maneuvers are available, how closely they can follow one another, and what resources the spacecraft must provide to sustain that capability.</strong> These obligations belong in the architecture comparison alongside tanks, feed hardware and control electronics.</p>
+</section>
+<section class="article-section" id="compare-complete-architectures-over-the-operating-sequence" aria-labelledby="compare-complete-architectures-over-the-operating-sequence-title"><h2 id="compare-complete-architectures-over-the-operating-sequence-title">6. Compare complete architectures over the operating sequence</h2>
+<p>Return to the sustained maneuver, coast and later corrections. Each candidate must address the same mission objectives, timing and accuracy limits, service life and specified fault cases, across the relevant inventory and thermal conditions.</p>
+<p><strong>Equivalent mission capability does not require identical operating strategies.</strong> Candidates may use different burn durations, preparation intervals or firing combinations, provided they remain within those common requirements.</p>
+<p>The comparison should answer five questions:</p>
+<table class="article-table"><caption class="visually-hidden">Complete architecture comparison questions</caption>
+<thead>
+<tr>
+<th scope="col">Comparison question</th>
+<th scope="col">What belongs in the assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What must the spacecraft carry and accommodate?</td>
+<td>Installed mass, volume and mounting constraints for propulsion hardware, supports, harnesses and any additional spacecraft power or thermal equipment required by that candidate.</td>
+</tr>
+<tr>
+<td>What must be loaded to complete the mission?</td>
+<td>Propellant consumption, defined reserves, unusable residuals and pressurant, with consistent accounting across candidates.</td>
+</tr>
+<tr>
+<td>When is the required capability available?</td>
+<td>Maneuver duration, preparation and repeat-firing limits, permitted thruster combinations, peak electrical power, energy use and thermal interfaces.</td>
+</tr>
+<tr>
+<td>What remains available under the specified faults?</td>
+<td>The required remaining maneuvers after isolation or reconfiguration, including shared dependencies and remaining consumables.</td>
+</tr>
+<tr>
+<td>What does it take to deliver a usable system?</td>
+<td>Manufacturing and supply availability, integration effort, cost, schedule, and the distinction between demonstrated behavior, predictions and unresolved assumptions.</td>
+</tr>
+</tbody>
+</table>
+<p>The comparison boundary matters. A reduction in propulsion-unit mass is not a spacecraft-level saving if it requires a larger addition elsewhere. Likewise, loaded propellant includes the portions assigned to usable reserves and unusable residuals; these are not extra masses to add again. Each candidate's mass and resource estimates must be consistent with its own operating strategy.</p>
+<p>Mandatory requirements should remain distinct from preferences. A mass advantage cannot compensate for missing a required maneuver window. A delivery deadline or budget may also be a hard constraint. NASA's decision-analysis guidance distinguishes mandatory from enhancing criteria and considers technical performance, cost, schedule and risk together. <a href="https://www.nasa.gov/reference/6-8-decision-analysis/">NASA Systems Engineering Handbook: Decision Analysis</a></p>
+<p>Unresolved performance is not automatically failure, but it is not demonstrated compliance either. If the preferred architecture depends on uncertain heater demand, usable propellant or pulse behavior, ask whether a plausible change in that assumption would reverse the decision. NASA recommends considering further uncertainty reduction when it could change the choice. The next analysis or test should therefore address the uncertainty most likely to change the architecture choice. <a href="https://www.nasa.gov/reference/6-8-decision-analysis/">NASA: Decision Analysis, section 6.8.1</a></p>
+<p><strong>The outcome is a candidate architecture with defined hardware functions, operating limits and spacecraft interfaces—and a clear account of what remains to be established.</strong> The next development step is turning that architecture into dependable hardware, then building the evidence that supports its intended use.</p>
+</section>
+<p class="article-note">This article is an educational discussion of public sources and a qualitative illustrative scenario. It does not report Aeterna hardware performance, qualification or flight results. Aeterna’s propulsion and fluid-control programs are in development.</p>
+<p class="article-backlink"><a href="/articles/matching-propulsion-to-the-mission.html">← Article 4: Matching propulsion to the mission</a></p>
+<p><a href="/articles/">All technical articles</a></p>
+</div></article></main>
+<footer class="site-footer">
+    <div class="shell footer-inner">
+      <a class="wordmark wordmark-footer" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" loading="lazy" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <p>© <span data-year>2026</span> Aeterna Sidera Inc. All rights reserved.</p>
+    </div>
+  </footer>
+<script src="/script.js" defer></script>
+<script src="/assets/article-five-visuals.js" defer></script>
+</body></html>
