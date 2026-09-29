@@ -37,17 +37,21 @@ const server = http.createServer(async (request, response) => {
     const page = await context.newPage();
     const errors = [];
     const articleFourExternal = [];
+    const articleFiveExternal = [];
     let checkingArticleFour = false;
+    let checkingArticleFive = false;
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
     page.on('request', request => {
       if (checkingArticleFour && /^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleFourExternal.push(request.url());
+      if (checkingArticleFive && /^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleFiveExternal.push(request.url());
     });
     const articleRoute = '/articles/why-spacecraft-need-maneuverability.html';
     const articleTwoRoute = '/articles/why-orbits-change.html';
     const articleThreeRoute = '/articles/from-mission-objectives-to-maneuver-requirements.html';
     const articleFourRoute = '/articles/matching-propulsion-to-the-mission.html';
-    const articleRoutes = [articleRoute, articleTwoRoute, articleThreeRoute, articleFourRoute];
+    const articleFiveRoute = '/articles/choosing-a-propulsion-system-architecture.html';
+    const articleRoutes = [articleRoute, articleTwoRoute, articleThreeRoute, articleFourRoute, articleFiveRoute];
     const chartCases = [
       { figure: '#hall-power-mass-figure', root: '#hall-power-mass-chart', name: 'hall-power-mass' },
       { figure: '#mass-break-even-figure', root: '#mass-break-even-chart', name: 'mass-break-even' },
@@ -57,6 +61,7 @@ const server = http.createServer(async (request, response) => {
       await page.setViewportSize({ width, height: 900 });
       for (const route of routes) {
         checkingArticleFour = route === articleFourRoute;
+        checkingArticleFive = route === articleFiveRoute;
         const response = await page.goto(origin + route);
         assert.equal(response.status(), 200, `Unexpected status: ${route}`);
         assert(!/\b(?:noindex|none)\b/i.test(response.headers()['x-robots-tag'] || ''), `Noindex response header: ${route}`);
@@ -211,6 +216,86 @@ const server = http.createServer(async (request, response) => {
           close(Number(await page.locator('[data-break-even-kg]').getAttribute('data-starting-mass-difference-kg')), 0, 'Break-even zero crossing');
           assert(mass.initial_mass_difference_at_0_kg < 0 && mass.initial_mass_difference_at_8_kg > 0, 'Break-even curve has correct sign');
         }
+        if (route === articleFiveRoute) {
+          assert.equal(await page.locator('section.article-section').count(), 6, 'Article 5 has six sections');
+          assert.equal(await page.locator('table.article-table').count(), 2, 'Article 5 has two tables');
+          assert.equal(await page.locator('.article-five-visual').count(), 2, 'Article 5 has two integrated visual roots');
+          assert.equal(await page.locator('.draft-notice, .preview-status, iframe').count(), 0, 'Article 5 retains private preview chrome');
+          const publicText = await page.locator('body').innerText();
+          assert(!/Private preview|Not published|Internal editorial notes|\/mnt\/|\/home\/|C:\\Users|\bour (?:spacecraft|example|configuration|architecture|propellant)\b/i.test(publicText), 'Private material or selected-design perspective visible in Article 5');
+          assert(publicText.includes('does not report Aeterna hardware performance, qualification or flight results'), 'Article 5 evidence boundary missing');
+          const metadata = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts => scripts.map(script => JSON.parse(script.textContent)).filter(item => item['@type'] === 'Article'));
+          assert.equal(metadata.length, 1, 'Article 5 has one Article schema');
+          assert.equal(metadata[0].mainEntityOfPage, canonical);
+          assert.equal(metadata[0].headline, 'Choosing a Propulsion System Architecture');
+          assert.equal(metadata[0].datePublished, '2026-09-29');
+          assert.equal(await page.locator('meta[property="article:published_time"]').getAttribute('content'), metadata[0].datePublished);
+          assert.equal(await page.locator(`time[datetime="${metadata[0].datePublished}"]`).count(), 1, 'Article 5 visible date agrees with schema');
+          const anchors = await page.evaluate(() => {
+            const ids = [...document.querySelectorAll('[id]')].map(node => node.id);
+            return {
+              count: ids.length, unique: new Set(ids).size,
+              broken: [...document.querySelectorAll('a[href^="#"]')].filter(node => !document.getElementById(decodeURIComponent(node.getAttribute('href').slice(1)))).map(node => node.getAttribute('href')),
+            };
+          });
+          assert.equal(anchors.count, anchors.unique, 'Article 5 IDs are unique');
+          assert.deepEqual(anchors.broken, [], 'Article 5 fragment links resolve');
+          await page.evaluate(() => document.fonts.ready);
+          await page.waitForFunction(() => document.querySelectorAll('.article-five-visual svg text').length > 20);
+          assert.equal(await page.locator('#propulsion-operating-timeline button, #propulsion-operating-timeline select, #propulsion-operating-timeline input').count(), 0, 'Article 5 timeline must remain static, without a dropdown');
+          const timeline = await page.locator('.pot-chart').innerHTML();
+          for (const mode of ['overview', 'shared', 'isolated']) {
+            // Programmatic activation preserves the page's initial keyboard-entry check below.
+            await page.locator(`[data-pam-mode="${mode}"]`).evaluate(button => button.click());
+            const state = await page.evaluate(() => ({
+              pressed: [...document.querySelectorAll('[data-pam-mode][aria-pressed="true"]')].map(button => button.dataset.pamMode),
+              blocked: document.querySelectorAll('.pam-blocked').length,
+              active: document.querySelectorAll('.pam-active').length,
+              mapText: [...document.querySelectorAll('.pam-map text')].map(node => [...node.querySelectorAll('tspan')].map(span => span.textContent).join(' ')).join(' | '),
+            }));
+            assert.deepEqual(state.pressed, [mode], `Article 5 map state ${mode} at ${width}`);
+            assert.equal(state.blocked, mode === 'isolated' ? 2 : 0, 'Isolation cuts both propellant paths to branch A only');
+            assert.equal(state.active, mode === 'shared' ? 2 : 0, 'Shared demand marks both groups');
+            if (mode === 'shared') assert.equal((state.mapText.match(/Commanded firing/g) || []).length, 2);
+            if (mode === 'isolated') assert(state.mapText.includes('Supply removed') && state.mapText.includes('Paths connected'), 'Isolation distinguishes disconnected A and connected B');
+            assert.equal(await page.locator('.pot-chart').innerHTML(), timeline, 'Map interaction must not alter the static timeline');
+            for (const selector of ['.pam-map', '.pot-chart']) {
+              const svg = page.locator(selector);
+              assert.equal(await svg.getAttribute('role'), 'img');
+              assert((await svg.locator('title').textContent()).trim());
+              assert((await svg.locator('desc').textContent()).trim());
+              const fit = await svg.evaluate(svg => {
+                const bounds = svg.getBoundingClientRect();
+                const labels = [...svg.querySelectorAll('text')].filter(node => node.textContent.trim()).map(node => {
+                  const rect = node.getBoundingClientRect();
+                  const matrix = node.getScreenCTM();
+                  return { text: node.textContent, left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, size: parseFloat(getComputedStyle(node).fontSize) * (matrix ? Math.hypot(matrix.c, matrix.d) : 1) };
+                });
+                const overlaps = [];
+                for (let i = 0; i < labels.length; i++) for (let j = i + 1; j < labels.length; j++) {
+                  const a = labels[i], b = labels[j];
+                  if (Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 && Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1) overlaps.push([a.text, b.text]);
+                }
+                return {
+                  count: labels.length,
+                  outside: labels.filter(label => label.left < bounds.left - 1 || label.right > bounds.right + 1 || label.top < bounds.top - 1 || label.bottom > bounds.bottom + 1).map(label => label.text),
+                  tiny: labels.filter(label => label.size < 11).map(label => label.text),
+                  overlaps,
+                };
+              });
+              assert(fit.count > 10, `Article 5 ${selector} did not render`);
+              assert.deepEqual(fit.tiny, [], `Article 5 ${selector} labels below 11 px at ${width}/${mode}`);
+              assert.deepEqual(fit.outside, [], `Article 5 ${selector} clipped labels at ${width}/${mode}`);
+              assert.deepEqual(fit.overlaps, [], `Article 5 ${selector} overlapping labels at ${width}/${mode}`);
+            }
+          }
+          await page.locator('[data-pam-mode="overview"]').evaluate(button => button.click());
+          const clipped = await page.locator('.article-table, .article-visual, h1, h2, h3').evaluateAll(elements => elements.filter(element => {
+            const bounds = element.getBoundingClientRect();
+            return bounds.left < -0.5 || bounds.right > innerWidth + 0.5 || element.scrollWidth > element.clientWidth + 2;
+          }).map(element => element.tagName + '#' + element.id));
+          assert.deepEqual(clipped, [], `Article 5 content clipping at ${width}`);
+        }
         const iconUrls = await page.locator('link[rel="icon"]').evaluateAll(icons => icons.map(icon => icon.href));
         assert.equal(iconUrls.length, 2);
         for (const iconUrl of iconUrls) {
@@ -229,11 +314,17 @@ const server = http.createServer(async (request, response) => {
           if (route === articleFourRoute) {
             for (const item of chartCases) await page.locator(item.figure).screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `article-four-${item.name}-${width}.png`) });
           }
+          if (route === articleFiveRoute) {
+            for (const [name, selector] of [['architecture-map', '#figure-propulsion-architecture-map'], ['operating-timeline', '#figure-propulsion-operating-timeline']]) {
+              await page.locator(selector).screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `article-five-${name}-${width}.png`) });
+            }
+          }
         }
       }
     }
     // Keep the legacy phasing checks independent of responsive route order.
     checkingArticleFour = false;
+    checkingArticleFive = false;
     await page.goto(origin + articleRoute);
     assert.equal(await page.locator('#phasing-lag').innerText(), '10.01');
     await page.locator('#phasing-time').fill('5');
@@ -378,6 +469,31 @@ const server = http.createServer(async (request, response) => {
     await coastSlider.fill('0.25');
     near(Number(await coast.getAttribute('data-fraction')), 0.25, 'Reduced-motion slider stays available');
 
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    checkingArticleFive = true;
+    await page.goto(origin + articleFiveRoute);
+    const overviewButton = page.locator('[data-pam-mode="overview"]');
+    const sharedButton = page.locator('[data-pam-mode="shared"]');
+    const isolatedButton = page.locator('[data-pam-mode="isolated"]');
+    assert.equal(await overviewButton.getAttribute('aria-pressed'), 'true', 'Article 5 opens in overview');
+    await overviewButton.focus();
+    await page.keyboard.press('Tab');
+    assert(await sharedButton.evaluate(button => button === document.activeElement), 'Map keyboard order reaches shared demand');
+    await page.keyboard.press('Enter');
+    assert.equal(await sharedButton.getAttribute('aria-pressed'), 'true', 'Map shared demand works with Enter');
+    await page.keyboard.press('Tab');
+    assert(await isolatedButton.evaluate(button => button === document.activeElement), 'Map keyboard order reaches isolation');
+    await page.keyboard.press('Space');
+    assert.equal(await isolatedButton.getAttribute('aria-pressed'), 'true', 'Map isolation works with Space');
+    assert.equal(await page.locator('.pam-blocked').count(), 2);
+    assert.equal(await page.locator('#pam-state-detail').getAttribute('aria-live'), 'polite');
+    const staticTimeline = await page.locator('.pot-chart').innerHTML();
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await overviewButton.click();
+    assert.equal(await overviewButton.getAttribute('aria-pressed'), 'true', 'Map remains usable with reduced motion');
+    assert.equal(await page.locator('.pot-chart').innerHTML(), staticTimeline, 'Timeline remains static under reduced motion');
+    checkingArticleFive = false;
+
     const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 900 } });
     const fallback = await noJs.newPage();
     await fallback.goto(origin + articleRoute);
@@ -399,7 +515,10 @@ const server = http.createServer(async (request, response) => {
     assert(await fallback.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No-JS Article 3 overflow');
     fallback.on('pageerror', error => errors.push(error.message));
     fallback.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
-    fallback.on('request', request => { if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleFourExternal.push(request.url()); });
+    let fallbackArticle = 4;
+    fallback.on('request', request => {
+      if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) (fallbackArticle === 5 ? articleFiveExternal : articleFourExternal).push(request.url());
+    });
     await fallback.goto(origin + articleFourRoute);
     assert.equal(await fallback.locator('.article-section').count(), 6);
     assert.equal(await fallback.locator('.equation math').count(), 3);
@@ -429,6 +548,23 @@ const server = http.createServer(async (request, response) => {
       if (process.env.AETERNA_SCREENSHOT_DIR) await fallback.locator(item.figure).screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, `article-four-${item.name}-no-js-320.png`) });
     }
     assert(await fallback.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No-JS Article 4 overflow');
+    fallbackArticle = 5;
+    await fallback.goto(origin + articleFiveRoute);
+    assert.equal(await fallback.locator('section.article-section').count(), 6, 'Article 5 full text remains available without JavaScript');
+    for (const selector of ['#propulsion-architecture-map .viz-controls', '#pam-state-detail', '.pam-figure', '.pot-figure']) {
+      assert.equal(await fallback.locator(selector).isVisible(), false, `No-JS Article 5 hides inactive ${selector}`);
+    }
+    const mapFallback = fallback.locator('#propulsion-architecture-map noscript');
+    const timelineFallback = fallback.locator('#propulsion-operating-timeline noscript');
+    assert(await mapFallback.isVisible() && await timelineFallback.isVisible(), 'Both Article 5 no-JS descriptions are visible');
+    assert.match(await mapFallback.innerText(), /group B retains connected paths.*shared upstream/s, 'Map fallback explains remaining shared dependencies');
+    assert.match(await mapFallback.innerText(), /No calculated flows or demonstrated fault tolerance; not an Aeterna configuration/, 'Map fallback retains limitations');
+    assert.match(await timelineFallback.innerText(), /restore readiness|restore readiness before firing/, 'Timeline fallback explains conditional preparation');
+    assert.match(await timelineFallback.innerText(), /No universal recovery interval/, 'Timeline fallback avoids universal cooldown');
+    assert.match(await timelineFallback.innerText(), /neither establishes unrestricted firing or lower energy use/, 'Timeline fallback retains standby limitations');
+    assert.equal(await fallback.locator('#propulsion-operating-timeline button, #propulsion-operating-timeline select, #propulsion-operating-timeline input').count(), 0, 'No-JS timeline has no irrelevant controls');
+    assert(await fallback.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No-JS Article 5 overflow');
+    if (process.env.AETERNA_SCREENSHOT_DIR) await fallback.screenshot({ path: path.join(process.env.AETERNA_SCREENSHOT_DIR, 'article-five-no-js-320.png'), fullPage: true });
     await noJs.close();
     await page.goto(origin + '/');
     await page.getByRole('link', { name: 'Propulsion', exact: true }).click();
@@ -436,7 +572,8 @@ const server = http.createServer(async (request, response) => {
     assert.equal(new URL(page.url()).hash, '');
     assert.deepEqual(errors, []);
     assert.deepEqual(articleFourExternal, [], 'Article 4 made external network requests');
-    console.log('PASS: 32 responsive page checks, metadata, four article index cards, homepage artwork and portrait, navigation, favicon rendering, keyboard entry, phasing, ten native display equations, five orbital figures, two responsive resource charts with independent numerical checks, precession quarters, shared GEO states, coast controls and invariants, apsis physics, reduced motion, no-JS fallbacks, no Article 4 external requests, and no browser errors');
+    assert.deepEqual(articleFiveExternal, [], 'Article 5 made external network requests');
+    console.log('PASS: 36 responsive page checks, metadata, five article index cards, homepage artwork and portrait, navigation, favicon rendering, keyboard entry, phasing, ten native display equations, five orbital figures, two responsive resource charts with independent numerical checks, precession quarters, shared GEO states, coast controls and invariants, apsis physics, three architecture-map states and keyboard control, static operating timeline, reduced motion, no-JS fallbacks, no Article 4/5 external requests, and no browser errors');
   } finally {
     if (browser) await browser.close();
     if (server.listening) await new Promise(resolve => server.close(resolve));

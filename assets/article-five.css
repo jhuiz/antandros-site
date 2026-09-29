@@ -1,0 +1,21 @@
+.article-five .article-toc a { display: inline; padding-block: 0; }
+.article-five .article-toc li { padding-block: 5px; }
+.article-five .article-body h3 { margin-top: 30px; font-size: 1.25rem; line-height: 1.3; }
+.article-five .article-table { width: 100%; margin-block: 26px; border-collapse: collapse; table-layout: fixed; font-size: .95rem; line-height: 1.55; }
+.article-five .article-table th, .article-five .article-table td { padding: 13px 12px; border-bottom: 1px solid var(--line-light); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+.article-five .article-table thead { background: var(--paper-muted); }
+.article-five .article-table th:first-child { width: 33%; }
+.article-five .article-visual { margin: 34px 0; padding-block: 24px; border-block: 1px solid var(--line-light); }
+.article-five .article-backlink { margin-top: 36px; }
+.article-five .figure-cross-reference { font-size: .95rem; }
+.article-five .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.article-five .figure-fallback { width: 100%; height: auto; display: block; }
+@media (max-width: 560px) {
+  .article-five .article-table { font-size: .875rem; }
+  .article-five .article-table th, .article-five .article-table td { padding: 10px 7px; }
+  .article-five .article-body h2 { font-size: 1.85rem; }
+}
+@media print {
+  .article-five .site-nav, .article-five .article-toc { display: none; }
+  .article-five .article-body { width: 100%; }
+}

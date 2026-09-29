@@ -1,0 +1,73 @@
+/* Article 5: original conceptual architecture and operating-sequence figures. */
+.article-five-visual {
+  --foreground: var(--ink);
+  --card: var(--paper);
+  --border: var(--line-light);
+  --muted: var(--paper-muted);
+  --muted-foreground: #46545e;
+  --accent: #e0e9e8;
+  --viz-series-1: #246580;
+  --viz-series-2: #946038;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.article-five .article-body .article-five-visual h3 {
+  margin: 0 0 16px;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: 500;
+}
+.article-five-visual .text-small { font-size: 12px; }
+.article-five-visual .text-muted { color: var(--muted-foreground); }
+.article-five-visual .viz-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.article-five-visual .btn {
+  appearance: none;
+  padding: 8px 12px;
+  border: 1px solid var(--line-light);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.35;
+  cursor: pointer;
+}
+.article-five-visual .btn:hover { background: var(--paper-muted); }
+.article-five-visual .btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.article-five-visual .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.article-five-visual figcaption { line-height: 1.5; }
+.article-five-visual noscript { display: block; margin-block: 12px; }
+@media (pointer: coarse) { .article-five-visual .btn { min-height: 44px; } }
+#propulsion-architecture-map .pam-figure { margin: 16px 0 8px; }
+    #propulsion-architecture-map .pam-map { display: block; width: 100%; overflow: visible; }
+    #propulsion-architecture-map .pam-map text { fill: var(--foreground); }
+    #propulsion-architecture-map .pam-node { fill: var(--card); stroke: var(--border); stroke-width: 1; }
+    #propulsion-architecture-map .pam-active { fill: var(--accent); }
+    #propulsion-architecture-map .pam-fluid { fill: none; stroke-width: 2; }
+    #propulsion-architecture-map .pam-fuel { stroke: var(--viz-series-1); }
+    #propulsion-architecture-map .pam-oxidizer { stroke: var(--viz-series-2); stroke-dasharray: 8 4; }
+    #propulsion-architecture-map .pam-electrical { fill: none; stroke: var(--muted-foreground); stroke-width: 1; stroke-dasharray: 5 5; }
+    #propulsion-architecture-map .pam-thermal { fill: none; stroke: var(--muted-foreground); stroke-width: 1; stroke-dasharray: 1 4; stroke-linecap: round; }
+    #propulsion-architecture-map .pam-junction { stroke: none; }
+    #propulsion-architecture-map .pam-blocked { fill: none; stroke: var(--foreground); stroke-width: 2; }
+    #propulsion-architecture-map .pam-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 8px 0; }
+    #propulsion-architecture-map .pam-legend span { display: inline-flex; align-items: center; gap: 7px; }
+    #propulsion-architecture-map .pam-swatch { width: 26px; height: 0; border-top: 2px solid var(--viz-series-1); }
+    #propulsion-architecture-map .pam-swatch.ox { border-color: var(--viz-series-2); border-top-style: dashed; }
+    #propulsion-architecture-map .pam-swatch.electric { border-color: var(--muted-foreground); border-top-width: 1px; border-top-style: dashed; }
+    #propulsion-architecture-map .pam-swatch.thermal { border-color: var(--muted-foreground); border-top-width: 1px; border-top-style: dotted; }
+    #propulsion-architecture-map .pam-caption { margin-top: 8px; }
+    #propulsion-architecture-map .pam-detail { margin: 12px 0 0; }
+
+#propulsion-operating-timeline .pot-figure { margin: 16px 0 0; }
+    #propulsion-operating-timeline .pot-chart { display: block; width: 100%; }
+    #propulsion-operating-timeline .pot-chart text { fill: var(--foreground); }
+    #propulsion-operating-timeline .pot-rule { stroke: var(--border); stroke-width: 1; fill: none; }
+    #propulsion-operating-timeline .pot-history { stroke: var(--muted-foreground); stroke-width: 1.5; fill: none; }
+    #propulsion-operating-timeline .pot-command { fill: var(--viz-series-1); }
+    #propulsion-operating-timeline .pot-ready { fill: var(--viz-series-1); fill-opacity: .18; }
+    #propulsion-operating-timeline .pot-rest { fill: var(--muted); }
+    #propulsion-operating-timeline .pot-hatch { stroke: var(--muted-foreground); stroke-width: 1; }
+    #propulsion-operating-timeline .pot-caption { margin-top: 12px; }

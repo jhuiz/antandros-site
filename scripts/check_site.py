@@ -115,6 +115,7 @@ articles = [
     "articles/why-orbits-change.html",
     "articles/from-mission-objectives-to-maneuver-requirements.html",
     "articles/matching-propulsion-to-the-mission.html",
+    "articles/choosing-a-propulsion-system-architecture.html",
 ]
 primary = ["index.html", "propulsion.html", "fluid-controls.html", "articles/index.html", *articles]
 canonical_urls = {name: "https://aeternasidera.com/" + ("" if name == "index.html" else name.replace("articles/index.html", "articles/")) for name in primary}
@@ -153,7 +154,7 @@ for name in articles:
         modified = article_metadata["dateModified"]
         assert date.fromisoformat(modified).isoformat() == modified and modified >= published, f"{name}: invalid modification date"
     assert published in article.times, f"{name}: visible publication date differs from metadata"
-    if name == articles[3]:
+    if name in articles[3:]:
         assert article.metadata.get("article:published_time") == [published], f"{name}: Open Graph publication date differs"
     cards = [card for card in index_cards if "/" + name in card["links"]]
     assert len(cards) == 1, f"{name}: missing or duplicate article index card"
@@ -202,6 +203,53 @@ for stem in ["series-04-hall-power-mass", "series-04-mass-break-even"]:
     assert figure_svg.tag == "{http://www.w3.org/2000/svg}svg", f"Article 4: invalid full-size SVG {stem}"
     assert not figure_svg.findall(".//{http://www.w3.org/2000/svg}script"), f"Article 4: static SVG contains script {stem}"
 assert "/assets/article-four.css" in article_four.links and "/assets/article-four-charts.js" in article_four.links, "Article 4: presentation assets missing"
+
+article_five = pages[(ROOT / articles[4]).resolve()]
+article_five_metadata = next(item for item in article_five.scripts if item.get("@type") == "Article")
+assert article_five_metadata.get("headline") == "Choosing a Propulsion System Architecture", "Article 5: incorrect headline metadata"
+assert article_five_metadata.get("datePublished") == "2026-09-29", "Article 5: incorrect publication date"
+assert article_five.article_sections == [
+    "follow-the-operating-sequence",
+    "store-propellant-and-make-it-available",
+    "decide-which-pressure-variation-to-accept-or-control",
+    "supply-and-command-a-network-of-thrusters",
+    "make-thermal-management-part-of-availability",
+    "compare-complete-architectures-over-the-operating-sequence",
+], "Article 5: expected six approved sections in order"
+assert len(article_five.article_tables) == 2, "Article 5: expected operating-stage and architecture-comparison tables"
+assert {"figure-propulsion-architecture-map", "propulsion-architecture-map", "figure-propulsion-operating-timeline", "propulsion-operating-timeline"} <= article_five.ids, "Article 5: visual roots missing"
+article_five_text = (ROOT / articles[4]).read_text(encoding="utf-8")
+assert not re.search(r"Private preview|Not published|draft-notice|preview-status|Internal editorial notes|Prepared:|/mnt/|/home/|C:\\Users|localhost:", article_five_text, re.I), "Article 5: private review material leaked into public copy"
+assert not re.search(r"\bour (?:spacecraft|example|configuration|architecture|propellant)\b", article_five_text, re.I), "Article 5: generic educational scenario presented as Aeterna's selected design"
+assert "not an Aeterna configuration" in article_five_text, "Article 5: architecture-map boundary missing"
+assert "does not report Aeterna hardware performance, qualification or flight results" in article_five_text, "Article 5: evidence boundary missing"
+assert "Widths are not durations" in article_five_text, "Article 5: qualitative timeline boundary missing"
+assert article_five_text.count("<noscript>") == 2, "Article 5: both visuals need no-JavaScript descriptions"
+assert set(re.findall(r'data-pam-mode="([^"]+)"', article_five_text)) == {"overview", "shared", "isolated"}, "Article 5: architecture map modes changed"
+assert "<iframe" not in article_five_text.lower(), "Article 5: visuals should be integrated, not nested iframe previews"
+article_five_sources = {
+    "https://www.nasa.gov/smallsat-institute/sst-soa/in-space_propulsion/",
+    "https://ntrs.nasa.gov/api/citations/20170000667/downloads/20170000667.pdf",
+    "https://www.nasa.gov/wp-content/uploads/static/history/alsj/16_Reaction_Control_Subsystem_pp147-158.pdf",
+    "https://wtt-lite.nist.gov/wtt-lite/help/properties/LG_pressure.html",
+    "https://elib.dlr.de/197901/1/EUCASS2023-596.pdf",
+    "https://ntrs.nasa.gov/api/citations/20240003278/downloads/Paper_Transit_Habitat_Prop_Concept_JANNAF_V4.pdf",
+    "https://resilience.esa.int/archives/projects/electronic-pressure-regulator",
+    "https://blogs.esa.int/orion/2022/11/21/how-to-fly-orion-propulsion/",
+    "https://ntrs.nasa.gov/api/citations/19740002611/downloads/19740002611.pdf",
+    "https://ntrs.nasa.gov/api/citations/19720014237/downloads/19720014237.pdf",
+    "https://ntrs.nasa.gov/api/citations/20250004573/downloads/Lesson%20Learned%20and%20Prop%20Stand%20TIM%206-13-25%20R3.pdf",
+    "https://www.nasa.gov/smallsat-institute/sst-soa/thermal-control/",
+    "https://ntrs.nasa.gov/api/citations/19830016280/downloads/19830016280.pdf",
+    "https://blogs.esa.int/orion/2023/02/03/how-to-fly-orion-thermal/",
+    "https://www.nasa.gov/reference/6-8-decision-analysis/",
+}
+actual_sources = {link for link in article_five.links if link.startswith("https://") and urlsplit(link).hostname != "aeternasidera.com"}
+assert actual_sources == article_five_sources, "Article 5: reference URLs differ from approved manuscript"
+for asset in ["article-five.css", "article-five-visuals.css", "article-five-visuals.js"]:
+    assert f"/assets/{asset}" in article_five.links, f"Article 5: missing presentation asset {asset}"
+article_five_js = (ROOT / "assets/article-five-visuals.js").read_text(encoding="utf-8")
+assert not re.search(r"window\.openai|openai:set_globals|\bfetch\s*\(|XMLHttpRequest|WebSocket", article_five_js), "Article 5: figures must work without host APIs or network calls"
 
 namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 urls = [element.text for element in ET.parse(ROOT / "sitemap.xml").findall("s:url/s:loc", namespace)]
