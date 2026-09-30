@@ -2,6 +2,7 @@
 from html.parser import HTMLParser
 from pathlib import Path
 from datetime import date
+from collections import Counter
 from urllib.parse import unquote, urlsplit
 import json
 import base64
@@ -116,6 +117,7 @@ articles = [
     "articles/from-mission-objectives-to-maneuver-requirements.html",
     "articles/matching-propulsion-to-the-mission.html",
     "articles/choosing-a-propulsion-system-architecture.html",
+    "articles/turning-propulsion-architecture-into-dependable-hardware.html",
 ]
 primary = ["index.html", "propulsion.html", "fluid-controls.html", "articles/index.html", *articles]
 canonical_urls = {name: "https://aeternasidera.com/" + ("" if name == "index.html" else name.replace("articles/index.html", "articles/")) for name in primary}
@@ -250,6 +252,68 @@ for asset in ["article-five.css", "article-five-visuals.css", "article-five-visu
     assert f"/assets/{asset}" in article_five.links, f"Article 5: missing presentation asset {asset}"
 article_five_js = (ROOT / "assets/article-five-visuals.js").read_text(encoding="utf-8")
 assert not re.search(r"window\.openai|openai:set_globals|\bfetch\s*\(|XMLHttpRequest|WebSocket", article_five_js), "Article 5: figures must work without host APIs or network calls"
+
+article_six = pages[(ROOT / articles[5]).resolve()]
+article_six_metadata = next(item for item in article_six.scripts if item.get("@type") == "Article")
+assert article_six_metadata.get("headline") == "Turning Propulsion Architecture into Dependable Hardware", "Article 6: incorrect headline metadata"
+assert article_six_metadata.get("datePublished") == "2026-09-30", "Article 6: incorrect publication date"
+assert article_six.article_sections == [
+    "define-the-component-s-job",
+    "engineer-the-requirements-together",
+    "design-for-variation",
+    "preserve-performance-through-use-and-storage",
+    "make-the-design-reproducible",
+    "keep-the-hardware-definition-and-evidence-connected",
+], "Article 6: expected six approved sections in order"
+assert len(article_six.article_tables) == 1, "Article 6: expected one valve-state table"
+assert len(article_six.display_equations) == 2 and len(article_six.math_expressions) == 10, "Article 6: expected two display and eight inline expressions"
+assert all(equation.get("xmlns") == "http://www.w3.org/1998/Math/MathML" and equation.get("aria-label", "").strip() for equation in article_six.math_expressions), "Article 6: equations need accessible native MathML"
+assert [equation.get("data-tex") for equation in article_six.display_equations] == [
+    r"F_p \approx |\Delta p|\,A_{\mathrm{eff}}",
+    r"\Delta c \approx \alpha_bD_b\Delta T_b-\alpha_sD_s\Delta T_s",
+], "Article 6: explanatory force or differential-clearance expression changed"
+assert article_six.figures == ["figure-valve-command-dependencies", "figure-thermal-guide-clearance"], "Article 6: expected two static figures in order"
+assert {"valve-command-dependencies", "thermal-guide-clearance", "vcd-title", "vcd-summary", "tgc-title"} <= article_six.ids, "Article 6: static figure content missing"
+article_six_text = (ROOT / articles[5]).read_text(encoding="utf-8")
+assert not re.search(r"Private preview|Not published|draft-notice|preview-status|Private editorial notes|Internal editorial notes|END ARTICLE BODY|/mnt/|/home/|C:\\Users|localhost:|window\.openai", article_six_text, re.I), "Article 6: private review material leaked"
+assert not re.search(r"\bour (?:spacecraft|example|configuration|architecture|propellant)\b", article_six_text, re.I), "Article 6: illustrative hardware presented as selected Aeterna design"
+for boundary in ["not a disclosed Aeterna product configuration", "not a complete actuator-sizing equation", "not a valve design or demonstrated performance"]:
+    assert boundary in article_six_text, f"Article 6: evidence/model boundary missing: {boundary}"
+assert not re.search(r"<(?:iframe|button|select|input|textarea)\b", article_six_text, re.I), "Article 6: static figures must not require controls or nested previews"
+assert re.findall(r'<script\b[^>]*\bsrc="([^"]+)"', article_six_text) == ["/script.js"], "Article 6: figures and equations must not require JavaScript"
+without_tex_attributes = re.sub(r'\sdata-tex="[^"]*"', "", article_six_text)
+assert not re.search(r"\\(?:\[|\]|\(|\)|Delta|alpha|mathrm|approx|begin|end)|\$\$", without_tex_attributes), "Article 6: unrendered LaTeX outside math audit attributes"
+for references in re.findall(r'aria-(?:labelledby|describedby)="([^"]+)"', article_six_text):
+    assert set(references.split()) <= article_six.ids, "Article 6: broken accessible-name/description references"
+svgs = re.findall(r"<svg\b.*?</svg>", article_six_text, re.S)
+assert len(svgs) == 2, "Article 6: expected reference and changed-clearance SVGs"
+for svg_text in svgs:
+    svg = ET.fromstring(svg_text)
+    assert svg.attrib.get("role") == "img", "Article 6: diagram needs image semantics"
+    for tag in ["title", "desc"]:
+        element = svg.find("{http://www.w3.org/2000/svg}" + tag)
+        assert element is not None and element.text and element.text.strip(), f"Article 6: SVG missing {tag}"
+    assert not svg.findall(".//{http://www.w3.org/2000/svg}script"), "Article 6: static SVG contains script"
+# Preserve every approved source-link occurrence, including figure citations.
+article_six_sources = Counter({
+    "https://www.nasa.gov/reference/appendix-c-how-to-write-a-good-requirement/": 1,
+    "https://ntrs.nasa.gov/api/citations/19740018866/downloads/19740018866.pdf": 7,
+    "https://www.nasa.gov/reference/4-2-technical-requirements-definition/": 1,
+    "https://ntrs.nasa.gov/api/citations/19740019163/downloads/19740019163.pdf": 6,
+    "https://www.ti.com/lit/an/slvae59a/slvae59a.pdf": 3,
+    "https://openstax.org/books/university-physics-volume-2/pages/1-3-thermal-expansion": 2,
+    "https://standards.nasa.gov/sites/default/files/standards/NASA/B/2022-12-06-NASA-STD-5017B-Approved.pdf": 2,
+    "https://www.nasa.gov/reference/6-5-configuration-management/": 2,
+    "https://www.nasa.gov/reference/5-3-product-verification/": 1,
+})
+actual_sources = Counter(link for link in article_six.links if link.startswith("https://") and urlsplit(link).hostname != "aeternasidera.com")
+assert actual_sources == article_six_sources, "Article 6: reference URLs or occurrence counts differ from approved copy"
+for asset in ["article-six.css", "article-six-visuals.css"]:
+    assert f"/assets/{asset}" in article_six.links, f"Article 6: missing presentation asset {asset}"
+    css = (ROOT / "assets" / asset).read_text(encoding="utf-8")
+    assert not re.search(r"@import|https?://|window\.openai", css), f"Article 6: {asset} must remain self-contained"
+assert "/" + articles[4] in article_six.links, "Article 6: previous-article link missing"
+assert "/" + articles[5] in article_five.links, "Article 5: next-article link missing"
 
 namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 urls = [element.text for element in ET.parse(ROOT / "sitemap.xml").findall("s:url/s:loc", namespace)]
