@@ -1,0 +1,43 @@
+/* Article 6: original static valve-response and thermal-clearance figures. No script required. */
+.article-six-visual { color: var(--ink); font-size: 14px; line-height: 1.5; }
+.article-six .article-body .article-six-visual h3 { margin: 0 0 10px; font-size: 1.15rem; line-height: 1.35; letter-spacing: normal; font-weight: 600; }
+.article-six .article-body .article-six-visual h4 { margin: 0; font-size: 1rem; line-height: 1.4; font-weight: 600; }
+.article-six-visual .a6v-summary { margin: 0 0 22px; color: #46545e; }
+.article-six-visual .a6v-key { margin: 20px 0 0; font-size: 13px; color: #46545e; }
+.vcd-visual .vcd-chain { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 26px; list-style: none; padding: 0; margin: 0; }
+.vcd-visual .vcd-stage { position: relative; min-width: 0; }
+.vcd-visual .vcd-node { background: var(--paper-muted); padding: 14px 12px; min-height: 132px; }
+.vcd-visual .vcd-order { display: block; color: #46545e; font-size: 12px; margin-bottom: 8px; }
+.vcd-visual .vcd-stage:not(:last-child)::after { content: "→"; position: absolute; left: calc(100% + 5px); top: 48px; color: #46545e; font-size: 20px; line-height: 1; }
+.vcd-visual .vcd-influences { margin: 12px 0 0; font-size: 13px; }
+.tgc-visual .tgc-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.tgc-visual .tgc-state { text-align: center; min-width: 0; }
+.tgc-visual .tgc-temperature { margin: 6px 0 12px; font-size: 13px; color: #46545e; min-height: 40px; }
+.tgc-visual sub { font-size: 11px; }
+.tgc-visual .tgc-diagram { display: block; width: 240px; height: 280px; max-width: 100%; margin-inline: auto; overflow: visible; }
+.tgc-visual .tgc-guide { fill: var(--paper-muted); stroke: #78858d; stroke-width: 1; }
+.tgc-visual .tgc-bore { fill: var(--paper); stroke: #78858d; stroke-width: 1; }
+.tgc-visual .tgc-member { fill: #c8dbe4; stroke: #246580; stroke-width: 1.5; }
+.tgc-visual .tgc-centerline { fill: none; stroke: #78858d; stroke-width: .65; stroke-dasharray: 8 4 2 4; }
+.tgc-visual .tgc-extension { fill: none; stroke: #78858d; stroke-width: .65; }
+.tgc-visual .tgc-dimension { fill: none; stroke: var(--ink); stroke-width: 1; }
+.tgc-visual .tgc-arrowhead { fill: var(--ink); }
+.tgc-visual .tgc-dimension-label { fill: var(--ink); font-family: inherit; font-size: 13px; }
+.tgc-visual .tgc-reference-boundary { fill: none; stroke: #46545e; stroke-width: 1; stroke-dasharray: 4 4; }
+.tgc-visual .tgc-result { margin: 12px 0 0; font-size: 13px; }
+.tgc-visual .tgc-equation { display: inline-block; white-space: nowrap; }
+.tgc-visual .tgc-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; margin-top: 22px; font-size: 12px; color: #46545e; }
+.tgc-visual .tgc-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.tgc-visual .tgc-key-guide { width: 16px; height: 12px; background: var(--paper-muted); border: 1px solid #78858d; }
+.tgc-visual .tgc-key-member { width: 16px; height: 12px; background: #c8dbe4; border: 1px solid #246580; }
+.tgc-visual .tgc-key-reference { width: 20px; height: 0; border-top: 1px dashed #46545e; }
+@media (max-width: 680px) {
+  .vcd-visual .vcd-chain { grid-template-columns: 1fr; gap: 34px; }
+  .vcd-visual .vcd-stage { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 16px; align-items: center; }
+  .vcd-visual .vcd-node { min-height: 0; padding: 12px 10px; }
+  .vcd-visual .vcd-influences { margin: 0; }
+  .vcd-visual .vcd-stage:not(:last-child)::after { content: "↓"; top: calc(100% + 7px); left: calc((100% - 16px) / 4.4 - 6px); }
+  .tgc-visual .tgc-comparison { grid-template-columns: 1fr; gap: 32px; }
+  .tgc-visual .tgc-temperature { min-height: 0; }
+}
+@media print { .article-six-visual { break-inside: avoid; } }

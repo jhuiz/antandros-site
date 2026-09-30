@@ -1,0 +1,26 @@
+.article-six .article-introduction { margin-top: 8px; margin-bottom: 30px; }
+.article-six .article-toc a { display: inline; padding-block: 0; }
+.article-six .article-toc li { padding-block: 5px; }
+.article-six .article-body h3 { margin-top: 30px; font-size: 1.25rem; line-height: 1.35; }
+.article-six .article-table { width: 100%; margin-block: 26px; border-collapse: collapse; table-layout: fixed; font-size: .95rem; line-height: 1.55; }
+.article-six .article-table th, .article-six .article-table td { padding: 13px 12px; border-bottom: 1px solid var(--line-light); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+.article-six .article-table thead { background: var(--paper-muted); }
+.article-six .article-table th:first-child { width: 29%; }
+.article-six .article-visual { margin: 34px 0; padding-block: 24px; border-block: 1px solid var(--line-light); }
+.article-six .article-backlink { margin-top: 36px; }
+.article-six .equation-block { margin: 22px 0 26px; padding-block: 8px; color: var(--ink); }
+.article-six math { font-family: "Cambria Math", "STIX Two Math", math; }
+.article-six .equation-block math { margin: 0; font-size: 1.2rem; }
+.article-six .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.article-six .article-body a { overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .article-six .article-table { font-size: .875rem; }
+  .article-six .article-table th, .article-six .article-table td { padding: 10px 7px; }
+  .article-six .article-body h2 { font-size: 1.85rem; }
+  .article-six .equation-block math { font-size: 1rem; }
+}
+@media print {
+  .article-six .site-nav, .article-six .article-toc { display: none; }
+  .article-six .article-body { width: 100%; }
+  .article-six .article-visual, .article-six .equation-block { break-inside: avoid; }
+}

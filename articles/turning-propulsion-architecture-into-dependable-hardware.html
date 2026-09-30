@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turning Propulsion Architecture into Dependable Hardware | Aeterna Sidera</title>
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="description" content="How component requirements become hardware that can retain its behavior through variation, use and manufacture.">
+<meta name="author" content="Jesus Daniel Huizar">
+<meta name="theme-color" content="#07131f">
+<link rel="icon" href="/assets/favicon.svg?v=aeterna-mark-1" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon.png?v=aeterna-mark-1" type="image/png" sizes="256x256">
+<link rel="apple-touch-icon" href="/assets/favicon.png?v=aeterna-mark-1">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/assets/article-six.css">
+<link rel="stylesheet" href="/assets/article-six-visuals.css">
+<link rel="canonical" href="https://aeternasidera.com/articles/turning-propulsion-architecture-into-dependable-hardware.html">
+<meta property="og:title" content="Turning Propulsion Architecture into Dependable Hardware | Aeterna Sidera">
+<meta property="og:description" content="How component requirements become hardware that can retain its behavior through variation, use and manufacture.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Aeterna Sidera Inc.">
+<meta property="og:url" content="https://aeternasidera.com/articles/turning-propulsion-architecture-into-dependable-hardware.html">
+<meta property="og:image" content="https://aeternasidera.com/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development">
+<meta property="article:published_time" content="2026-09-30">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Turning Propulsion Architecture into Dependable Hardware | Aeterna Sidera">
+<meta name="twitter:description" content="How component requirements become hardware that can retain its behavior through variation, use and manufacture.">
+<meta name="twitter:image" content="https://aeternasidera.com/assets/og-card.png">
+<meta name="twitter:image:alt" content="Aeterna Sidera — spacecraft propulsion and fluid controls in development">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Turning Propulsion Architecture into Dependable Hardware",
+  "description": "How component requirements become hardware that can retain its behavior through variation, use and manufacture.",
+  "datePublished": "2026-09-30",
+  "author": {
+    "@type": "Person",
+    "name": "Jesus Daniel Huizar"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Aeterna Sidera Inc.",
+    "url": "https://aeternasidera.com/"
+  },
+  "mainEntityOfPage": "https://aeternasidera.com/articles/turning-propulsion-architecture-into-dependable-hardware.html",
+  "image": "https://aeternasidera.com/assets/og-card.png",
+  "inLanguage": "en"
+}</script>
+</head><body class="page-secondary article-six">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+    <div class="shell header-inner">
+      <a class="wordmark" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="/propulsion.html">Propulsion</a>
+        <a href="/fluid-controls.html">Fluid controls</a>
+        <a href="/articles/" aria-current="page">Technical articles</a>
+        <a href="/#company">Company</a>
+        <a class="nav-contact" href="/#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+<main id="main"><article>
+<header class="hero page-hero"><div class="shell">
+<p class="eyebrow">Mission to hardware · Article 6</p>
+<h1>Turning Propulsion Architecture into Dependable Hardware</h1>
+<p class="hero-lede">How component requirements become hardware that can retain its behavior through variation, use and manufacture.</p>
+<p class="article-meta">By Jesus Daniel Huizar · Founder, Aeterna Sidera</p>
+<p class="article-meta">Published <time datetime="2026-09-30">September 30, 2026</time></p>
+</div></header>
+<div class="shell article-body">
+<div class="article-introduction"><p>An architecture assigns functions to hardware: store propellant, control its delivery and produce the required maneuver. Component engineering determines how that hardware performs across changing conditions, repeated use and manufacturing variation.</p>
+<p>This article follows one firing valve and its drive electronics from the illustrative spacecraft in <a href="https://aeternasidera.com/articles/choosing-a-propulsion-system-architecture.html">Article 5</a>. The example makes those engineering decisions concrete; it is not a disclosed Aeterna product configuration.</p>
+</div>
+<nav class="article-toc" aria-label="In this article"><p><strong>In this article</strong></p><ol><li><a href="#define-the-component-s-job">Define the component&#x27;s job</a></li><li><a href="#engineer-the-requirements-together">Engineer the requirements together</a></li><li><a href="#design-for-variation">Design for variation</a></li><li><a href="#preserve-performance-through-use-and-storage">Preserve performance through use and storage</a></li><li><a href="#make-the-design-reproducible">Make the design reproducible</a></li><li><a href="#keep-the-hardware-definition-and-evidence-connected">Keep the hardware definition and evidence connected</a></li></ol></nav>
+<section class="article-section" id="define-the-component-s-job" aria-labelledby="define-the-component-s-job-title"><h2 id="define-the-component-s-job-title">1. Define the component&#x27;s job</h2>
+<p>The valve controls one propellant path; the driver translates electrical commands into actuation. Their requirements connect the spacecraft's operating sequence to behavior that can be specified and evaluated at those interfaces.</p>
+<p><strong>A component requirement should identify the required behavior, the conditions under which it applies and an unambiguous acceptance criterion.</strong> NASA's requirements guidance emphasizes measurable performance, explicit interfaces and verifiability. <a href="https://www.nasa.gov/reference/appendix-c-how-to-write-a-good-requirement/">NASA: How to Write a Good Requirement</a></p>
+<p>For the valve, three operating states provide a starting point:</p>
+<table class="article-table"><caption class="visually-hidden">Valve states and required behavior</caption>
+<thead>
+<tr>
+<th scope="col">State</th>
+<th scope="col">Behavior to define</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Closed</td>
+<td>Allowable internal leakage through the valve under specified fluid, pressure and temperature conditions.</td>
+</tr>
+<tr>
+<td>Open</td>
+<td>Required flow within the available pressure-loss allocation, for the specified fluid state and operating conditions.</td>
+</tr>
+<tr>
+<td>Opening or closing</td>
+<td>Separate response limits, each with a defined timing reference, endpoint and permissible variation between operations.</td>
+</tr>
+</tbody>
+</table>
+<p>Pressure containment and external leakage—to the surroundings—remain relevant across all applicable states. Internal pressure relative to the surroundings governs containment loading; the pressure difference across the valve contributes to actuation loads. These are related but different requirements. NASA's historical valve guidance treats flow, leakage, forces and response as distinct considerations. <a href="https://ntrs.nasa.gov/api/citations/19740018866/downloads/19740018866.pdf">NASA: Liquid Rocket Valve Assemblies, section 2.1</a></p>
+<p>A response-time requirement also needs defined electrical conditions. The spacecraft supply may be an established constraint while the actuator's drive profile remains a design choice. Mounting loads, temperature limits and heat-transfer paths complete the interface definition. Unresolved conditions should remain identified assumptions, with a plan to resolve them. <a href="https://www.nasa.gov/reference/4-2-technical-requirements-definition/">NASA: Technical Requirements Definition</a></p>
+</section>
+<section class="article-section" id="engineer-the-requirements-together" aria-labelledby="engineer-the-requirements-together-title"><h2 id="engineer-the-requirements-together-title">2. Engineer the requirements together</h2>
+<p>Consider a normally closed, spring-return poppet valve opened by a solenoid. In this non-latching example, electrical power holds the valve open. Its flow passages, moving parts, sealing surfaces and driver must work together.</p>
+<h3>Flow capacity and actuation</h3>
+<p>Increasing opening travel can provide more area for flow, but also increases the distance the actuator must move. Passage geometry affects both pressure loss and forces on the moving element.</p>
+<p>For a simplified quasi-static loading model of an unbalanced poppet, the pressure-load magnitude can be estimated as:</p>
+<div class="equation-block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Pressure-force magnitude is approximately the absolute pressure difference multiplied by the effective pressure-loaded area." data-tex="F_p \approx |\Delta p|\,A_{\mathrm{eff}}"><msub><mi>F</mi><mi mathvariant="normal">p</mi></msub><mo>≈</mo><mo>|</mo><mrow><mi>Δ</mi><mi>p</mi></mrow><mo>|</mo><mo>⁢</mo><msub><mi>A</mi><mi mathvariant="normal">eff</mi></msub></math></div>
+<p>Here, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Pressure difference, delta p" data-tex="\Delta p"><mrow><mi>Δ</mi><mi>p</mi></mrow></math> is the pressure difference and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Effective pressure-loaded area" data-tex="A_{\mathrm{eff}}"><msub><mi>A</mi><mi mathvariant="normal">eff</mi></msub></math> is the effective projected <strong>pressure-loaded area—not the flow area</strong>. Pressure in pascals and area in square metres give force in newtons. Whether pressure assists or opposes opening depends on the arrangement.</p>
+<p>This is one contribution to the force balance, not a complete actuator-sizing equation. Spring force, friction, inertia and flow-induced forces also matter, and their contributions can change through the stroke. <a href="https://ntrs.nasa.gov/api/citations/19740018866/downloads/19740018866.pdf">NASA: Liquid Rocket Valve Assemblies, sections 2.2.5–2.2.7</a></p>
+<h3>Closing force and sealing</h3>
+<p>A stronger return spring can provide more closing force while increasing the opening demand. Depending on the resulting motion, it can also increase seating impact.</p>
+<p>Contact geometry, surface finish, alignment and material behavior determine how force is distributed at the seal. Insufficient loading can permit leakage; excessive loading or repeated impact can damage the sealing surfaces. <a href="https://ntrs.nasa.gov/api/citations/19740019163/downloads/19740019163.pdf">NASA: Liquid Rocket Valve Components, section 2.1</a></p>
+<h3>Electrical drive and response</h3>
+<p>A peak-and-hold strategy uses a higher current for opening followed by a lower holding current. Compared with maintaining the opening current, this can reduce coil heating, provided sufficient holding force remains throughout the required conditions.</p>
+<p>Removing the command does not make coil current disappear instantly. The suppression circuit controls its decay. Faster decay can shorten electromagnetic release but requires suitable voltage handling; mechanical closure and cessation of flow remain separate events. <a href="https://www.ti.com/lit/an/slvae59a/slvae59a.pdf">TI: Using Motor Drivers to Drive Solenoids, section 3</a></p>
+<figure class="article-visual" id="figure-valve-command-dependencies">
+<div id="valve-command-dependencies" class="article-six-visual vcd-visual">
+  <h3 id="vcd-title">From command to valve flow</h3>
+  <p class="a6v-summary" id="vcd-summary">Four connected stages, with different influences at each stage.</p>
+  <ol class="vcd-chain" aria-labelledby="vcd-title" aria-describedby="vcd-summary">
+    <li class="vcd-stage" data-vcd-stage="command">
+      <div class="vcd-node"><span class="vcd-order" aria-hidden="true">01</span><h4>Electrical command</h4></div>
+      <p class="vcd-influences">The requested actuation, not confirmation of motion or flow.</p>
+    </li>
+    <li class="vcd-stage" data-vcd-stage="current">
+      <div class="vcd-node"><span class="vcd-order" aria-hidden="true">02</span><h4>Driver and coil current</h4></div>
+      <p class="vcd-influences">Supply, drive profile, suppression circuit and winding temperature.</p>
+    </li>
+    <li class="vcd-stage" data-vcd-stage="motion">
+      <div class="vcd-node"><span class="vcd-order" aria-hidden="true">03</span><h4>Moving element</h4></div>
+      <p class="vcd-influences">Actuator force, pressure and spring loads, friction and inertia.</p>
+    </li>
+    <li class="vcd-stage" data-vcd-stage="flow">
+      <div class="vcd-node"><span class="vcd-order" aria-hidden="true">04</span><h4>Flow at the valve outlet</h4></div>
+      <p class="vcd-influences">Available opening, inlet and outlet conditions, and fluid state.</p>
+    </li>
+  </ol>
+  <p class="a6v-key">Arrows indicate functional dependencies—not fixed delays, guaranteed opening or delivered thrust. Fluid loading and motion remain coupled.</p>
+</div>
+
+<figcaption class="figure-caption">Figure 1. Electrical drive, mechanical motion and valve flow are connected responses. Arrows identify functional dependencies, not measured delays or guaranteed operation. Outlet flow here refers to the valve, not the resulting thrust. Principles: <a href="https://ntrs.nasa.gov/api/citations/19740018866/downloads/19740018866.pdf">NASA valve forces and response, sections 2.2.5–2.2.7</a> and <a href="https://www.ti.com/lit/an/slvae59a/slvae59a.pdf">TI solenoid-driving guidance, section 3</a>.</figcaption></figure>
+<p>The design must meet the flow, response, sealing and electrical requirements together. Its next challenge is maintaining that combination as conditions and dimensions vary.</p>
+</section>
+<section class="article-section" id="design-for-variation" aria-labelledby="design-for-variation-title"><h2 id="design-for-variation-title">3. Design for variation</h2>
+<p>Nominal dimensions represent one case. The valve must also function across permitted manufacturing variation and changing operating conditions.</p>
+<h3>Tolerances support the assembled function</h3>
+<p>Combined dimensional variation can change alignment, spring preload, available travel and seat contact. A tolerance stack-up examines these relationships across the assembly, identifying which dimensions require close control and which can tolerate greater variation. NASA's valve guidance addresses both interference and excessive clearance in assembly-tolerance reviews. <a href="https://ntrs.nasa.gov/api/citations/19740018866/downloads/19740018866.pdf">NASA: Liquid Rocket Valve Assemblies, sections 2.3.12 and 3.3.12</a></p>
+<h3>Operating conditions change the fit</h3>
+<p>For a cylindrical member moving inside a guide bore, diametral clearance is <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Diametral clearance equals bore diameter minus moving-member diameter" data-tex="c=D_b-D_s"><mi>c</mi><mo>=</mo><msub><mi>D</mi><mi mathvariant="normal">b</mi></msub><mo>−</mo><msub><mi>D</mi><mi mathvariant="normal">s</mi></msub></math>. Applying the linear thermal-expansion relationship separately to the two diameters gives a first-order estimate of the clearance change:</p>
+<div class="equation-block"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block" aria-label="Change in diametral clearance is approximately the bore&#x27;s thermal expansion minus the moving member&#x27;s thermal expansion. Each expansion is its linear expansion coefficient times its reference diameter times its temperature change." data-tex="\Delta c \approx \alpha_bD_b\Delta T_b-\alpha_sD_s\Delta T_s"><mrow><mi>Δ</mi><mi>c</mi></mrow><mo>≈</mo><msub><mi>α</mi><mi mathvariant="normal">b</mi></msub><mo>⁢</mo><msub><mi>D</mi><mi mathvariant="normal">b</mi></msub><mo>⁢</mo><mi>Δ</mi><msub><mi>T</mi><mi mathvariant="normal">b</mi></msub><mo>−</mo><msub><mi>α</mi><mi mathvariant="normal">s</mi></msub><mo>⁢</mo><msub><mi>D</mi><mi mathvariant="normal">s</mi></msub><mo>⁢</mo><mi>Δ</mi><msub><mi>T</mi><mi mathvariant="normal">s</mi></msub></math></div>
+<p>The subscripts <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Bore subscript b" data-tex="b"><mi>b</mi></math> and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Moving-member subscript s" data-tex="s"><mi>s</mi></math> identify the bore and moving member. Both diameters are defined at a common reference temperature; <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Linear thermal expansion coefficient, alpha" data-tex="\alpha"><mi>α</mi></math> is the linear thermal-expansion coefficient, and each <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Temperature change, delta T" data-tex="\Delta T"><mrow><mi>Δ</mi><mi>T</mi></mrow></math> is the corresponding temperature change. Using consistent diameter units and coefficients per kelvin gives <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline" aria-label="Change in diametral clearance, delta c" data-tex="\Delta c"><mrow><mi>Δ</mi><mi>c</mi></mrow></math> in those diameter units. <a href="https://openstax.org/books/university-physics-volume-2/pages/1-3-thermal-expansion">OpenStax: Thermal Expansion</a></p>
+<p>This approximation assumes freely expanding parts with approximately constant coefficients. It allows different uniform temperatures for the two parts, but does not capture internal temperature gradients, constraints or pressure-induced deformation. Too little clearance can impede motion; too much can permit excessive lateral movement. This guide clearance is not necessarily a sealing gap. <a href="https://ntrs.nasa.gov/api/citations/19740019163/downloads/19740019163.pdf">NASA: Liquid Rocket Valve Components, section 3.9.1</a></p>
+<figure class="article-visual" id="figure-thermal-guide-clearance">
+<div id="thermal-guide-clearance" class="article-six-visual tgc-visual">
+  <h3 id="tgc-title">Both dimensions determine the clearance</h3>
+  <p class="a6v-summary">One illustrative case: the member's diameter increases more than the bore's, so the clearance decreases.</p>
+  <div class="tgc-comparison">
+    <div class="tgc-state" data-tgc-state="reference">
+      <h4>Reference fit</h4>
+      <p class="tgc-temperature">Both parts at reference temperature</p>
+      <svg class="tgc-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" width="240" height="280" role="img" aria-labelledby="tgc-reference-title tgc-reference-desc">
+        <title id="tgc-reference-title">Reference concentric bore and moving member</title>
+        <desc id="tgc-reference-desc">The outer annulus is the guide material and the inner circle is the moving member. The space between them is the radial gap. Dimension lines show the full bore diameter D b and the full member diameter D s; their difference is diametral clearance, twice the radial gap in this concentric illustration.</desc>
+        <defs><marker id="tgc-ref-arrow" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse"><path d="M7 0L0 3.5L7 7" class="tgc-arrowhead"/></marker></defs>
+        <circle class="tgc-guide" cx="120" cy="110" r="100"/>
+        <circle class="tgc-bore" cx="120" cy="110" r="85"/>
+        <circle class="tgc-member" cx="120" cy="110" r="73"/>
+        <path class="tgc-centerline" d="M120 6V214M16 110H224"/>
+        <path class="tgc-extension" d="M35 110V246M205 110V246M47 110V277M193 110V277"/>
+        <path class="tgc-dimension" d="M35 240H205" marker-start="url(#tgc-ref-arrow)" marker-end="url(#tgc-ref-arrow)"/>
+        <path class="tgc-dimension" d="M47 271H193" marker-start="url(#tgc-ref-arrow)" marker-end="url(#tgc-ref-arrow)"/>
+        <text class="tgc-dimension-label" x="120" y="229" text-anchor="middle">D<tspan baseline-shift="sub" font-size="11">b</tspan> · bore diameter</text>
+        <text class="tgc-dimension-label" x="120" y="260" text-anchor="middle">D<tspan baseline-shift="sub" font-size="11">s</tspan> · member diameter</text>
+      </svg>
+      <p class="tgc-result">Diametral clearance: <span class="tgc-equation">c = D<sub>b</sub> − D<sub>s</sub></span></p>
+    </div>
+    <div class="tgc-state" data-tgc-state="changed">
+      <h4>Unequal expansion</h4>
+      <p class="tgc-temperature">Separate part temperatures: T<sub>b</sub> and T<sub>s</sub></p>
+      <svg class="tgc-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280" width="240" height="280" role="img" aria-labelledby="tgc-changed-title tgc-changed-desc">
+        <title id="tgc-changed-title">Illustrative clearance reduction although both diameters increase</title>
+        <desc id="tgc-changed-desc">Both the bore and moving member expand outward. In this selected example the member's diameter increases by more than the bore's, leaving a smaller positive clearance. Dashed circles mark their reference boundaries. This does not mean heating always decreases clearance. The dimensional changes and gap are exaggerated, not calculated dimensions or Aeterna geometry.</desc>
+        <defs><marker id="tgc-changed-arrow" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse"><path d="M7 0L0 3.5L7 7" class="tgc-arrowhead"/></marker></defs>
+        <circle class="tgc-guide" cx="120" cy="110" r="106"/>
+        <circle class="tgc-bore" cx="120" cy="110" r="90"/>
+        <circle class="tgc-member" cx="120" cy="110" r="84"/>
+        <circle class="tgc-reference-boundary" cx="120" cy="110" r="85"/>
+        <circle class="tgc-reference-boundary" cx="120" cy="110" r="73"/>
+        <path class="tgc-centerline" d="M120 0V220M10 110H230"/>
+        <path class="tgc-extension" d="M30 110V246M210 110V246M36 110V277M204 110V277"/>
+        <path class="tgc-dimension" d="M30 240H210" marker-start="url(#tgc-changed-arrow)" marker-end="url(#tgc-changed-arrow)"/>
+        <path class="tgc-dimension" d="M36 271H204" marker-start="url(#tgc-changed-arrow)" marker-end="url(#tgc-changed-arrow)"/>
+        <text class="tgc-dimension-label" x="120" y="229" text-anchor="middle">Changed bore diameter</text>
+        <text class="tgc-dimension-label" x="120" y="260" text-anchor="middle">Changed member diameter</text>
+      </svg>
+      <p class="tgc-result">Both grow; the member grows more.<br><strong>Smaller diametral clearance.</strong></p>
+    </div>
+  </div>
+  <div class="tgc-legend" aria-label="Diagram key">
+    <span><i class="tgc-key-guide" aria-hidden="true"></i>Guide material</span>
+    <span><i class="tgc-key-member" aria-hidden="true"></i>Moving member</span>
+    <span><i class="tgc-key-reference" aria-hidden="true"></i>Reference boundaries</span>
+  </div>
+  <p class="a6v-key">For the illustrated concentric fit, one-sided radial gap = c/2. Gap and dimensional changes are exaggerated; each part is uniform in temperature and free to expand. This is a guide clearance, not necessarily a sealing gap.</p>
+</div>
+
+<figcaption class="figure-caption">Figure 2. Clearance depends on how both dimensions change. Schematic with a magnified gap and uniform temperature within each freely expanding part; dimensions are not to scale. No pressure deformation, assembly constraint or Aeterna geometry is represented. Principles: <a href="https://openstax.org/books/university-physics-volume-2/pages/1-3-thermal-expansion">OpenStax linear thermal expansion</a> and <a href="https://ntrs.nasa.gov/api/citations/19740019163/downloads/19740019163.pdf">NASA clearance guidance, section 3.9.1</a>.</figcaption></figure>
+<p>A historical example shows the consequence. A J-2 rotary-sleeve valve experienced reduced clearance from thermal contraction and rubbing from pressure-induced deflection, producing erratic opening. Increased clearance was then checked under cryogenic, high-pressure-differential conditions. Its geometry differs from the illustrative poppet, but the example demonstrates why thermal and pressure effects need joint assessment. <a href="https://ntrs.nasa.gov/api/citations/19740019163/downloads/19740019163.pdf">NASA: Liquid Rocket Valve Components, section 2.5.1.2</a></p>
+<h3>Electrical behavior also varies</h3>
+<p>As the winding warms, its resistance increases. At fixed applied voltage, this reduces the steady-state current available; opening response also depends on transient current rise. Current regulation can reduce sensitivity to resistance changes within the driver's voltage, current and thermal capability. <a href="https://www.ti.com/lit/an/slvae59a/slvae59a.pdf">TI: Using Motor Drivers to Drive Solenoids, section 3.1</a></p>
+<p>The assessment therefore includes credible combinations of conditions, including relevant transients. It must identify which variations are allowable and how they affect function.</p>
+</section>
+<section class="article-section" id="preserve-performance-through-use-and-storage" aria-labelledby="preserve-performance-through-use-and-storage-title"><h2 id="preserve-performance-through-use-and-storage-title">4. Preserve performance through use and storage</h2>
+<p>A firing valve may alternate between bursts of activity and long periods without a command. Its design must preserve sealing, flow and response throughout that history, including the next operation after an extended pause.</p>
+<h3>Define the duty history</h3>
+<p>Three parts of the valve-and-driver history need definition:</p>
+<ul>
+<li><strong>Actuation:</strong> number of operations, pulse durations, repetition rates and operating pressures.</li>
+<li><strong>Time in each state:</strong> continuous and cumulative energized time, and periods held closed under pressure.</li>
+<li><strong>Storage and exposure:</strong> duration, temperature history and whether internal surfaces remain dry or in contact with propellant.</li>
+</ul>
+<p>Ground checkout and acceptance operations also contribute to accumulated use. NASA's valve guidance distinguishes dry and wet cycling, cycling rate and prolonged solenoid energization because they impose different demands. <a href="https://ntrs.nasa.gov/api/citations/19740018866/downloads/19740018866.pdf">NASA: Liquid Rocket Valve Assemblies, section 2.1.6</a></p>
+<h3>Identify what can change</h3>
+<p>Repeated seating impacts and sliding contact can alter sealing surfaces and guidance. For a polymer seat, sustained loading can also produce time-dependent deformation. The significance depends on material, geometry, temperature and loading history.</p>
+<p>Material suitability must cover the intended fluid exposure and duration. NASA's valve-component guidance considers cycling damage and changes in seal geometry during prolonged loaded storage. These are mechanisms to assess, not reasons to assume a particular seat material will inevitably fail. <a href="https://ntrs.nasa.gov/api/citations/19740019163/downloads/19740019163.pdf">NASA: Liquid Rocket Valve Components, sections 2.1 and 3.1.2</a></p>
+<h3>Preserve the pauses in the assessment</h3>
+<p>The first operation after a long closed dwell can reveal behavior that continuous cycling does not exercise. Completing a cycle count rapidly therefore does not automatically represent those operations distributed across a mission.</p>
+<p>NASA-STD-5017B warns that removing dwell periods can conceal failure mechanisms and that acceleration can change the mechanism being evaluated. Accelerated testing needs a justified relationship to service conditions. <a href="https://standards.nasa.gov/sites/default/files/standards/NASA/B/2022-12-06-NASA-STD-5017B-Approved.pdf">NASA-STD-5017B, Appendix A.2.12, printed p. 98</a></p>
+<p>The evidence must address whether leakage, response and required flow remain acceptable at relevant points in that history. <strong>Useful life is the period over which the hardware retains its required behavior under its defined operating and storage conditions.</strong></p>
+</section>
+<section class="article-section" id="make-the-design-reproducible" aria-labelledby="make-the-design-reproducible-title"><h2 id="make-the-design-reproducible-title">5. Make the design reproducible</h2>
+<p>Repeatable operation of one valve and consistent performance across separately manufactured valves are different achievements. Manufacturing must preserve the characteristics that determine function within their allowable ranges.</p>
+<h3>Connect fabrication to function</h3>
+<p>Heat treatment can affect dimensions and residual stress; welding near a soft seat requires control of heat input to avoid damaging the sealing material. These effects influence the order of machining, joining, finishing and inspection. NASA's valve-component guidance treats processing controls as part of achieving the required hardware properties. <a href="https://ntrs.nasa.gov/api/citations/19740019163/downloads/19740019163.pdf">NASA: Liquid Rocket Valve Components, sections 2.1, 3.1.2.2 and 3.9.2</a></p>
+<p>Inspection access belongs in the design. A feature that becomes inaccessible may need an earlier measurement, while later operations can require another check of its resulting position or clearance. NASA-STD-5017B calls for clearance measurements at the highest practical assembly level, allowing suitable positional measurements where direct access is unavailable. <a href="https://standards.nasa.gov/sites/default/files/standards/NASA/B/2022-12-06-NASA-STD-5017B-Approved.pdf">NASA-STD-5017B, section 4.2.6</a></p>
+<h3>Control assembly and cleanliness</h3>
+<p>Locating features, fixtures and documented steps help establish alignment and preload consistently. Hand finishing or adjustment can be legitimate process steps when their methods, limits and resulting configuration are controlled.</p>
+<p>The configuration includes electrical components, connections and driver settings that influence actuation. Build records connect the tested assembly to the parts and adjustments actually used. NASA's valve-assembly guidance describes unit identification, assembly records, fixtures and functional measurements as complementary controls. <a href="https://ntrs.nasa.gov/api/citations/19740018866/downloads/19740018866.pdf">NASA: Liquid Rocket Valve Assemblies, section 2.4</a></p>
+<p>Burrs, particles or residues can obstruct motion or compromise sealing. Cleaning and handling provisions must suit the materials, fluid service and sensitive features. Final flushing cannot be assumed to remove every trapped particle, and subsequent assembly or handling can introduce contamination. <a href="https://ntrs.nasa.gov/api/citations/19740018866/downloads/19740018866.pdf">NASA: Liquid Rocket Valve Assemblies, section 2.4.2</a></p>
+<h3>Compare successive builds</h3>
+<p>Measurements across builds can reveal whether critical characteristics remain controlled and whether differences correspond to changes in leakage, response or flow. Consistent measurement conditions and understood measurement uncertainty help distinguish hardware variation from test variation.</p>
+<p><strong>Inspection provides evidence that specified physical characteristics are met. Functional testing provides evidence of the resulting behavior under the tested conditions.</strong> Both connect the manufacturing process to hardware performance.</p>
+</section>
+<section class="article-section" id="keep-the-hardware-definition-and-evidence-connected" aria-labelledby="keep-the-hardware-definition-and-evidence-connected-title"><h2 id="keep-the-hardware-definition-and-evidence-connected-title">6. Keep the hardware definition and evidence connected</h2>
+<p>As development progresses, a practical question should remain answerable:</p>
+<p><strong>Which hardware configuration does each performance statement describe, under what conditions, and with what supporting evidence?</strong></p>
+<p>This connection makes the engineering work usable by both the team building the component and the spacecraft developer integrating it.</p>
+<h3>Identify the configuration</h3>
+<p>The component definition must distinguish the valve, driver and relevant interfaces from other configurations. Drawings, material specifications, assembly controls and driver settings collectively describe the product. NASA's configuration-management guidance emphasizes keeping the physical product and its technical information consistent while controlling changes. <a href="https://www.nasa.gov/reference/6-5-configuration-management/">NASA: Configuration Management</a></p>
+<h3>State what the evidence establishes</h3>
+<p>A target, an analytical prediction and a measured result convey different information. A measurement describes observations under particular conditions; verification determines whether appropriate evidence satisfies a specified requirement.</p>
+<p>Analysis can itself be a valid verification method. The method, assumptions, coverage and acceptance criteria must support the requirement being addressed. Verification planning develops alongside the design, influencing facilities, instrumentation and test access. <a href="https://www.nasa.gov/reference/5-3-product-verification/">NASA: Product Verification</a></p>
+<p>Known operating exclusions remain distinct from conditions not yet evaluated. An unverified condition is an unresolved question, not automatically an established capability or a demonstrated failure.</p>
+<h3>Assess changes against existing evidence</h3>
+<p>Suppose a response-time result was obtained with a particular driver, pressure condition, temperature and timing definition. Substituting another driver raises a specific question: which requirements and existing results could that change affect?</p>
+<p>The assessment determines what evidence remains applicable and what needs updating. It need not repeat every previous activity automatically, but must preserve the connection between the revised product and its performance statements. <a href="https://www.nasa.gov/reference/6-5-configuration-management/">NASA: Configuration Change Management</a></p>
+<p>The result is a hardware definition connecting intended function, physical implementation, operating limits and evidence. The next article examines how that evidence supports qualification, acceptance and integration into a spacecraft.</p>
+<h3>Reference scope</h3>
+<p>NASA SP-8094 and SP-8097 are historical design-guidance monographs, not current universal requirements. NASA-STD-5017B is cited for specific engineering practices; citing it does not establish that it is contractually applicable to every project or that the example complies with it. The TI application note supports circuit principles, not flight qualification. The equations are simplified explanatory models, not a valve design or demonstrated performance.</p>
+</section>
+<p class="article-backlink"><a href="/articles/choosing-a-propulsion-system-architecture.html">← Article 5: Choosing a propulsion system architecture</a></p>
+<p><a href="/articles/">All technical articles</a></p>
+</div></article></main>
+<footer class="site-footer">
+    <div class="shell footer-inner">
+      <a class="wordmark wordmark-footer" href="/" aria-label="Aeterna Sidera home">
+        <img class="wordmark-logo" src="/assets/aeterna-sidera-mark.png" alt="" width="36" height="36" loading="lazy" />
+        <span>Aeterna Sidera</span>
+      </a>
+      <p>© <span data-year>2026</span> Aeterna Sidera Inc. All rights reserved.</p>
+    </div>
+  </footer>
+<script src="/script.js" defer></script>
+</body></html>
