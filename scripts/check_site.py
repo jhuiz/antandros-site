@@ -31,6 +31,7 @@ class Page(HTMLParser):
         self.article_tables = []
         self.images = []
         self.figures = []
+        self.elements = []
         self.current_card = None
         self.current_json = None
         self.errors = []
@@ -38,6 +39,7 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        self.elements.append((tag, attrs))
         if "id" in attrs:
             value = attrs["id"]
             if value in self.ids:
@@ -118,6 +120,7 @@ articles = [
     "articles/matching-propulsion-to-the-mission.html",
     "articles/choosing-a-propulsion-system-architecture.html",
     "articles/turning-propulsion-architecture-into-dependable-hardware.html",
+    "articles/establishing-readiness-for-customer-use.html",
 ]
 primary = ["index.html", "propulsion.html", "fluid-controls.html", "articles/index.html", *articles]
 canonical_urls = {name: "https://aeternasidera.com/" + ("" if name == "index.html" else name.replace("articles/index.html", "articles/")) for name in primary}
@@ -315,10 +318,81 @@ for asset in ["article-six.css", "article-six-visuals.css"]:
 assert "/" + articles[4] in article_six.links, "Article 6: previous-article link missing"
 assert "/" + articles[5] in article_five.links, "Article 5: next-article link missing"
 
+article_seven = pages[(ROOT / articles[6]).resolve()]
+article_seven_metadata = next(item for item in article_seven.scripts if item.get("@type") == "Article")
+assert article_seven_metadata.get("headline") == "Establishing Readiness for Customer Use", "Article 7: incorrect headline metadata"
+assert article_seven_metadata.get("datePublished") == "2026-10-02", "Article 7: incorrect publication date"
+assert article_seven.article_sections == [
+    "define-what-ready-means",
+    "separate-the-questions-different-evidence-answers",
+    "represent-the-installation-and-operating-sequence",
+    "turn-results-into-a-defensible-acceptance-decision",
+    "deliver-the-hardware-with-usable-information",
+    "preserve-that-basis-after-delivery",
+], "Article 7: expected six approved sections in order"
+assert len(article_seven.article_tables) == 1, "Article 7: expected one evidence-comparison table"
+assert len(article_seven.display_equations) == 1 and len(article_seven.math_expressions) == 4, "Article 7: expected one display and three inline expressions"
+assert all(equation.get("xmlns") == "http://www.w3.org/1998/Math/MathML" and equation.get("aria-label", "").strip() for equation in article_seven.math_expressions), "Article 7: equations need accessible native MathML"
+assert [equation.get("data-tex") for equation in article_seven.display_equations] == [r"y+U\leq L"], "Article 7: illustrative guarded-acceptance expression changed"
+assert article_seven.figures == ["figure-test-installation-interfaces", "figure-measurement-guarded-acceptance"], "Article 7: expected two static figures in order"
+assert {"test-installation-interfaces", "measurement-guarded-acceptance", "tii-title", "tii-lab-title", "tii-installed-title", "tii-pressure-title", "mga-title", "mga-plot-description"} <= article_seven.ids, "Article 7: static figure content missing"
+article_seven_text = (ROOT / articles[6]).read_text(encoding="utf-8")
+assert not re.search(r"Private preview|Not published|draft-notice|preview-status|Private editorial notes|Internal editorial notes|END ARTICLE BODY|Prepared:|/mnt/|/home/|C:\\Users|localhost:|window\.openai", article_seven_text, re.I), "Article 7: private review material leaked"
+assert not re.search(r"\bour (?:spacecraft|example|configuration|architecture|propellant|valve)\b", article_seven_text, re.I), "Article 7: illustrative hardware presented as selected Aeterna design"
+for boundary in [
+    "rather than presenting an Aeterna product or qualification result",
+    "not an Aeterna system layout or calculated operating conditions",
+    "not Aeterna measurements or a claimed coverage probability",
+    "uncertainty intervals are not absolute error bounds",
+    "not as universal contractual requirements or evidence of Aeterna compliance",
+]:
+    assert boundary in article_seven_text, f"Article 7: evidence/model boundary missing: {boundary}"
+assert not re.search(r"<(?:iframe|button|select|input|textarea)\b", article_seven_text, re.I), "Article 7: static figures must not require controls or nested previews"
+assert re.findall(r'<script\b[^>]*\bsrc="([^"]+)"', article_seven_text) == ["/script.js"], "Article 7: figures and equations must not require JavaScript"
+without_tex_attributes = re.sub(r'\sdata-tex="[^"]*"', "", article_seven_text)
+assert not re.search(r"\\(?:\[|\]|\(|\)|leq|mathrm|begin|end)|\$\$", without_tex_attributes), "Article 7: unrendered LaTeX outside math audit attributes"
+for references in re.findall(r'aria-(?:labelledby|describedby)="([^"]+)"', article_seven_text):
+    assert set(references.split()) <= article_seven.ids, "Article 7: broken accessible-name/description references"
+interfaces = Counter(attrs["data-tii-interface"] for _, attrs in article_seven.elements if "data-tii-interface" in attrs)
+assert interfaces == Counter({"electrical": 2, "fluid": 2, "mechanical": 2, "thermal": 2}), "Article 7: both installations need the four compared interfaces"
+plots = [attrs for _, attrs in article_seven.elements if "mga-plot" in attrs.get("class", "").split()]
+assert len(plots) == 1 and plots[0].get("role") == "img" and plots[0].get("aria-labelledby") == "mga-title mga-plot-description", "Article 7: guarded-acceptance plot needs its accessible explanation"
+guardband_cases = [
+    tuple(attrs.get(key) for key in ["data-mga-case", "data-mga-reading", "data-mga-lower", "data-mga-upper"])
+    for _, attrs in article_seven.elements if "data-mga-case" in attrs
+]
+assert guardband_cases == [("a", "0.75", "0.65", "0.85"), ("b", "0.95", "0.85", "1.05")], "Article 7: approved hypothetical readings or uncertainty intervals changed"
+assert [attrs["data-mga-threshold"] for _, attrs in article_seven.elements if "data-mga-threshold" in attrs] == ["0.90", "1.00"], "Article 7: acceptance and specification thresholds changed"
+article_seven_sources = Counter({
+    "https://www.nasa.gov/reference/5-5-product-transition/": 2,
+    "https://www.nasa.gov/reference/5-3-product-verification/": 4,
+    "https://ecss.nl/wp-content/uploads/2022/05/ECSS-E-ST-10-03-Rev.1%2831May2022%29.pdf": 1,
+    "https://www.nasa.gov/reference/6-0-crosscutting-technical-management/": 2,
+    "https://standards.nasa.gov/sites/default/files/standards/MSFC/Baseline/0/MSFC-HDBK-3701.pdf": 2,
+    "https://ntrs.nasa.gov/api/citations/20140010169/downloads/20140010169.pdf": 1,
+    "https://www.bipm.org/documents/20126/2071204/JCGM_106_2012_E.pdf": 2,
+    "https://ecss.nl/wp-content/uploads/2018/06/ECSS-Q-ST-20C-Rev.2%281February2018%29.pdf": 1,
+    "https://www.nasa.gov/reference/6-5-configuration-management/": 1,
+    "https://ecss.nl/item/?glossary_id=2684": 1,
+})
+actual_sources = Counter(link for link in article_seven.links if link.startswith("https://") and urlsplit(link).hostname != "aeternasidera.com")
+assert actual_sources == article_seven_sources, "Article 7: reference URLs or occurrence counts differ from approved copy"
+for asset in ["article-seven.css", "article-seven-visuals.css"]:
+    assert f"/assets/{asset}" in article_seven.links, f"Article 7: missing presentation asset {asset}"
+    css = (ROOT / "assets" / asset).read_text(encoding="utf-8")
+    assert not re.search(r"@import|https?://|window\.openai|Private preview|preview-status|draft-notice", css, re.I), f"Article 7: {asset} must remain self-contained and free of private-preview material"
+assert "/" + articles[5] in article_seven.links, "Article 7: previous-article link missing"
+assert "/" + articles[6] in article_six.links, "Article 6: next-article link missing"
+
 namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 urls = [element.text for element in ET.parse(ROOT / "sitemap.xml").findall("s:url/s:loc", namespace)]
 expected = list(canonical_urls.values())
 assert sorted(urls) == sorted(expected), "sitemap does not match primary pages"
+sitemap_lastmods = {
+    element.findtext("s:loc", namespaces=namespace): element.findtext("s:lastmod", namespaces=namespace)
+    for element in ET.parse(ROOT / "sitemap.xml").findall("s:url", namespace)
+}
+assert sitemap_lastmods[canonical_urls[articles[6]]] == article_seven_metadata.get("dateModified", article_seven_metadata["datePublished"]), "Article 7: sitemap date differs from release metadata"
 assert (ROOT / "CNAME").read_text().strip() == "aeternasidera.com", "deployment domain changed"
 
 # Keep source PNGs, but do not serve their full download cost on the homepage.

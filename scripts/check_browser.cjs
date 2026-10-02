@@ -115,6 +115,136 @@ async function captureArticleSix(page, directory, width, suffix = '') {
   }
 }
 
+const articleSevenFigures = ['#figure-test-installation-interfaces', '#figure-measurement-guarded-acceptance'];
+async function checkArticleSevenLayout(page, label) {
+  await page.evaluate(() => document.fonts.ready);
+  assert.equal(await page.locator('body.article-seven').count(), 1, `${label}: Article 7 page class`);
+  assert.equal(await page.locator('section.article-section').count(), 6, `${label}: six sections`);
+  assert.equal(await page.locator('.equation-block math[display="block"]').count(), 1, `${label}: one display equation`);
+  assert.equal(await page.locator('math').count(), 4, `${label}: four native math expressions`);
+  assert(await page.locator('math').evaluateAll(equations => equations.every(node =>
+    node.namespaceURI === 'http://www.w3.org/1998/Math/MathML' && node.getAttribute('aria-label')?.trim() && node.getBoundingClientRect().height > 0)), `${label}: accessible native MathML`);
+  assert.equal(await page.locator('.article-seven-visual button, .article-seven-visual select, .article-seven-visual input, iframe').count(), 0, `${label}: static figures have no controls or frames`);
+  for (const selector of articleSevenFigures) {
+    const figure = page.locator(selector);
+    assert(await figure.isVisible(), `${label}: visible ${selector}`);
+    assert((await figure.innerText()).trim().length > 150, `${label}: meaningful static figure text`);
+    assert((await figure.locator('figcaption').innerText()).trim(), `${label}: figure caption`);
+  }
+  const inspection = await page.evaluate(() => {
+    // Mobile table headers and figure descriptions remain available to assistive
+    // technology, but their intentional one-pixel clipping is not a layout fault.
+    const accessibleOnly = node => {
+      for (let ancestor = node; ancestor; ancestor = ancestor.parentElement) {
+        const style = getComputedStyle(ancestor), box = ancestor.getBoundingClientRect();
+        if (style.position === 'absolute' && box.width <= 2 && box.height <= 2 && /hidden|clip/.test(style.overflow) && /inset\(50%\)|rect\(/.test(style.clipPath + style.clip)) return true;
+      }
+      return false;
+    };
+    const visible = node => {
+      const style = getComputedStyle(node), box = node.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && box.width > 0 && box.height > 0 && !accessibleOnly(node);
+    };
+    const textProblems = [];
+    for (const container of document.querySelectorAll('.article-seven-visual, .article-table')) {
+      const frame = container.getBoundingClientRect(), walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walker.nextNode())) {
+        const parent = node.parentElement;
+        if (!node.textContent.trim() || parent.closest('math,script,style') || !visible(parent)) continue;
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        const rects = [...range.getClientRects()].filter(rect => rect.width && rect.height);
+        if (parseFloat(getComputedStyle(parent).fontSize) < 10.99) textProblems.push('Tiny: ' + node.textContent.trim());
+        if (rects.some(rect => rect.left < frame.left - 1 || rect.right > frame.right + 1)) textProblems.push('Outside: ' + node.textContent.trim());
+        for (let ancestor = parent; ancestor && ancestor !== container.parentElement; ancestor = ancestor.parentElement) {
+          const style = getComputedStyle(ancestor), box = ancestor.getBoundingClientRect();
+          if (/(hidden|clip)/.test(style.overflowX) && rects.some(r => r.left < box.left - 1 || r.right > box.right + 1)) textProblems.push('Clipped horizontally: ' + node.textContent.trim());
+          if (/(hidden|clip)/.test(style.overflowY) && rects.some(r => r.top < box.top - 1 || r.bottom > box.bottom + 1)) textProblems.push('Clipped vertically: ' + node.textContent.trim());
+        }
+      }
+    }
+    const tableProblems = [], table = document.querySelector('.article-table');
+    const headers = table ? [...table.querySelectorAll('thead th')] : [];
+    const rows = table ? [...table.querySelectorAll('tbody tr')] : [];
+    if (headers.length !== 3 || rows.length !== 4) tableProblems.push('Expected three columns and four activity rows');
+    if (headers.some(header => header.getAttribute('scope') !== 'col')) tableProblems.push('Missing column-header associations');
+    for (const row of rows) {
+      const cells = [...row.querySelectorAll('th,td')];
+      if (cells.length !== 3) tableProblems.push('Incomplete row');
+      cells.forEach((cell, index) => {
+        const pseudo = getComputedStyle(cell, '::before');
+        const pseudoLabel = pseudo.display !== 'none' && pseudo.visibility !== 'hidden' && !['', 'none', 'normal', '""'].includes(pseudo.content);
+        const labelled = index === 0 && cell.getAttribute('data-label') === 'Activity' || headers[index] && visible(headers[index]) || pseudoLabel;
+        if (!visible(cell) || !cell.textContent.trim() || !labelled) tableProblems.push('Missing content or mobile label: ' + cell.textContent.trim());
+      });
+    }
+    const geometryProblems = [];
+    const closePx = (actual, expected, what) => {
+      if (!Number.isFinite(actual) || Math.abs(actual - expected) > 1) geometryProblems.push({what, actual, expected});
+    };
+    const cases = [...document.querySelectorAll('.mga-case')], axis = document.querySelector('.mga-axis')?.getBoundingClientRect();
+    if (cases.length !== 2 || !axis) geometryProblems.push({what: 'Missing measurement cases or axis'});
+    for (const node of cases) {
+      const id = node.dataset.mgaCase, track = node.querySelector('.mga-case-track')?.getBoundingClientRect();
+      if (!track) { geometryProblems.push({what: 'Missing track ' + id}); continue; }
+      const reading = Number(node.dataset.mgaReading), lower = Number(node.dataset.mgaLower), upper = Number(node.dataset.mgaUpper);
+      const expectedX = value => track.left + track.width * value / 1.2;
+      for (const [name, value, selector] of [['reading', reading, '.mga-point'], ['lower', lower, `.mga-cap.mga-${id}-lower`], ['upper', upper, `.mga-cap.mga-${id}-upper`]]) {
+        const mark = node.querySelector(selector)?.getBoundingClientRect();
+        closePx(mark ? mark.left + mark.width / 2 : NaN, expectedX(value), id + ' ' + name + ' marker');
+      }
+      const interval = node.querySelector('.mga-interval')?.getBoundingClientRect();
+      closePx(interval?.left ?? NaN, expectedX(lower), id + ' interval lower');
+      closePx(interval?.right ?? NaN, expectedX(upper), id + ' interval upper');
+      closePx(axis?.left ?? NaN, track.left, id + ' shared-axis start');
+      closePx(axis?.right ?? NaN, track.right, id + ' shared-axis end');
+      if (Math.abs(reading - lower - 0.1) > 1e-8 || Math.abs(upper - reading - 0.1) > 1e-8) geometryProblems.push({what: id + ' interval must use U/L = 0.10'});
+      for (const guide of document.querySelectorAll('.mga-guide')) closePx(guide.getBoundingClientRect().left, expectedX(Number(guide.dataset.mgaThreshold)), id + ' threshold ' + guide.dataset.mgaThreshold);
+    }
+    if (cases.map(node => Number(node.dataset.mgaReading)).join(',') !== '0.75,0.95') geometryProblems.push({what: 'Unexpected example readings'});
+    if ([...document.querySelectorAll('.mga-guide')].map(node => Number(node.dataset.mgaThreshold)).sort().join(',') !== '0.9,1') geometryProblems.push({what: 'Expected acceptance threshold 0.9 and specification limit 1'});
+    const plot = document.querySelector('.mga-plot');
+    const plotDescription = plot?.getAttribute('aria-labelledby')?.split(/\s+/).map(id => document.getElementById(id)?.textContent.trim()).filter(Boolean).join(' ') || '';
+    const clipped = [...document.querySelectorAll('main *')].filter(visible).filter(node => {
+      const box = node.getBoundingClientRect();
+      return box.left < -1 || box.right > innerWidth + 1;
+    }).map(node => node.tagName + '#' + node.id);
+    for (const equation of document.querySelectorAll('.equation-block')) {
+      const box = equation.getBoundingClientRect(), math = equation.querySelector('math')?.getBoundingClientRect();
+      if (!math || math.left < box.left - 1 || math.right > box.right + 1) clipped.push('Display equation');
+    }
+    const moving = [...document.querySelectorAll('.article-seven-visual, .article-seven-visual *')].filter(node => {
+      const style = getComputedStyle(node);
+      return style.animationName !== 'none' && style.animationDuration.split(',').some(value => parseFloat(value) > 0);
+    }).map(node => node.tagName);
+    const ids = [...document.querySelectorAll('[id]')].map(node => node.id);
+    const badAria = [...document.querySelectorAll('[aria-labelledby],[aria-describedby]')].flatMap(node =>
+      `${node.getAttribute('aria-labelledby') || ''} ${node.getAttribute('aria-describedby') || ''}`.trim().split(/\s+/)).filter(id => id && !document.getElementById(id));
+    const badAnchors = [...document.querySelectorAll('a[href^="#"]')].map(node => node.getAttribute('href').slice(1)).filter(id => id && !document.getElementById(decodeURIComponent(id)));
+    return {textProblems, tableProblems, geometryProblems, plotDescribed: plot?.getAttribute('role') === 'img' && plotDescription.length > 150, clipped, moving, duplicateIds: ids.filter((id, i) => ids.indexOf(id) !== i), badAria, badAnchors, overflow: document.documentElement.scrollWidth > innerWidth + 1};
+  });
+  for (const key of ['textProblems', 'tableProblems', 'geometryProblems', 'clipped', 'moving', 'duplicateIds', 'badAria', 'badAnchors']) assert.deepEqual(inspection[key], [], `${label}: ${key}`);
+  assert(inspection.plotDescribed, `${label}: measurement chart has an accessible description`);
+  assert(!inspection.overflow, `${label}: document overflow`);
+  const text = await page.locator('main').innerText();
+  assert(!/\\(?:\[|\]|\(|\)|leq|Delta|alpha|mathrm|approx|begin|end)|\$\$/.test(text), `${label}: raw LaTeX visible`);
+  assert.match(text, /not as universal contractual requirements or evidence of Aeterna compliance/, `${label}: reference scope`);
+  assert.match(text, /does not, by itself, establish that actual leakage exceeds the specification/, `${label}: acceptance-rule limitation`);
+}
+
+async function captureArticleSeven(page, directory, width, suffix = '') {
+  await fs.mkdir(directory, {recursive: true});
+  const items = [['test-interfaces', articleSevenFigures[0]], ['guarded-acceptance', articleSevenFigures[1]], ['evidence-table', '.article-table'], ['acceptance-equation', '.equation-block']];
+  for (const [name, selector] of items) {
+    const locator = page.locator(selector), viewport = page.viewportSize(), box = await locator.boundingBox();
+    if (box && box.height + 80 > viewport.height) await page.setViewportSize({...viewport, height: Math.ceil(box.height + 80)});
+    await page.evaluate(() => document.activeElement?.blur());
+    await locator.screenshot({path: path.join(directory, `article-seven-${name}-${width}${suffix}.png`)});
+    await page.setViewportSize(viewport);
+  }
+}
+
 (async () => {
   let browser;
   try {
@@ -135,15 +265,18 @@ async function captureArticleSix(page, directory, width, suffix = '') {
     const articleFourExternal = [];
     const articleFiveExternal = [];
     const articleSixExternal = [];
+    const articleSevenExternal = [];
     let checkingArticleFour = false;
     let checkingArticleFive = false;
     let checkingArticleSix = false;
+    let checkingArticleSeven = false;
     page.on('pageerror', error => errors.push(error.message));
     page.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
     page.on('request', request => {
       if (checkingArticleFour && /^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleFourExternal.push(request.url());
       if (checkingArticleFive && /^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleFiveExternal.push(request.url());
       if (checkingArticleSix && /^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleSixExternal.push(request.url());
+      if (checkingArticleSeven && /^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) articleSevenExternal.push(request.url());
     });
     const articleRoute = '/articles/why-spacecraft-need-maneuverability.html';
     const articleTwoRoute = '/articles/why-orbits-change.html';
@@ -151,7 +284,8 @@ async function captureArticleSix(page, directory, width, suffix = '') {
     const articleFourRoute = '/articles/matching-propulsion-to-the-mission.html';
     const articleFiveRoute = '/articles/choosing-a-propulsion-system-architecture.html';
     const articleSixRoute = '/articles/turning-propulsion-architecture-into-dependable-hardware.html';
-    const articleRoutes = [articleRoute, articleTwoRoute, articleThreeRoute, articleFourRoute, articleFiveRoute, articleSixRoute];
+    const articleSevenRoute = '/articles/establishing-readiness-for-customer-use.html';
+    const articleRoutes = [articleRoute, articleTwoRoute, articleThreeRoute, articleFourRoute, articleFiveRoute, articleSixRoute, articleSevenRoute];
     const chartCases = [
       { figure: '#hall-power-mass-figure', root: '#hall-power-mass-chart', name: 'hall-power-mass' },
       { figure: '#mass-break-even-figure', root: '#mass-break-even-chart', name: 'mass-break-even' },
@@ -163,6 +297,7 @@ async function captureArticleSix(page, directory, width, suffix = '') {
         checkingArticleFour = route === articleFourRoute;
         checkingArticleFive = route === articleFiveRoute;
         checkingArticleSix = route === articleSixRoute;
+        checkingArticleSeven = route === articleSevenRoute;
         const response = await page.goto(origin + route);
         assert.equal(response.status(), 200, `Unexpected status: ${route}`);
         assert(!/\b(?:noindex|none)\b/i.test(response.headers()['x-robots-tag'] || ''), `Noindex response header: ${route}`);
@@ -415,6 +550,23 @@ async function captureArticleSix(page, directory, width, suffix = '') {
           assert.equal(await page.locator('time[datetime="2026-09-30"]').count(), 1, 'Article 6 visible publication date');
           assert.equal(await page.locator(`.article-backlink a[href="${articleFiveRoute}"]`).count(), 1, 'Article 6 links back to Article 5');
           assert.equal(await page.locator('link[rel="stylesheet"][href^="/assets/article-six"]').count(), 2, 'Article 6 has two local stylesheets');
+          assert.equal(await page.locator(`a[href="${articleSevenRoute}"]`).count(), 1, 'Article 6 links forward to Article 7');
+        }
+        if (route === articleSevenRoute) {
+          await checkArticleSevenLayout(page, `Article 7/${width}`);
+          assert.equal(await page.locator('table.article-table').count(), 1, 'Article 7 has one evidence-purpose table');
+          assert.equal(await page.locator('.draft-notice, .preview-status').count(), 0, 'Article 7 retains preview chrome');
+          const publicText = await page.locator('body').innerText();
+          assert(!/Private preview|Not published|Private editorial notes|Internal editorial notes|END ARTICLE BODY|Proposed visual placements|\/mnt\/|\/home\/|C:\\Users|\bour (?:spacecraft|example|configuration|architecture|propellant)\b/i.test(publicText), 'Article 7 private content or ownership perspective leaked');
+          const metadata = await page.locator('script[type="application/ld+json"]').evaluateAll(scripts => scripts.map(script => JSON.parse(script.textContent)).filter(item => item['@type'] === 'Article'));
+          assert.equal(metadata.length, 1, 'Article 7 has one Article schema');
+          assert.equal(metadata[0].mainEntityOfPage, canonical);
+          assert.equal(metadata[0].headline, 'Establishing Readiness for Customer Use');
+          assert.equal(metadata[0].datePublished, '2026-10-02');
+          assert.equal(await page.locator('meta[property="article:published_time"]').getAttribute('content'), metadata[0].datePublished);
+          assert.equal(await page.locator('time[datetime="2026-10-02"]').count(), 1, 'Article 7 visible publication date');
+          assert.equal(await page.locator(`.article-backlink a[href="${articleSixRoute}"]`).count(), 1, 'Article 7 links back to Article 6');
+          assert.equal(await page.locator('link[rel="stylesheet"][href^="/assets/article-seven"]').count(), 2, 'Article 7 has two local stylesheets');
         }
         const iconUrls = await page.locator('link[rel="icon"]').evaluateAll(icons => icons.map(icon => icon.href));
         assert.equal(iconUrls.length, 2);
@@ -440,6 +592,7 @@ async function captureArticleSix(page, directory, width, suffix = '') {
             }
           }
           if (route === articleSixRoute) await captureArticleSix(page, process.env.AETERNA_SCREENSHOT_DIR, width);
+          if (route === articleSevenRoute) await captureArticleSeven(page, process.env.AETERNA_SCREENSHOT_DIR, width);
         }
       }
     }
@@ -447,6 +600,7 @@ async function captureArticleSix(page, directory, width, suffix = '') {
     checkingArticleFour = false;
     checkingArticleFive = false;
     checkingArticleSix = false;
+    checkingArticleSeven = false;
     await page.goto(origin + articleRoute);
     assert.equal(await page.locator('#phasing-lag').innerText(), '10.01');
     await page.locator('#phasing-time').fill('5');
@@ -630,6 +784,21 @@ async function captureArticleSix(page, directory, width, suffix = '') {
     }
     checkingArticleSix = false;
 
+    checkingArticleSeven = true;
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(origin + articleSevenRoute);
+    for (const width of [320, 1280]) {
+      await page.setViewportSize({ width, height: 900 });
+      await checkArticleSevenLayout(page, `Article 7 reduced motion ${width}`);
+    }
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    for (const width of [375, 480]) {
+      await page.setViewportSize({ width, height: 900 });
+      await checkArticleSevenLayout(page, `Article 7 additional width ${width}`);
+      if (width === 375 && process.env.AETERNA_SCREENSHOT_DIR) await captureArticleSeven(page, process.env.AETERNA_SCREENSHOT_DIR, width);
+    }
+    checkingArticleSeven = false;
+
     const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 320, height: 900 } });
     const fallback = await noJs.newPage();
     await fallback.goto(origin + articleRoute);
@@ -653,7 +822,7 @@ async function captureArticleSix(page, directory, width, suffix = '') {
     fallback.on('response', response => { if (response.status() >= 400) errors.push(`${response.status()} ${response.url()}`); });
     let fallbackArticle = 4;
     fallback.on('request', request => {
-      if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) (fallbackArticle === 6 ? articleSixExternal : fallbackArticle === 5 ? articleFiveExternal : articleFourExternal).push(request.url());
+      if (/^https?:/.test(request.url()) && new URL(request.url()).origin !== origin) (fallbackArticle === 7 ? articleSevenExternal : fallbackArticle === 6 ? articleSixExternal : fallbackArticle === 5 ? articleFiveExternal : articleFourExternal).push(request.url());
     });
     await fallback.goto(origin + articleFourRoute);
     assert.equal(await fallback.locator('.article-section').count(), 6);
@@ -708,6 +877,13 @@ async function captureArticleSix(page, directory, width, suffix = '') {
       await checkArticleSixLayout(fallback, `Article 6 no JavaScript ${width}`);
       if (process.env.AETERNA_SCREENSHOT_DIR) await captureArticleSix(fallback, process.env.AETERNA_SCREENSHOT_DIR, width, '-no-js');
     }
+    fallbackArticle = 7;
+    await fallback.goto(origin + articleSevenRoute);
+    for (const width of [320, 1280]) {
+      await fallback.setViewportSize({ width, height: 900 });
+      await checkArticleSevenLayout(fallback, `Article 7 no JavaScript ${width}`);
+      if (process.env.AETERNA_SCREENSHOT_DIR) await captureArticleSeven(fallback, process.env.AETERNA_SCREENSHOT_DIR, width, '-no-js');
+    }
     await noJs.close();
     await page.goto(origin + '/');
     await page.getByRole('link', { name: 'Propulsion', exact: true }).click();
@@ -717,7 +893,8 @@ async function captureArticleSix(page, directory, width, suffix = '') {
     assert.deepEqual(articleFourExternal, [], 'Article 4 made external network requests');
     assert.deepEqual(articleFiveExternal, [], 'Article 5 made external network requests');
     assert.deepEqual(articleSixExternal, [], 'Article 6 made external network requests');
-    console.log('PASS: 40 responsive page checks, metadata, six article index cards, homepage artwork and portrait, navigation, favicon rendering, keyboard entry, phasing, twelve native display equations, five orbital figures, two responsive resource charts with independent numerical checks, precession quarters, shared GEO states, coast controls and invariants, apsis physics, three architecture-map states and keyboard control, static operating timeline, two static hardware figures with force/clearance MathML, two additional Article 6 widths, reduced motion, no-JS fallbacks, no Article 4/5/6 external requests, and no browser errors');
+    assert.deepEqual(articleSevenExternal, [], 'Article 7 made external network requests');
+    console.log('PASS: 44 responsive page checks, metadata, seven article index cards, homepage artwork and portrait, navigation, favicon rendering, keyboard entry, phasing, thirteen native display equations, five orbital figures, two responsive resource charts with independent numerical checks, precession quarters, shared GEO states, coast controls and invariants, apsis physics, three architecture-map states and keyboard control, static operating timeline, two static hardware figures with force/clearance MathML, two readiness figures with independently checked measurement geometry and mobile evidence table, two additional widths each for Articles 6/7, reduced motion, no-JS fallbacks, no Article 4/5/6/7 external requests, and no browser errors');
   } finally {
     if (browser) await browser.close();
     if (server.listening) await new Promise(resolve => server.close(resolve));
