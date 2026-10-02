@@ -29,11 +29,13 @@ Public copy must not disclose internal tasks, gate criteria, schedules, or unann
 - `articles/matching-propulsion-to-the-mission.html` — Article 4 with illustrative propulsion comparisons, native equations and original power–mass and mass break-even figures
 - `articles/choosing-a-propulsion-system-architecture.html` — Article 5 with sourced architecture decisions, an interactive shared-dependency map and a static operating/thermal timeline
 - `articles/turning-propulsion-architecture-into-dependable-hardware.html` — Article 6 with sourced component-engineering principles, native equations and static valve-response and thermal-clearance figures
+- `articles/establishing-readiness-for-customer-use.html` — Article 7 with sourced verification and acceptance principles, native MathML and static test-interface and uncertainty illustrations
 - `assets/article-two.css`, `assets/orbital-frame.{css,js}`, `assets/precession.{css,js}`, `assets/geo-libration.{css,js}` — isolated Article 2 layout and self-contained educational illustrations
 - `assets/article-three.css`, `assets/state-coast.{css,js}`, `assets/apsis-burn.{css,js}` — isolated Article 3 layout and self-contained illustrative two-body models
 - `assets/article-four.css`, `assets/article-four-charts.{css,js}`, `assets/series-04-*.{svg,png}` — isolated Article 4 layout, responsive charts and static figure fallbacks
 - `assets/article-five.css`, `assets/article-five-visuals.{css,js}` — isolated Article 5 layout and original qualitative figures with no-JavaScript text alternatives
 - `assets/article-six.css`, `assets/article-six-visuals.css` — isolated Article 6 layout and original static figures; no illustration scripts or external rendering dependencies
+- `assets/article-seven.css`, `assets/article-seven-visuals.css` — isolated Article 7 layout, responsive evidence table and original static figures; no illustration scripts or external rendering dependencies
 - `assets/phasing.js` — progressively enhanced phasing controls (no remote dependencies or tracking)
 - `contact.html` — redirect to the contact section on the homepage
 - Other legacy `.html` files — deindexed redirects to the homepage
@@ -72,6 +74,8 @@ Article 5 is available at `/articles/choosing-a-propulsion-system-architecture.h
 
 Article 6 is available at `/articles/turning-propulsion-architecture-into-dependable-hardware.html`, listed in the index and sitemap and linked from Article 5. Its release was approved by the founder on September 30, 2026. The static figures distinguish command, coil current, motion and outlet flow, and illustrate a selected case of unequal thermal expansion reducing guide clearance. The equations and geometry are explanatory, not an Aeterna design or measured performance. Both figures and the native MathML remain readable without JavaScript. Historical NASA monographs, selected standard provisions and circuit guidance retain explicit scope limitations.
 
+Article 7 is available at `/articles/establishing-readiness-for-customer-use.html`, listed in the index and sitemap and linked from Article 6. Its release was approved by the founder on October 2, 2026. The static figures compare test and installation interfaces and illustrate a guarded acceptance rule using normalized hypothetical leakage values. They are not an Aeterna configuration, measurement or product requirement. The native equation, figures and mobile evidence table remain readable without JavaScript. Source scope, acceptance exceptions and uncertainty limitations are retained.
+
 ## Verification
 
 Before merging:
@@ -92,7 +96,7 @@ For browser checks, make Playwright available to Node (for example through the i
 node scripts/check_browser.cjs
 ```
 
-The browser check starts an ephemeral localhost-only server and uses an isolated headless Edge browser by default. Set `AETERNA_BROWSER_CHANNEL=chromium` to use Playwright's Chromium instead. It checks the ten primary pages at 320, 768, 900, and 1280 pixels, optimized homepage artwork and portrait rendering, navigation destinations and visibility, favicon rendering, overflow, JavaScript errors, article illustrations, reduced motion, and no-JavaScript fallbacks. Optional `AETERNA_SCREENSHOT_DIR` saves review screenshots outside the repository; `AETERNA_SITE_ORIGIN=https://aeternasidera.com` verifies the live site instead of starting the local server.
+The browser check starts an ephemeral localhost-only server and uses an isolated headless Edge browser by default. Set `AETERNA_BROWSER_CHANNEL=chromium` to use Playwright's Chromium instead. It checks the eleven primary pages at 320, 768, 900, and 1280 pixels, optimized homepage artwork and portrait rendering, navigation destinations and visibility, favicon rendering, overflow, JavaScript errors, article illustrations, reduced motion, and no-JavaScript fallbacks. Optional `AETERNA_SCREENSHOT_DIR` saves review screenshots outside the repository; `AETERNA_SITE_ORIGIN=https://aeternasidera.com` verifies the live site instead of starting the local server.
 
 Review the homepage, propulsion page, fluid-controls page, article index, article, 404 page, every legacy redirect, mobile layout, keyboard focus, metadata, structured data, social card, and email action. Confirm that superseded public positioning and unsupported capability claims are absent. Article sources and legal scope require editorial review before merge; the article is an educational synthesis, not peer-reviewed research or demonstrated Aeterna performance.
 

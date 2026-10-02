@@ -1,0 +1,33 @@
+.article-seven .article-introduction { margin-top: 8px; margin-bottom: 30px; }
+.article-seven .article-toc a { display: inline; padding-block: 0; }
+.article-seven .article-toc li { padding-block: 5px; }
+.article-seven .article-body h3 { margin-top: 30px; font-size: 1.25rem; line-height: 1.35; }
+.article-seven .article-table { width: 100%; margin-block: 26px; border-collapse: collapse; table-layout: fixed; font-size: .95rem; line-height: 1.55; }
+.article-seven .article-table th, .article-seven .article-table td { padding: 13px 12px; border-bottom: 1px solid var(--line-light); text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+.article-seven .article-table thead { background: var(--paper-muted); }
+.article-seven .article-table th:first-child { width: 22%; }
+.article-seven .article-table td:first-child { font-weight: 600; }
+.article-seven .article-visual { margin: 34px 0; padding-block: 24px; border-block: 1px solid var(--line-light); }
+.article-seven .article-backlink { margin-top: 36px; }
+.article-seven .equation-block { margin: 22px 0 26px; padding-block: 8px; color: var(--ink); }
+.article-seven math { font-family: "Cambria Math", "STIX Two Math", math; }
+.article-seven .equation-block math { margin: 0; font-size: 1.2rem; }
+.article-seven .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.article-seven .article-body a { overflow-wrap: anywhere; }
+@media (max-width: 640px) {
+  .article-seven .article-table, .article-seven .article-table tbody { display: block; }
+  .article-seven .article-table thead { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .article-seven .article-table tr { display: block; padding-block: 16px; border-bottom: 1px solid var(--line-light); }
+  .article-seven .article-table td { display: block; padding: 6px 0; border: 0; }
+  .article-seven .article-table td:first-child { font-size: 1.05rem; }
+  .article-seven .article-table td:not(:first-child)::before { content: attr(data-label); display: block; font-weight: 600; font-size: .8rem; margin-bottom: 3px; }
+}
+@media (max-width: 560px) {
+  .article-seven .article-body h2 { font-size: 1.85rem; }
+  .article-seven .equation-block math { font-size: 1.1rem; }
+}
+@media print {
+  .article-seven .site-nav, .article-seven .article-toc { display: none; }
+  .article-seven .article-body { width: 100%; }
+  .article-seven .article-visual, .article-seven .equation-block { break-inside: avoid; }
+}
